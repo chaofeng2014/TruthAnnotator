@@ -46,7 +46,10 @@ $(document).ready(function(){
                 console.log(objectId);
                 sendToContentLogin(objectId, username, nickname);
                 saveToStorage(objectId, username, nickname);
-                window.location.reload();
+                chrome.browserAction.setIcon({path:'../../util/T-400.png'}, function()
+                { console.log('iconC');
+                  window.location.reload();
+                });
               },
               error: function(user, error){
                 console.log("Error: ", error);
@@ -61,8 +64,8 @@ $(document).ready(function(){
             chrome.tabs.query({url:'*://twitter.com/'}, function(tabs) {
               for (var i = 0; i < tabs.length; i++){
                 //console.log("the nick name will be sent ", nickname);
-                chrome.tabs.sendMessage(tabs[i].id, {objectId: objectId, username: username, nickname:nickname}, function(response) {
-                  console.log(response.farewell);
+                chrome.tabs.sendMessage(tabs[i].id, {objectId: objectId, username: username, nickname:nickname}, function() {
+                  console.log('login change sent to content script');
                 });
               }
             }); 

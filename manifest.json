@@ -8,17 +8,17 @@
   "description": "Inline annotation for the web. Select text, images, or (nearly) anything else, and add your notes.",
   
   "browser_action": {
-    "default_icon":  "util/icon.png",
+    "default_icon":  "util/T-400_white.png",
     "default_popup": "login/login.html"
   },
   
   //"page_action": {
   //  },
   
-  //"background": {
-   // "scripts": ["js-lib/parse.min.js", "js/background.js"],
-   // "persistent": true 
-  //},
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": false 
+  },
 
   "permissions":[
     "tabs",

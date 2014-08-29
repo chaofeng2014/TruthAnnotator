@@ -48,6 +48,7 @@ $(document).ready(function() {
                 $(processor.initElements).popline();
               }
             else{
+
             //destory all existing popline
             instances = $.popline.instances;
             for (var i = 0; i < instances.length; i++) {

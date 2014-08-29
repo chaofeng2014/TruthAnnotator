@@ -15,16 +15,19 @@ $(document).ready(function(){
         Parse.User.logOut();
         sendToContentLogout();
         removeStorage();
-        window.location.href = "login.html";
+        chrome.browserAction.setIcon({path:'../../util/T-400_white.png'}, function()
+        {
+          console.log('iconCC');
+          window.close();
+        });
     });
 
     function sendToContentLogout(){
         console.log("sending to content");
-        //chrome.extension.getBackgroundPage().chrome.tabs.query({url:'*://twitter.com/'}, function(tabs) {
         chrome.tabs.query({url:'*://twitter.com/'}, function(tabs) {
           for (var i = 0; i < tabs.length; i++){
             chrome.tabs.sendMessage(tabs[i].id, {objectId: "", username: "", nickname:""}, function(response) {
-              console.log(response.farewell);
+              console.log("change sent to content script");
             });
           }
         }); 

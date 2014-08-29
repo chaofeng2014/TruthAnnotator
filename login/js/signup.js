@@ -42,6 +42,7 @@ $(document).ready(function(){
                   console.log(objectId);
                   sendToContent(objectId, username, nickname);
                   saveToStorage(objectId, username, nickname);
+                  chrome.browserAction.setIcon({path:'../../util/T-400.png'});
                   console.log("save succeeded");
                   window.location.href="login.html";
               },
