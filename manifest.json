@@ -1,0 +1,70 @@
+{
+  "name": "Truth Annotator",
+
+  "version": "0.0.1",
+
+  "manifest_version": 2,
+
+  "description": "Inline annotation for the web. Select text, images, or (nearly) anything else, and add your notes.",
+  
+  "browser_action": {
+    "default_icon":  "util/icon.png",
+    "default_popup": "login/login.html"
+  },
+  
+  //"page_action": {
+  //  },
+  
+  //"background": {
+   // "scripts": ["js-lib/parse.min.js", "js/background.js"],
+   // "persistent": true 
+  //},
+
+  "permissions":[
+    "tabs",
+    "storage"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "*://twitter.com/*",
+        "http://disqus.com/*"
+      ],
+
+      "css": [
+        "css/font-awesome.css",
+        "css/highlight.css",
+        "js/slick/slick.css",
+        "js/popline/themes/default.css"
+      ],
+
+      "js": [
+        "js/parse/parse.js",
+        "js/popline/jquery.min.js",
+        "js/rangy/rangy-core.js",
+        "js/rangy/rangy-cssclassapplier.js",
+        "js/rangy/rangy-selectionsaverestore.js",
+        "js/rangy/rangy-serializer.js",
+        "js/rangy/rangy-textrange.js",
+        "js/processor/processor.js",
+        "js/processor/modules/processor.twitter.js",
+        "js/popline/jquery.popline.js",
+        "js/popline/jquery.popinfo.js",
+        "js/popline/plugins/jquery.popline.vote.js",
+        "js/popline/plugins/jquery.popline.link.js",
+        "js/popline/plugins/jquery.popinfo.infolist.js",
+        "js/slick/slick.min.js",
+        "js/main.js"
+      ],
+
+      "run_at": "document_idle"
+      //"all_frames": true
+    }
+  ],
+
+  "web_accessible_resources": [
+    "fonts/*",
+    "js/popline/jquery.min.map"
+  ]
+}

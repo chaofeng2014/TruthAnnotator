@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--default: LOGIN-->
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login-Truth-Annotator</title>
+  <link rel='stylesheet' href="css/jquery-ui.css" type="text/css"/>
+  <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+  <script src="js-lib/jquery-and-jqueryui.js"></script>
+  <script type="text/javascript" src="js-lib/parse.min.js"></script>
+  <script type="text/javascript" src="js/login.js"></script>
+</head>
+
+<body>
+
+  <div class="login-card" id="login-card">
+    <h1>Welcome to the <br>Truth Annotator</h1><br>
+
+  <form id="toggle">
+    <!--Login form-->
+    <input id="login-email" type="email" name="email" placeholder="Email">
+    <input id="login-password" type="password" name="pass" placeholder="Password">
+  </form>
+
+    <button id="login" type="submit" name="login" class="login login-submit">login</button>
+
+  <div id="users" class="login-help">
+    <a href="signup.html">Register</a>  |  <a href="#">Forgot Password</a>
+  </div>
+
+   <!--Dynamic information--> 
+    <div id="login-info" class="login-info">
+        <p>By logging in, you will be able to annotate!</p>
+       <!-- <p style="visibility:hidden">info</p>-->
+    </div>
+  </div>
+
+
+</body>
+
+</html>

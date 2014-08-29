@@ -1,0 +1,15 @@
+*.ta-annotation-highlight {
+  font-style: normal;
+  background-color: yellow;
+}
+
+*.boldRed {
+  font-weight: bold;
+  color: red;
+}
+
+a.pinkLink {
+  color: #f66;
+  font-size:
+  1.2em;
+}

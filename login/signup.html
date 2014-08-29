@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!-- SIGN UP  -->
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>signup-Truth-Annotator</title>
+  <link rel='stylesheet' href="css/jquery-ui.css" type="text/css"/>
+  <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+  <script src="js-lib/jquery-and-jqueryui.js"></script>
+  <script src="js-lib/parse.min.js"></script>
+  <script type="text/javascript" src="js/signup.js"></script>
+</head>
+
+<body>
+
+    <!-- BODY -->
+    <div class="signup-card">
+        <h1>Becoming a member</h1><br>
+        <form>
+        <!-- email -->
+            <input id="signup-email" type="email" class="form-control" id="email" name="Email" placeholder="Email">
+            <!-- password -->
+            <input id="signup-password" type="password" class="form-control" id="password" name="Password" placeholder="Password">
+            <input id="signup-repassword" type="password" class="form-control" id="password" name="Password"
+            placeholder="Re-enter password">
+            <!-- name -->
+            <input id="signup-nickname" type="text" class="form-control" name="Name" placeholder="Nickname">
+            <!-- signup button-->
+        </form>
+            <button id="signup-submit" type="submit" name="signup" class="signup signup-submit" value="signup">submit</button>
+            <!-- cancel-->
+            <a href="login.html"  class="signup signup-cancel" >Cancel</a>
+
+
+        <div class="signup-info" id='signup-info'>
+            <p style='visibility:hidden'>info</p>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
