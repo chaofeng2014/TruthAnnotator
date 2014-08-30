@@ -6,17 +6,11 @@
 
 */
 
-// Initialize modules
+// Initialize database 
 Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak", "anMcouVSWbzeHoJmFJBcJYrmg8XtzUatOt7hrgJX");
 
+// Initialize rangy 
 rangy.init();
-
-/*
-  After the page load, using multiple lists to store the information from the current html
-    * tweet id list (string)
-    * user name list (string)
-    * tweet text node list (node)
-*/
 
 $(document).ready(function() {
   
@@ -27,12 +21,12 @@ $(document).ready(function() {
     processor.updateAnnotations();
   })
   
-  //initilize user from chrome local storage 
+  //pull user info from chrome local storage 
   chrome.storage.sync.get(['objectId', 'username','nickname'], function(data){
     processor.author = data;
     if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
         data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
-      $(processor.initElements).popline();
+          $(processor.initElements).popline();
     }
           
     console.log("processor author is:", processor.author);
@@ -46,17 +40,20 @@ $(document).ready(function() {
             if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
                 data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
                 $(processor.initElements).popline();
+                processor.updateAnnotations();
+                //processor.updateAuthorVote();
               }
             else{
-
-            //destory all existing popline
-            instances = $.popline.instances;
-            for (var i = 0; i < instances.length; i++) {
-              if (instances[i].target.data("popline") !== undefined) {
-                instances[i].target.data("popline").destroy();
+              //destory all existing popline
+              instances = $.popline.instances;
+              for (var i = 0; i < instances.length; i++) {
+                if (instances[i].target.data("popline") !== undefined) {
+                  instances[i].target.data("popline").destroy();
+                }
               }
+                processor.updateAnnotations();
+                //processor.updateAuthorVote();
             }
-          }
           console.log("processor author is:", processor.author);
           sendResponse({farewell: document.URL + ": message received"});
   });

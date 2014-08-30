@@ -1,12 +1,17 @@
 //FIXME: this is unsafe way to match URL, use tab query instead
 
-//pull from local storage to determine the icon
-chrome.storage.sync.get(['objectId', 'username','nickname'], function(data){
-  if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
-      data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
-      chrome.browserAction.setIcon({path:'../../util/T-400.png'}, function(){console.log("icon changed")});
-  }
-});
+//Listen for any changes to the URL of any tab.
+function pullLocalStorage(){
+  //pull from local storage to determine the icon
+  chrome.storage.sync.get(['objectId', 'username','nickname'], function(data){
+    if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
+        data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
+        chrome.browserAction.setIcon({path:'../../util/T-400.png'}, function(){console.log("icon changed")});
+    }
+  });
+}
+
+chrome.tabs.onUpdated.addListener(pullLocalStorage);
 
 
 /*
@@ -28,6 +33,4 @@ function isCandidateURL(tab, URLlist){
     }
     return false;
 };
-// Listen for any changes to the URL of any tab.
-chrome.tabs.onUpdated.addListener(checkForValidUrl);
 */

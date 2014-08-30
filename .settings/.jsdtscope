@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="parse/|popline/plugins/|slick/|rangy/|processor/|processor/modules/|popline/" kind="src" path="js"/>
+	<classpathentry kind="src" path="js/parse"/>
+	<classpathentry excluding="plugins/" kind="src" path="js/popline"/>
+	<classpathentry kind="src" path="js/popline/plugins"/>
+	<classpathentry excluding="modules/" kind="src" path="js/processor"/>
+	<classpathentry kind="src" path="js/processor/modules"/>
+	<classpathentry kind="src" path="js/rangy"/>
+	<classpathentry kind="src" path="js/slick"/>
+	<classpathentry kind="src" path="login/js"/>
+	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path=""/>
+</classpath>

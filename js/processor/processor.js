@@ -16,6 +16,8 @@
 
     modules: {},
     author: {},
+    postList: {},
+    annotationIdList: [],  
 
     updatePostList: function() {
       $(processor.container).each(function() {
@@ -28,12 +30,18 @@
       });
     },
 
-    postList: {},
+    updateAuthorVote: function(callback2){
+      console.log("updating author vote");
+      processor.database.queryAuthor(function(results){
+        //console.log("Find " + results.length.toString() + " results!");
+        callback2(results);
+      });
+    },
 
     updateAnnotations: function() {
       processor.updatePostList();
-      processor.database.query(function(results) {
-        console.log("Find " + results.length.toString() + " results!");
+      processor.database.queryAnnotation(function(results) {
+        console.log("Find " + results.length.toString() + " annotation results on current view!");
 
         if (results.length !== 0) {
           var objectId, postId, text, textRange, post;
@@ -48,6 +56,11 @@
 
             post = processor.postList[postId];
 
+            //update annotationList
+            if (!(objectId in processor.annotationIdList)){
+              processor.annotationIdList.push(objectId);
+            }
+
             if (!("selectedTexts" in post)) {
               $.extend(post, {selectedTexts: []});
             }
@@ -60,22 +73,32 @@
             }
           }
 
-          for (var id in processor.postList) {
-            post = processor.postList[id];
-            if ("selectedTexts" in post) {
-              var selectedTexts = post.selectedTexts;
+            //query the author vote
+            processor.updateAuthorVote(function (results){
+            console.log("find", results.length, "annotation results for current author");
+              for (var id in processor.postList) {
+                post = processor.postList[id];
+                if ("selectedTexts" in post) {
+                  var selectedTexts = post.selectedTexts;
 
-              for (var i = 0; i < selectedTexts.length; i++) {
-                processor.utils.highlight(post.element, selectedTexts[i].range);
+                  for (var i = 0; i < selectedTexts.length; i++) {
+                    processor.utils.highlight(post.element, selectedTexts[i].range);
+                  }
+
+                  $(post.element).popinfo({"selectedText": selectedTexts});
+                  /*
+                  if (results.length !== 0) {
+                    for (var j = 0; j < results.length; j++) {
+                      console.log(results[j].id);
+                    }
+                  }
+                  */
+                }
               }
-
-              $(post.element).popinfo({"selectedText": selectedTexts});
-
-            }
+            });
           }
-        }
       });
-      
+
     },
 
     getContainerFromRange: function(containerClass, range) {
@@ -215,8 +238,8 @@
           ...
         }
       */
-      query: function(callback) {
-      // Query through Parse database
+      queryAnnotation: function(callback) {
+      // Query through ANNOTATION table 
         var Annotation = Parse.Object.extend(ANNOTATION_TABLE_NAME);
         var query = new Parse.Query(Annotation);
 
@@ -228,6 +251,27 @@
           },
           error: function(error) {
             console.log("Could not finish the query!");
+          }
+        });
+      },
+      
+      queryAuthor: function(callback) {
+      // Query through USER_ANNOTATION table 
+        var userAnnotation = Parse.Object.extend(USER_ANNOTATION_TABLE_NAME);
+
+        var query = new Parse.Query(userAnnotation);
+        //console.log(processor.author.objectId);
+        //console.log(processor.annotationIdList);
+        query.equalTo("userId", processor.author.objectId);
+        query.containedIn("annotationId", processor.annotationIdList);
+
+        query.find({
+          success: function(results) {
+            //console.log(results);
+            callback(results);
+          },
+          error: function(error) {
+            console.log("Could not finish the Main query!");
           }
         });
       }

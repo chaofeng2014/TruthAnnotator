@@ -25,7 +25,7 @@ Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak","anMcouVSWbzeHoJmFJB
     if (button.find(":text").length === 0) {
       var $textField = $("<input type='text' />");
       $textField.addClass("textfield");
-      $textField.attr("placeholder", "http://");
+      $textField.attr("placeholder", "comments & reference");
 
       $textField.keyup(function(event) {
         if (event.which === 13) {
@@ -76,7 +76,6 @@ Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak","anMcouVSWbzeHoJmFJB
               }, function() {
                 $_this.children(":text").focus()
               });
-              //$_this.data('selection', window.getSelection().getRangeAt(0));
               event.stopPropagation();
             }
           });
