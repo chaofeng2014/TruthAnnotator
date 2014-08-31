@@ -44,7 +44,7 @@
       clearTimeout(timerShow);
       timerHide = setTimeout(function(){
         $.popinfo.hideAllBar();
-        }, 500);
+        }, 200);
     }
   };
 

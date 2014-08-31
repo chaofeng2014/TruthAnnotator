@@ -6,6 +6,8 @@ $(document).ready(function(){
     if(currentUser){
         window.location.href = 'welcome.html';
     }
+    
+    $("#login-password").focus();
 
           $("#login").click(function(){ 
           console.log("login in");
