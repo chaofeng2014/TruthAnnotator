@@ -105,12 +105,25 @@ body {
   font-size: 12px;
 }
 
+.login-close {
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+}
+
+#close {
+  position: relative; 
+  top: -13px;
+  right: -100px;
+}
+
 #login-info {
   width: 100%;
   text-align: center;
   font-size: 14px;
 }
 
+/*sign up page */
 .signup-card {
   padding: 20px;
   width: 225px;
@@ -145,7 +158,6 @@ body {
   background: #fff;
   border: 1px solid #d9d9d9;
   border-top: 1px solid #c0c0c0;
-  /* border-radius: 2px; */
   padding: 0 8px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -166,26 +178,19 @@ body {
   font-weight: 700;
   height: 36px;
   padding: 0 8px;
-/* border-radius: 3px; */
-/* -webkit-user-select: none;
-  user-select: none; */
 }
 
 .signup-submit {
-  /* border: 1px solid #3079ed; */
   border: 0px;
   color: #fff;
   text-shadow: 0 1px rgba(0,0,0,0.1); 
   background-color: #4d90fe;
-  /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#4787ed)); */
 }
 
 .signup-submit:hover {
-  /* border: 1px solid #2f5bb7; */
   border: 0px;
   text-shadow: 0 1px rgba(0,0,0,0.3);
   background-color: #357ae8;
-  /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#357ae8)); */
 }
 
 .signup-card a{
@@ -246,6 +251,12 @@ body {
   font-size: 12px;
 }
 
+#welcome-logout {
+  position: relative;
+  top: 10px;
+  left: 100px;
+}
+
 .welcome-card a {
   text-decoration: none;
   color: #666;
@@ -265,7 +276,6 @@ body {
     display: block;
     margin: 12px 0;
 }
-
 
 ::-webkit-input-placeholder {
   font-family: 'Arial', Sans-serif;

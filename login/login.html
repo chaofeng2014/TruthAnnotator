@@ -14,25 +14,29 @@
 <body>
 
   <div class="login-card" id="login-card">
-    <h1>Welcome to the <br>Truth Annotator</h1><br>
+      <div id="close" class="login-close">
+        <a href="#">close</a>
+      </div>
 
-  <form id="toggle">
-    <!--Login form-->
-    <input id="login-email" type="email" name="email" placeholder="Email" autocomplete="on">
-    <input id="login-password" type="password" name="pass" placeholder="Password">
-  </form>
+      <h1>Welcome to the <br>Truth Annotator</h1><br>
 
-    <button id="login" type="submit" name="login" class="login login-submit">login</button>
+      <form id="toggle">
+        <!--Login form-->
+        <input id="login-email" type="email" name="email" placeholder="Email" autocomplete="on">
+        <input id="login-password" type="password" name="pass" placeholder="Password">
+      </form>
 
-  <div id="users" class="login-help">
-    <a href="signup.html">Register</a>  |  <a href="#">Forgot Password</a>
-  </div>
+        <button id="login" type="submit" name="login" class="login login-submit">login</button>
 
-   <!--Dynamic information--> 
-    <div id="login-info" class="login-info">
-        <p>After logging in, you are able to annotate!</p>
-       <!-- <p style="visibility:hidden">info</p>-->
-    </div>
+      <div id="users" class="login-help">
+        <a href="signup.html">sign up </a>  |  <a href="#"> forgot password</a>
+      </div>
+
+
+     <!--Dynamic information--> 
+      <div id="login-info" class="login-info">
+          <p>After logging in, you will be able to annotate!</p>
+      </div>
   </div>
 
 

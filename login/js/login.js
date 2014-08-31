@@ -27,6 +27,7 @@ $(document).ready(function(){
             login(); 
           }
       });
+          $("#close").click(function(){window.close();}); 
     
     $("#logout").click(function(){ 
         Parse.User.logOut();
