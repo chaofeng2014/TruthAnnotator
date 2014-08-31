@@ -29,7 +29,7 @@
     {
       "matches": [
         "*://twitter.com/*",
-        "http://disqus.com/*"
+        "*://disqus.com/*"
       ],
 
       "css": [
@@ -48,7 +48,7 @@
         "js/rangy/rangy-serializer.js",
         "js/rangy/rangy-textrange.js",
         "js/processor/processor.js",
-        "js/processor/modules/processor.twitter.js",
+        "js/processor/modules/processor.platformModules.js",
         "js/popline/jquery.popline.js",
         "js/popline/jquery.popinfo.js",
         "js/popline/plugins/jquery.popline.vote.js",
@@ -58,8 +58,8 @@
         "js/main.js"
       ],
 
-      "run_at": "document_idle"
-      //"all_frames": true
+      "run_at": "document_idle",
+      "all_frames": true
     }
   ],
 

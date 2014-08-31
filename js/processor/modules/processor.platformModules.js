@@ -1,5 +1,5 @@
 /*
-  processor.twitter.js
+  processor.platformModules.js
 
   (c) 2014 by archlyx
 */
@@ -35,6 +35,24 @@
             $(window).trigger("postUpdated");
           }
         });
+      }
+    }
+  });
+
+  processor.addModule({
+    disqus: {
+      initElements: "#post-list",
+      container: ".post",
+
+      getInfoFromContainer: function(element) {
+        var userName   = $(element).find(".author").children().html();
+        var commentId  = $(element).attr("id");
+
+        return {postId: commentId, userName: userName};
+      },
+
+      initializeUpdateEvent: function() {
+      console.log("init update event");
       }
     }
   });

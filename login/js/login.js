@@ -47,10 +47,10 @@ $(document).ready(function(){
                 var username = user.get("username");
                 var objectId = user.id;
                 console.log(objectId);
-                sendToContentLogin(objectId, username, nickname);
+                //sendToContentLogin(objectId, username, nickname);
                 saveToStorage(objectId, username, nickname);
                 chrome.browserAction.setIcon({path:'../../util/T-400.png'}, function()
-                { console.log('iconC');
+                { 
                   window.location.reload();
                 });
               },
@@ -62,9 +62,11 @@ $(document).ready(function(){
           });
         }
         
+        /*
         function sendToContentLogin(objectId, username, nickname){
             console.log("sending to content");
-            chrome.tabs.query({url:'*://twitter.com/'}, function(tabs) {
+            //chrome.tabs.query({url:'*://twitter.com/'}, function(tabs) {
+            chrome.tabs.query({}, function(tabs) {
               for (var i = 0; i < tabs.length; i++){
                 //console.log("the nick name will be sent ", nickname);
                 chrome.tabs.sendMessage(tabs[i].id, {objectId: objectId, username: username, nickname:nickname}, function() {
@@ -73,6 +75,7 @@ $(document).ready(function(){
               }
             }); 
         }
+        */
         
         function saveToStorage(objectId, username, nickname){
           chrome.storage.sync.set({'objectId': objectId, 'username': username, 'nickname': nickname}, function() {

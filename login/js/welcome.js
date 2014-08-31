@@ -13,7 +13,7 @@ $(document).ready(function(){
     
     $("#logout").click(function(){
         Parse.User.logOut();
-        sendToContentLogout();
+        //sendToContentLogout();
         removeStorage();
         chrome.browserAction.setIcon({path:'../../util/T-400_white.png'}, function()
         {
@@ -21,7 +21,8 @@ $(document).ready(function(){
           window.close();
         });
     });
-
+    
+    /*
     function sendToContentLogout(){
         console.log("sending to content");
         chrome.tabs.query({url:'*://twitter.com/'}, function(tabs) {
@@ -32,6 +33,7 @@ $(document).ready(function(){
           }
         }); 
     }
+    */
 
     function removeStorage(){
       chrome.storage.sync.set({objectId: "", username: "", nickname:""}, function(){
