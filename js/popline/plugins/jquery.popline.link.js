@@ -89,9 +89,16 @@ Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak","anMcouVSWbzeHoJmFJB
         $.extend($.popline.selection, {link:linkText});
         window.getSelection().removeAllRanges();
         window.getSelection().addRange($(this).data('selection'));
-        if ("numberOfAgree" in $.popline.selection) {
-          processor.database.save($.popline.selection);
-        }
+        
+        //for iframe, the window.lcoation.host only return iframe domain, not the host domain
+        //console.log(window.location.host);
+        chrome.runtime.sendMessage({question:"what is the host domain?"}, function(response){
+          console.log(response.answer);
+          $.extend($.popline.selection, {sourceURL: response.answer});
+          if ("numberOfAgree" in $.popline.selection) {
+            processor.database.save($.popline.selection);
+          }
+        });
       }
     }
   });

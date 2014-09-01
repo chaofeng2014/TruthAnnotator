@@ -52,7 +52,18 @@
       },
 
       initializeUpdateEvent: function() {
-      console.log("init update event");
+      //FIXME this does not seem to work 
+        $('.load-more').click(function() {
+          console.log("load more comments clicked");
+          var origPostNumber = Object.keys(processor.postList).length;
+          var newPostNumber = $(processor.container).length;
+
+          if (newPostumber > origPostNumber) {
+            $(window).trigger("postUpdated");
+            //console.log("load more comments clicked");
+          }
+        });
+        console.log("init update event");
       }
     }
   });

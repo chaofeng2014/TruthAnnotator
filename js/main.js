@@ -31,6 +31,7 @@ $(document).ready(function() {
   processor.initializeUpdateEvent();
   $(window).on("postUpdated", function() {
     processor.updateAnnotations();
+    console.log("post update event trigger");
   })
 
   //pull user info from chrome local storage 
@@ -50,29 +51,29 @@ $(document).ready(function() {
   //listen to popup page login/logout, update user info
   // dependes on if it is iframe
   if (!window.isTop | !iframe){
-  chrome.storage.onChanged.addListener(
-    function(changes, namespace){
-      console.log("local storage changed!");
-      chrome.storage.sync.get(['objectId', 'username','nickname'], function(data){
-        processor.author = data;
-        if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
-            data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
-                $(processor.initElements).popline();
-                processor.updateAnnotations();
-        }
-        else{
-          //destory all existing popline
-          instances = $.popline.instances;
-          for (var i = 0; i < instances.length; i++) {
-            if (instances[i].target.data("popline") !== undefined) {
-              instances[i].target.data("popline").destroy();
-            }
+    chrome.storage.onChanged.addListener(
+      function(changes, namespace){
+        console.log("local storage changed!");
+        chrome.storage.sync.get(['objectId', 'username','nickname'], function(data){
+          processor.author = data;
+          if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
+              data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
+                  $(processor.initElements).popline();
+                  processor.updateAnnotations();
           }
-            processor.updateAnnotations();
-        }
-          console.log("processor author is:", processor.author);
+          else{
+            //destory all existing popline
+            instances = $.popline.instances;
+            for (var i = 0; i < instances.length; i++) {
+              if (instances[i].target.data("popline") !== undefined) {
+                instances[i].target.data("popline").destroy();
+              }
+            }
+              processor.updateAnnotations();
+          }
+            console.log("processor author is:", processor.author);
+        });
       });
-    });
   }
           
   /*

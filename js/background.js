@@ -13,6 +13,13 @@ function pullLocalStorage(){
 
 chrome.tabs.onUpdated.addListener(pullLocalStorage);
 
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.question === "what is the host domain?"){
+      console.log("question received");
+      sendResponse({answer: sender.tab.url});
+    }
+});
 
 /*
 function checkForValidUrl(tabId, changeInfo, tab) {

@@ -75,7 +75,7 @@
 
             //query the author vote
             processor.updateAuthorVote(function (results){
-            console.log("find", results.length, "annotation results for current author");
+              console.log("find", results.length, "annotation results for current author");
               for (var id in processor.postList) {
                 post = processor.postList[id];
                 if ("selectedTexts" in post) {
@@ -86,13 +86,6 @@
                   }
 
                   $(post.element).popinfo({"selectedText": selectedTexts});
-                  /*
-                  if (results.length !== 0) {
-                    for (var j = 0; j < results.length; j++) {
-                      console.log(results[j].id);
-                    }
-                  }
-                  */
                 }
               }
             });
@@ -173,7 +166,7 @@
         console.log(entry);
         annotation.save({postId : entry.postId, userName: entry.userName, selectedText:entry.selectedText,
                          textRange : entry.textRange, numberOfAgree: entry.numberOfAgree, 
-                         numberOfDisagree: entry.numberOfDisagree},
+                         numberOfDisagree: entry.numberOfDisagree, sourceURL: entry.sourceURL},
         //annotation.save(entry,
         {
           success: function(newEntry) {
