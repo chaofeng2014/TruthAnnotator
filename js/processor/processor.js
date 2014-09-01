@@ -166,7 +166,8 @@
         console.log(entry);
         annotation.save({postId : entry.postId, userName: entry.userName, selectedText:entry.selectedText,
                          textRange : entry.textRange, numberOfAgree: entry.numberOfAgree, 
-                         numberOfDisagree: entry.numberOfDisagree, sourceURL: entry.sourceURL},
+                         numberOfDisagree: entry.numberOfDisagree, sourceURL: entry.sourceURL, hostDomain:
+                         entry.hostDomain},
         //annotation.save(entry,
         {
           success: function(newEntry) {

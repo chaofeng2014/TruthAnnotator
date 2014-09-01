@@ -94,7 +94,7 @@ Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak","anMcouVSWbzeHoJmFJB
         //console.log(window.location.host);
         chrome.runtime.sendMessage({question:"what is the host domain?"}, function(response){
           console.log(response.answer);
-          $.extend($.popline.selection, {sourceURL: response.answer});
+          $.extend($.popline.selection, {sourceURL: response.answer}, {hostDomain: window.location.host});
           if ("numberOfAgree" in $.popline.selection) {
             processor.database.save($.popline.selection);
           }
