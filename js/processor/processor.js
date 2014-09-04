@@ -44,10 +44,15 @@
       //console.log(selectedObject);
       var tweetElement  = processor.postList[entry.postId].element;
       //FIXME add annotation-group attribute
-      var currentElement = $(tweetElement).find(".ta-annotation-highlight").get(0);
+      //var annotationGroup = $(tweetElement).find("[annotation-group]");
+
+      var currentElements = $(tweetElement).find(".ta-annotation-highlight").not("[annotation-group]");
       //var currentElement = processor.postList[entry.postId].element;
-      console.log(currentElement);
-      $(currentElement).popinfo({"selectedText": selectedObject});
+      //console.log(currentElement);
+      for( var i = 0; i < currentElements.size(); i++){
+        $(currentElements.get(i)).popinfo({"selectedText": selectedObject});
+        console.log("new popinfo inited");
+      }
     },
 
     updateAnnotations: function() {
