@@ -37,12 +37,15 @@
     },
 
     //init popinf right after the new annotation is saved 
-    updateCurrentAnnotation: function(entry, objectId) {
-      console.log(objectId);
+    updateCurrentAnnotation: function(entry, objectId){
+      //console.log(objectId);
       var selectedObject = [{id: objectId, text: entry.selectedText, range: entry.textRange, agree: entry.numberOfAgree, disagree:
       entry.numberOfDisagree}];
-      console.log(selectedObject);
-      var currentElement = processor.postList[entry.postId].element;
+      //console.log(selectedObject);
+      var tweetElement  = processor.postList[entry.postId].element;
+      //FIXME add annotation-group attribute
+      var currentElement = $(tweetElement).find(".ta-annotation-highlight").get(0);
+      //var currentElement = processor.postList[entry.postId].element;
       console.log(currentElement);
       $(currentElement).popinfo({"selectedText": selectedObject});
     },
@@ -153,18 +156,20 @@
           } else {
             var cssApplier = rangy.createCssClassApplier("ta-annotation-highlight");
           }
+          //over load 
           if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
             var range = rangy.createRange(element);
             var characterRange = textRange.characterRange;
             range.selectCharacters(element, characterRange.start, characterRange.end);
             cssApplier.applyToRange(range);
-          } else {
-            if (window.getSelection().toString().length > 0) {
+          }
+          else if (window.getSelection().toString().length > 0) {
+              //var range = rangy.Selection(window.getSelection());
+              //console.log(range.getNodes());
               cssApplier.applyToSelection();
+              //return range.getNodes();
             }
           }
-        }
-
       },
 
       toggleHighlight: function(element, textRange) {
@@ -213,7 +218,6 @@
           success: function(newEntry) {
             console.log('New annotation saved');
             processor.utils.highlight();
-            console.log("new entry id is ", newEntry.id);
             processor.updateCurrentAnnotation(entry, newEntry.id);
             var UserAnnotation = Parse.Object.extend(USER_ANNOTATION_TABLE_NAME);
             var userannotation = new UserAnnotation();

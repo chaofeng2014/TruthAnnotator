@@ -51,7 +51,7 @@
       textClass: "opinions",
       mode: "edit",
       beforeShow: function(popinfo) {
-        processor.utils.removeHighlight(popinfo.target.get(0));
+        //processor.utils.removeHighlight(popinfo.target.get(0));
         var textField = this.find(".text");
         if (this.find(".opinion").length === 0) {
           var selectedText = popinfo.settings["selectedText"];
@@ -156,9 +156,11 @@
 
       afterHide: function(popinfo) {
         selectedText = popinfo.settings["selectedText"];
+        /*
         for (var i = 0; i < selectedText.length; i++) {
           processor.utils.highlight(popinfo.target.get(0), selectedText[i].range);
         }
+        */
         for (var objectId in userOpinion) {
           processor.database.update(objectId, userOpinion[objectId]);
         }
