@@ -58,9 +58,9 @@
     click: function(event) {
       event.stopPropagation();
     }
-
+    
     /*
-    keyup: function(event) {
+    mouseup: function(event) {
       var popinfo = $(this).data("popinfo"), bar = popinfo.bar;
       //if (!isIMEMode && window.getSelection().toString().length > 0 && !popinfo.keepSlientWhenBlankSelected()) {
       if (!isIMEMode) {
@@ -78,8 +78,9 @@
         $(this).data('lastKeyPos', $.popinfo.boundingRect());
       }
     }
-    */
-  }
+    */ 
+
+  };
 
   var Position = function() {
     var target= $.popinfo.current.target, bar = $.popinfo.current.bar, positionType = $.popinfo.current.settings.position;

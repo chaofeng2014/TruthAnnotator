@@ -124,7 +124,7 @@ body {
 
 #login-info {
   width: 100%;
-  font-weight:100;
+  /*font-weight:100;*/
   text-align: center;
   font-size: 15px;
   color: blue;
