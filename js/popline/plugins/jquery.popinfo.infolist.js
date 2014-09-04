@@ -75,7 +75,7 @@
               toggleButton(selectedText[currentIndex].agree,
                            selectedText[currentIndex].disagree,
                            userOpinion[currentId]);   
-              processor.utils.toggleHighlight(popinfo.target.get(0), selectedText[currentIndex].range);      
+              //processor.utils.toggleHighlight(popinfo.target.get(0), selectedText[currentIndex].range);      
             },
             onReInit: function() {
               currentIndex = this.currentSlide;     
@@ -83,7 +83,7 @@
               toggleButton(selectedText[currentIndex].agree,
                            selectedText[currentIndex].disagree,
                            userOpinion[currentId]);   
-              processor.utils.toggleHighlight(popinfo.target.get(0), selectedText[currentIndex].range);      
+              //processor.utils.toggleHighlight(popinfo.target.get(0), selectedText[currentIndex].range);      
             },
             onAfterChange: function() {
               currentIndex = this.currentSlide;
@@ -91,7 +91,7 @@
               toggleButton(selectedText[currentIndex].agree,
                            selectedText[currentIndex].disagree,
                            userOpinion[currentId]);
-              processor.utils.toggleHighlight(popinfo.target.get(0), selectedText[currentIndex].range);
+              //processor.utils.toggleHighlight(popinfo.target.get(0), selectedText[currentIndex].range);
             },
             onBeforeChange: function() {
               currentIndex = this.currentSlide;
@@ -99,7 +99,7 @@
               toggleButton(selectedText[currentIndex].agree,
                            selectedText[currentIndex].disagree,
                            userOpinion[currentId]); 
-              processor.utils.toggleHighlight(popinfo.target.get(0), selectedText[currentIndex].range);
+              //processor.utils.toggleHighlight(popinfo.target.get(0), selectedText[currentIndex].range);
             }
           });
         }

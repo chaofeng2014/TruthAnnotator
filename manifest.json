@@ -8,7 +8,7 @@
   "description": "Inline annotation for the web. Select text, images, or (nearly) anything else, and add your notes.",
   
   "browser_action": {
-    "default_icon":  "util/T-400_white.png",
+    "default_icon":  "img/T-400_white.png",
     "default_popup": "login/login.html"
   },
   
