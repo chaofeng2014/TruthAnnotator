@@ -49,8 +49,14 @@
   };
 
   var targetEvent = {
-    mouseout: function(event) {
+    mousedown: function(event) {
       $.popinfo.current = $(this).data("popinfo");
+      $.popinfo.hideAllBar();
+      event.stopPropagation();
+    },
+
+    click: function(event) {
+      event.stopPropagation();
     }
 
     /*

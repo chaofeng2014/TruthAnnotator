@@ -17,9 +17,9 @@
 
   // need to used different size icons
   "icons":{
-    "128": "util/T-400.png", 
-    "48": "util/T-400.png", 
-    "16": "util/T-400.png" 
+    "128": "img/T-400.png", 
+    "48": "img/T-400.png", 
+    "16": "img/T-400.png" 
   },
   
   "background": {
