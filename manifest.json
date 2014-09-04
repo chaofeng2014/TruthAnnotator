@@ -14,9 +14,17 @@
   
   //"page_action": {
   //  },
+
+  // need to used different size icons
+  "icons":{
+    "128": "util/T-400.png", 
+    "48": "util/T-400.png", 
+    "16": "util/T-400.png" 
+  },
   
   "background": {
     "scripts": ["js/background.js"],
+    //not recommended by google
     "persistent": true 
   },
 

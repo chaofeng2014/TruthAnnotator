@@ -37,6 +37,16 @@
         callback2(results);
       });
     },
+    
+    updateCurrentAnnotation: function(entry) {
+      var currentElement = processor.postList[entry.postId].element;
+      if ($.popinfo.utils.isNull(currentElement)){
+        $(currentElement).popinfo({"selectedText": entry.selectedText});
+      }
+      else{
+        console.log("the popinfo already exist");
+      }
+    },
 
     updateAnnotations: function() {
       processor.updatePostList();
@@ -84,7 +94,6 @@
                   for (var i = 0; i < selectedTexts.length; i++) {
                     processor.utils.highlight(post.element, selectedTexts[i].range);
                   }
-
                   $(post.element).popinfo({"selectedText": selectedTexts});
                 }
               }
@@ -173,6 +182,7 @@
           success: function(newEntry) {
             console.log('New annotation saved');
             processor.utils.highlight();
+            processor.updateCurrentAnnotation(entry);
             var UserAnnotation = Parse.Object.extend(USER_ANNOTATION_TABLE_NAME);
             var userannotation = new UserAnnotation();
             console.log(processor.author.username);

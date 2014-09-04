@@ -1,6 +1,5 @@
-//FIXME: this is unsafe way to match URL, use tab query instead
 
-//Listen for any changes to the URL of any tab.
+//set browser action icon based on user login .
 function pullLocalStorage(){
   //pull from local storage to determine the icon
   chrome.storage.sync.get(['objectId', 'username','nickname'], function(data){
@@ -11,8 +10,10 @@ function pullLocalStorage(){
   });
 }
 
+//add listener for any tab change
 chrome.tabs.onUpdated.addListener(pullLocalStorage);
 
+//add listener for request of getting current host domain
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if (request.question === "what is the host domain?"){
