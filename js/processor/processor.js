@@ -31,9 +31,7 @@
     },
 
     updateAuthorVote: function(callback2){
-      console.log("updating author vote");
       processor.database.queryAuthor(function(results){
-        //console.log("Find " + results.length.toString() + " results!");
         callback2(results);
       });
     },
@@ -75,17 +73,26 @@
 
             //query the author vote
             processor.updateAuthorVote(function (results){
-              console.log("find", results.length, "annotation results for current author");
               for (var id in processor.postList) {
                 post = processor.postList[id];
                 if ("selectedTexts" in post) {
                   var selectedTexts = post.selectedTexts;
 
-                  for (var i = 0; i < selectedTexts.length; i++) {
-                    processor.utils.highlight(post.element, selectedTexts[i].range);
-                  }
+                  selectedTexts.sort(function(a, b) {
+                     return parseInt(a.range.characterRange.start) -
+                            parseInt(b.range.characterRange.start)
+                  });
 
-                  $(post.element).popinfo({"selectedText": selectedTexts});
+                  var groupTexts = processor.utils.groupTextRanges(selectedTexts);
+
+                  for (var i = 0; i < groupTexts.length; i++) {
+                    var groupSel = groupTexts[i].selections;
+                    for (var j = 0; j < groupSel.length; j++) {
+                      processor.utils.highlight(post.element, groupSel[j].range, 
+                                                {"annotation-group": i});
+                    }
+                    $(post.element).find("[annotation-group = '" + i + "']").popinfo({"selectedText": groupSel});
+                  }
                 }
               }
             });
@@ -107,11 +114,35 @@
 
     utils: {
 
-      highlight: function(element, textRange) {
+      groupTextRanges: function(textRanges) {
+        var groupRanges = [{maxEnd: textRanges[0].range.characterRange.end,
+                            selections: [textRanges[0]]}];
+        var groupOrder = 0;
+        for (var i = 1; i < textRanges.length; i++) {
+          var characterRange = textRanges[i].range.characterRange;
+          var group = groupRanges[groupOrder];
+
+          if (characterRange.start < group.maxEnd) {
+            group.selections.push(textRanges[i]);
+            group.maxEnd = (characterRange.end < group.maxEnd) ? group.maxEnd : characterRange.end;
+          } else {
+            groupRanges.push({maxEnd: characterRange.end,
+                              selections: [textRanges[i]]});
+            groupOrder = groupOrder + 1;
+          }
+        }
+        return groupRanges;
+      },
+
+      highlight: function(element, textRange, group) {
         var classApplierModule = rangy.modules.ClassApplier || rangy.modules.CssClassApplier;
 
         if (rangy.supported && classApplierModule && classApplierModule.supported) {
-          var cssApplier = rangy.createCssClassApplier("ta-annotation-highlight");
+          if (group) {
+            var cssApplier = rangy.createCssClassApplier("ta-annotation-highlight", {elementAttributes : group});
+          } else {
+            var cssApplier = rangy.createCssClassApplier("ta-annotation-highlight");
+          }
           if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
             var range = rangy.createRange(element);
             var characterRange = textRange.characterRange;
@@ -162,8 +193,7 @@
       save: function(entry) {
         var Annotation = Parse.Object.extend(ANNOTATION_TABLE_NAME);
         var annotation = new Annotation();
-        //var user 
-        console.log(entry);
+
         annotation.save({postId : entry.postId, userName: entry.userName, selectedText:entry.selectedText,
                          textRange : entry.textRange, numberOfAgree: entry.numberOfAgree, 
                          numberOfDisagree: entry.numberOfDisagree, sourceURL: entry.sourceURL, hostDomain:
@@ -175,7 +205,6 @@
             processor.utils.highlight();
             var UserAnnotation = Parse.Object.extend(USER_ANNOTATION_TABLE_NAME);
             var userannotation = new UserAnnotation();
-            console.log(processor.author.username);
             userannotation.save({userId:processor.author.objectId, username:processor.author.username, annotationId: newEntry.id, opinion: entry.opinion, link:
             entry.link}, {success: function(newUserEntry){
                           console.log('New annotation user saved');
@@ -254,14 +283,12 @@
         var userAnnotation = Parse.Object.extend(USER_ANNOTATION_TABLE_NAME);
 
         var query = new Parse.Query(userAnnotation);
-        //console.log(processor.author.objectId);
-        //console.log(processor.annotationIdList);
+
         query.equalTo("userId", processor.author.objectId);
         query.containedIn("annotationId", processor.annotationIdList);
 
         query.find({
           success: function(results) {
-            //console.log(results);
             callback(results);
           },
           error: function(error) {
