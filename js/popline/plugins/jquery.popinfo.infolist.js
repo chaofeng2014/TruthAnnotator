@@ -156,11 +156,9 @@
 
       afterHide: function(popinfo) {
         selectedText = popinfo.settings["selectedText"];
-        /*
         for (var i = 0; i < selectedText.length; i++) {
           processor.utils.highlight(popinfo.target.get(0), selectedText[i].range);
         }
-        */
         for (var objectId in userOpinion) {
           processor.database.update(objectId, userOpinion[objectId]);
         }
