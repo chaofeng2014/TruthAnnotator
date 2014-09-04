@@ -38,11 +38,13 @@
 
     //init popinf right after the new annotation is saved 
     updateCurrentAnnotation: function(entry, objectId) {
-      var selectedText = [{id: objectId, text: entry.selectedText, range: entry.textRange, agree: entry.numberOfAgree, disagree:
+      console.log(objectId);
+      var selectedObject = [{id: objectId, text: entry.selectedText, range: entry.textRange, agree: entry.numberOfAgree, disagree:
       entry.numberOfDisagree}];
-      console.log(selectedText);
+      console.log(selectedObject);
       var currentElement = processor.postList[entry.postId].element;
-      $(currentElement).popinfo({"selectedText": selectedText});
+      console.log(currentElement);
+      $(currentElement).popinfo({"selectedText": selectedObject});
     },
 
     updateAnnotations: function() {
@@ -211,7 +213,8 @@
           success: function(newEntry) {
             console.log('New annotation saved');
             processor.utils.highlight();
-            processor.updateCurrentAnnotation(entry, newEntry.Id);
+            console.log("new entry id is ", newEntry.id);
+            processor.updateCurrentAnnotation(entry, newEntry.id);
             var UserAnnotation = Parse.Object.extend(USER_ANNOTATION_TABLE_NAME);
             var userannotation = new UserAnnotation();
             userannotation.save({userId:processor.author.objectId, username:processor.author.username, annotationId: newEntry.id, opinion: entry.opinion, link:

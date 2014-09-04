@@ -1,12 +1,12 @@
 /*
 
-  truth-annotator
+  Truth Annotator
   Version 0.0.1
   (c) 2014 by Yu, Shuangping
 
 */
 
-// Initialize database 
+// Initialize parse database 
 Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak", "anMcouVSWbzeHoJmFJBcJYrmg8XtzUatOt7hrgJX");
 
 // Initialize rangy 
@@ -21,17 +21,21 @@ $(document).ready(function() {
     processor.useModule("twitter");
     iframe = false;
   }
+
+  //the disqus module, not implemeted
+  /*
   else if(host === "disqus.com"){
     processor.useModule("disqus");
     iframe = true;
   }
+  */
 
   else return;
 
   processor.initializeUpdateEvent();
   $(window).on("postUpdated", function() {
     processor.updateAnnotations();
-    console.log("post update event trigger");
+    console.log("init post update event trigger");
   })
 
   //pull user info from chrome local storage 
@@ -40,7 +44,8 @@ $(document).ready(function() {
     if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
         data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
           setTimeout(function(){
-            //FIXME adjust the delay time
+
+            //need to adjust the delay time for iframe
             processor.updateAnnotations();
             $(processor.initElements).popline();
           }, 1000);
@@ -75,31 +80,4 @@ $(document).ready(function() {
         });
       });
   }
-          
-  /*
-  chrome.runtime.onMessage.addListener(
-      function(data, sender, sendResponse) {
-          console.log("received message!");
-          console.log("local storage changed!");
-          processor.author = data;
-            if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
-                data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
-                $(processor.initElements).popline();
-                processor.updateAnnotations();
-              }
-            else{
-              //destory all existing popline
-              instances = $.popline.instances;
-              for (var i = 0; i < instances.length; i++) {
-                if (instances[i].target.data("popline") !== undefined) {
-                  instances[i].target.data("popline").destroy();
-                }
-              }
-                processor.updateAnnotations();
-            }
-          console.log("processor author is:", processor.author);
-          sendResponse({farewell: document.URL + ": message received"});
-  });
-  */
-  
 });

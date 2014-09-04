@@ -61,6 +61,10 @@
           $.extend($.popline.selection, {numberOfAgree: 0}, {opinion: -1});
           $.extend($.popline.selection, {numberOfDisagree: 1});
         }
+        else{
+          $.extend($.popline.selection,{opinion: 0});
+        }
+
       }
     },
 
