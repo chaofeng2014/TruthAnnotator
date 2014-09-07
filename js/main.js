@@ -23,12 +23,10 @@ $(document).ready(function() {
   }
 
   //the disqus module, not implemeted
-  /*
   else if(host === "disqus.com"){
     processor.useModule("disqus");
     iframe = true;
   }
-  */
 
   else return;
 

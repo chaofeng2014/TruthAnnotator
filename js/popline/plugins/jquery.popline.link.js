@@ -93,7 +93,7 @@ Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak","anMcouVSWbzeHoJmFJB
         //for iframe, the window.lcoation.host only return iframe domain, not the host domain
         //console.log(window.location.host);
         chrome.runtime.sendMessage({question:"what is the host domain?"}, function(response){
-          console.log(response.answer);
+          //console.log(response.answer);
           $.extend($.popline.selection, {sourceURL: response.answer}, {hostDomain: window.location.host});
           if ($.popline.selection.opinion === 1 | $.popline.selection.opinion === -1) {
             console.log($.popline.selection.opinion);

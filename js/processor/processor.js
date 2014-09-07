@@ -42,11 +42,11 @@
       var selectedObject = [{id: objectId, text: entry.selectedText, range: entry.textRange, agree: entry.numberOfAgree, disagree:
       entry.numberOfDisagree}];
       //console.log(selectedObject);
-      var tweetElement  = processor.postList[entry.postId].element;
+      var postElement  = processor.postList[entry.postId].element;
       //FIXME add annotation-group attribute
       //var annotationGroup = $(tweetElement).find("[annotation-group]");
 
-      var currentElements = $(tweetElement).find(".ta-annotation-highlight").not("[annotation-group]");
+      var currentElements = $(postElement).find(".ta-annotation-highlight").not("[annotation-group]");
       //var currentElement = processor.postList[entry.postId].element;
       //console.log(currentElement);
       for( var i = 0; i < currentElements.size(); i++){

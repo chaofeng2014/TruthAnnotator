@@ -30,21 +30,18 @@
     }
     var isTargetOrChild = $.contains($.popinfo.current.target.get(0), event.target) || $.popinfo.current.target.get(0) === event.target;
     var isBarOrChild = $.contains($.popinfo.current.bar.get(0), event.target) || $.popinfo.current.bar.get(0) === event.target;
-    if (isTargetOrChild || isBarOrChild) {
+    var selection = rangy.getSelection();
+    if ((isTargetOrChild || isBarOrChild) && selection.toString().length === 0) {
+
       var target= $.popinfo.current.target, bar = $.popinfo.current.bar;
       if (bar.is(":hidden") || bar.is(":animated")) {
         bar.stop(true, true);
         var pos = Position().mouseup(event);
-        clearTimeout(timerHide);
-        timerShow = setTimeout(function(){
-          $.popinfo.current.show(pos);
-          }, 1);
+        $.popinfo.current.show(pos);
       }
-    } else {
-      clearTimeout(timerShow);
-      timerHide = setTimeout(function(){
-        $.popinfo.hideAllBar();
-        }, 1);
+    }
+    else {
+      $.popinfo.hideAllBar();
     }
   };
 
@@ -52,7 +49,7 @@
     mousedown: function(event) {
       $.popinfo.current = $(this).data("popinfo");
       $.popinfo.hideAllBar();
-      event.stopPropagation();
+      //event.stopPropagation();
     },
 
     click: function(event) {
@@ -96,6 +93,7 @@
           var top = scrollTop + rect.top - bar.outerHeight();
           return {left: left, top: top};
         },
+        /*
         keyup: function(event) {
           var left = null, top = null;
           var rect = $.popinfo.getRect(), keyMoved = $.popinfo.current.isKeyMove();
@@ -108,6 +106,7 @@
           top = scrollTop + rect.top - bar.outerHeight() - 10;
           return {left: left, top: top};
         }
+        */
       },
       "relative": {
         mouseover: function(event) {
@@ -116,6 +115,7 @@
           var top = event.pageY - bar.outerHeight() - parseInt(target.css('font-size')) / 2;
           return {left: left, top: top};
         },
+        /*
         keyup: function(event) {
           var left = null, top = null;
           var rect = $.popinfo.getRect(), keyMoved = $.popinfo.current.isKeyMove();
@@ -128,6 +128,7 @@
           }
           return {left: left, top: top};
         }
+        */
       }
     };
 
