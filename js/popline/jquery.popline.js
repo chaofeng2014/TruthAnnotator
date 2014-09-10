@@ -11,8 +11,6 @@
 
 ;(function(processor, rangy, $) {
 
-  var LEFT = -2, UP = -1, RIGHT = 2, DOWN = 1, NONE = 0, ENTER = 13;
-
   var isIMEMode = false;
   $(document).on('compositionstart', function(event) {
     isIMEMode = true;
@@ -28,26 +26,13 @@
     var isTargetOrChild = $.contains($.popline.current.target.get(0), event.target) || $.popline.current.target.get(0) === event.target;
     var isBarOrChild = $.contains($.popline.current.bar.get(0), event.target) || $.popline.current.bar.get(0) === event.target;
 
-    var selection = rangy.getSelection();
-    if ((isTargetOrChild || isBarOrChild) && selection.toString().length > 0 && !$.popline.current.keepSlientWhenBlankSelected()) {
-      if (selection.rangeCount > 0) {
-        // Check if the selection is in container
-        var containerElement = processor.getContainerFromRange(processor.container, selection.getRangeAt(0));
-        if (containerElement != null) {
-          $.extend($.popline.selection, processor.getInfoFromContainer(containerElement), {
-            selectedText: selection.toString(),
-            textRange: selection.saveCharacterRanges(containerElement)[0]
-          });
-
-          var target= $.popline.current.target, bar = $.popline.current.bar;
-          if (bar.is(":hidden") || bar.is(":animated")) {
-            bar.stop(true, true);
-            var pos = Position().mouseup(event);
-            $.popline.current.show(pos);
-          }
-        }
+    if ((isTargetOrChild || isBarOrChild) && $.popline.current.isAnnotationOrDisplay()) {
+      var target= $.popline.current.target, bar = $.popline.current.bar;
+      if (bar.is(":hidden") || bar.is(":animated")) {
+        bar.stop(true, true);
+        var pos = Position().mouseup(event);
+        $.popline.current.show(pos);
       }
-
     } else {
       $.popline.hideAllBar();
     }
@@ -55,36 +40,45 @@
 
   var targetEvent = {
     mousedown: function(event) {
-      $.popline.current = $(this).data("popline");
       $.popline.hideAllBar();
     },
-    keyup: function(event) {
-      var popline = $(this).data("popline"), bar = popline.bar;
-      if (!isIMEMode && window.getSelection().toString().length > 0 && !popline.keepSlientWhenBlankSelected()) {
-        var pos = Position().keyup(event);
-        $.popline.current.show(pos);
-      } else {
-        $.popline.current.hide();
+
+    mouseup: function(event) {
+      if (($(this).data("popline").settings.mode === "display"
+           && rangy.getSelection().toString().length === 0) ||
+          ($(this).data("popline").settings.mode === "annotation"
+           && rangy.getSelection().toString().length > 0)) {
+        $.popline.current = $(this).data("popline");
       }
     },
-    keydown: function(event) {
-      $.popline.current = $(this).data("popline");
-      var selection = window.getSelection();
 
-      if (selection.rangeCount > 0) {
-        var rects = window.getSelection().getRangeAt(0).getClientRects();
+    mouseenter: function(event) {
+      if ($(this).data("popline").settings.mode === "display") {
+        $(this).css("background-color", "rgba(255, 178, 0, 0.7)");
       }
-      if (rects.length > 0) {
-        $(this).data('lastKeyPos', $.popline.boundingRect());
+    },
+
+    mouseleave: function(event) {
+      if ($(this).data("popline").settings.mode === "display") {
+        var _this = this;
+        setTimeout(function() {
+          $(_this).css("background-color", "rgba(136, 153, 166, 0.4)");
+        }, 200);
+      }
+    },
+
+    click: function(event) {
+      if (rangy.getSelection().toString().length === 0) {
+        event.stopPropagation();
       }
     }
   }
 
   var Position = function() {
-    var target= $.popline.current.target, bar = $.popline.current.bar, positionType = $.popline.current.settings.position;
+    var target= $.popline.current.target, bar = $.popline.current.bar, positionType = $.popline.current.settings.mode;
 
     var positions = {
-      "fixed": {
+      "annotation": {
         mouseup: function(event) {
           var rect = window.getSelection().getRangeAt(0).getBoundingClientRect();
           var left = event.pageX - bar.width() / 2;
@@ -92,37 +86,15 @@
           if (left < 0) left = 10;
           var top = scrollTop + rect.top - bar.outerHeight() -10; 
           return {left: left, top: top};
-        },
-        keyup: function(event) {
-          var left = null, top = null;
-          var rect = $.popline.getRect(), keyMoved = $.popline.current.isKeyMove();
-          if (keyMoved === DOWN || keyMoved === RIGHT) {
-            left = rect.right - bar.width() / 2;
-          }else if (keyMoved === UP || keyMoved === LEFT) {
-            left = rect.left - bar.width() / 2;
-          }
-          var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-          top = scrollTop + rect.top - bar.outerHeight() - 10;
-          return {left: left, top: top};
         }
       },
-      "relative": {
+      "display": {
         mouseup: function(event) {
-          var left = event.pageX - bar.width() / 2;
+          var rect = target.get(0).getBoundingClientRect();
+          var left = rect.right;
+          var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
           if (left < 0) left = 10;
-          var top = event.pageY - bar.outerHeight() - parseInt(target.css('font-size')) / 2;
-          return {left: left, top: top};
-        },
-        keyup: function(event) {
-          var left = null, top = null;
-          var rect = $.popline.getRect(), keyMoved = $.popline.current.isKeyMove();
-          if (keyMoved === DOWN || keyMoved === RIGHT) {
-            left = rect.right - bar.width() / 2;
-            top = $(document).scrollTop() + rect.bottom - bar.outerHeight() - parseInt(target.css("font-size"));
-          }else if (keyMoved === UP || keyMoved === LEFT) {
-            left = rect.left - bar.width() / 2;
-            top = $(document).scrollTop() + rect.top - bar.outerHeight();
-          }
+          var top = scrollTop + rect.top - bar.outerHeight();
           return {left: left, top: top};
         }
       }
@@ -133,10 +105,6 @@
 
   $.fn.popline = function(options) {
 
-    if ($.popline.utils.browser.ie) {
-      return;
-    }
-
     _arguments = arguments;
     this.each(function() {
       if (_arguments.length >= 1 && typeof(_arguments[0]) === "string" && $(this).data("popline")) {
@@ -144,7 +112,7 @@
         if (typeof(func) === "function") {
           func.apply($(this).data("popline"), Array.prototype.slice.call(_arguments, 1));
         }
-      }else if (!$(this).data("popline")) {
+      } else if (!$(this).data("popline")) {
         var popline = new $.popline(options, this);
       }
     });
@@ -162,7 +130,6 @@
 
   $.popline = function(options, target) {
     this.settings = $.extend(true, {}, $.popline.defaults, options);
-    this.setPosition(this.settings.position);
     this.target = $(target);
 
     this.beforeShowCallbacks = [];
@@ -177,10 +144,9 @@
 
     defaults: {
       zIndex: 9999,
-      mode: "edit",
+      mode: "annotation",
       enable: null,
       disable: null,
-      position: "fixed",
       keepSlientWhenBlankSelected: true
     },
 
@@ -188,11 +154,13 @@
 
     selection: {},
 
+    currentAnnotation: null,
+
     current: null,
 
     prototype: {
       init: function() {
-        this.bar = $("<ul class='popline' style='z-index:" + this.settings.zIndex + "'></ul>").appendTo("body");
+        this.bar = $("<div class='popline' style='z-index:" + this.settings.zIndex + "'></div>").appendTo("body");
         this.bar.data("popline", this);
         this.target.data("popline", this);
         var me = this;
@@ -205,7 +173,7 @@
             var v = array[i];
             if (typeof(v) === "string" && name === v) {
               return true;
-            }else if ($.isArray(v)) {
+            } else if ($.isArray(v)) {
               if (isEnable(v, name)) {
                 return true;
               }
@@ -239,12 +207,13 @@
             var button = buttons[name];
             var mode = $.popline.utils.isNull(button.mode) ? $.popline.defaults.mode : button.mode;
 
-            if (mode !== me.settings.mode
+            if ((mode !== me.settings.mode && mode !== "always")
                 || !isEnable(this.settings.enable, name)
                 || isDisable(this.settings.disable, name)) {
               continue;
             }
-            var $button = $("<li><span class='pop-btn'></span></li>");
+
+            var $button = $("<div><span class='pop-btn'></span></div>");
 
             $button.addClass("popline-button popline-" + name + "-button")
 
@@ -271,16 +240,16 @@
             $button.appendTo(parent);
 
             if (button.buttons) {
-              $subbar = $("<ul class='subbar'></ul>");
+              $subbar = $("<div class='subbar'></div>");
               $button.append($subbar);
               makeButtons.call(this, $subbar, button.buttons);
               $button.click(function(event) {
                 var _this = this;
                 if (!$(this).hasClass("boxed")) {
                   me.switchBar($(this), function() {
-                    $(_this).siblings("li").hide().end()
+                    $(_this).siblings("div").hide().end()
                          .children(".pop-btn").hide().end()
-                         .children("ul").show().end()
+                         .children("div").show().end()
                   });
                   event.stopPropagation();
                 }
@@ -307,39 +276,29 @@
         makeButtons.call(this, this.bar, $.popline.buttons);
 
         this.target.bind(targetEvent);
-
-        this.bar.on("mouseenter", "li", function() {
-          if (!($(this).hasClass("boxed"))) {
-            $(this).addClass("hover");
-          }
-        });
-        this.bar.on("mouseleave", "li", function() {
-          if (!($(this).hasClass("boxed"))) {
-            $(this).removeClass("hover");
-          }
-        });
       },
       
       show: function(options) {
         for (var i = 0, l = this.beforeShowCallbacks.length; i < l; i++) {
           var obj = this.beforeShowCallbacks[i];
-          var $button = this.bar.find("li.popline-" + obj.name + "-button");
+          var $button = this.bar.find("div.popline-" + obj.name + "-button");
           obj.callback.call($button, this);
         }
         this.bar.css('top', options.top + "px").css('left', options.left + "px").stop(true, true).fadeIn();
+        this.bar.resize();
       },
 
       hide: function() {
         var _this = this;
         if (this.bar.is(":visible") && !this.bar.is(":animated")) {
           this.bar.fadeOut(function(){
-            _this.bar.find("li").removeClass("boxed").show();
+            _this.bar.find("div").removeClass("boxed").show();
             _this.bar.find(".subbar").hide();
             _this.bar.find(".textfield").hide();
             _this.bar.find(".pop-btn").show();
             for (var i = 0, l = _this.afterHideCallbacks.length; i < l; i++) {
               var obj = _this.afterHideCallbacks[i];
-              var $button = _this.bar.find("li.popline-" + obj.name + "-button");
+              var $button = _this.bar.find("div.popline-" + obj.name + "-button");
               obj.callback.call($button, _this);
             }
           });
@@ -364,7 +323,7 @@
             _this.bar.css("left", position - _this.bar.width() / 2 + "px");
             if (typeof(showFunc) === "function") {
               _this.bar.animate({ opacity: 1, marginTop: 0 }, showFunc)
-            }else {
+            } else {
               _this.bar.animate({ opacity: 1, marginTop: 0 })
             }
           });
@@ -372,41 +331,35 @@
       },
 
       keepSlientWhenBlankSelected: function() {
-        if (this.settings.keepSlientWhenBlankSelected && $.trim(window.getSelection().toString()) === ""){
+        if (this.settings.keepSlientWhenBlankSelected && $.trim(window.getSelection().toString()) === "") {
           return true;
-        }else {
+        } else {
           return false;
         }
       },
 
-      isKeyMove: function() {
-        var lastKeyPos = this.target.data('lastKeyPos');
-        currentRect = $.popline.boundingRect();
-        if ($.popline.utils.isNull(lastKeyPos)) {
-          return null;
-        }
-        if (currentRect.top === lastKeyPos.top && currentRect.bottom !== lastKeyPos.bottom) {
-          return DOWN;
-        }
-        if (currentRect.bottom === lastKeyPos.bottom && currentRect.top !== lastKeyPos.top) {
-          return UP;
-        }
-        if (currentRect.right !== lastKeyPos.right) {
-          return RIGHT;
-        }
-        if (currentRect.left !== lastKeyPos.left) {
-          return LEFT;
-        }
-        return NONE;
-      },
+      isAnnotationOrDisplay: function() {
+        var selection = rangy.getSelection();
 
-      setPosition: function(position) {
-        this.settings.position = position === "relative" ? "relative" : "fixed";
-      },
+        if (this.settings.mode === "annotation" && selection.toString().length > 0 && !this.keepSlientWhenBlankSelected()) {
+          if (selection.rangeCount > 0) {
+            // Check if the selection is in container
+            var containerElement = processor.getContainerFromRange(processor.container, selection.getRangeAt(0));
+            if (containerElement != null) {
+              $.extend($.popline.selection, processor.getInfoFromContainer(containerElement), {
+                selectedText: selection.toString(),
+                textRange: selection.saveCharacterRanges(containerElement)[0]
+              });
 
-      //beforeShowCallbacks: [],
-
-      //afterHideCallbacks: []
+              return true;
+            }
+          }
+        } else if (this.settings.mode === "display" && selection.toString().length === 0) {
+          return true;
+        } else {
+          return false;
+        }
+      }
 
     },
 
@@ -418,42 +371,6 @@
 
     addInstance: function(popline){
       $.popline.instances.push(popline);
-    },
-
-    boundingRect: function(rects) {
-      if ($.popline.utils.isNull(rects)) {
-        rects = window.getSelection().getRangeAt(0).getClientRects();
-      }
-      return {
-        top: parseInt(rects[0].top),
-        left: parseInt(rects[0].left),
-        right: parseInt(rects[rects.length -1].right),
-        bottom: parseInt(rects[rects.length - 1].bottom)
-      }
-    },
-
-    webkitBoundingRect: function() {
-      var rects = window.getSelection().getRangeAt(0).getClientRects();
-      var wbRects = [];
-      for (var i = 0, l = rects.length; i < l; i++) {
-        var rect = rects[i];
-        if (rect.width === 0) {
-          continue;
-        }else if ((i === 0 || i === rects.length - 1) && rect.width === 1) {
-          continue;
-        }else {
-          wbRects.push(rect);
-        }
-      }
-      return $.popline.boundingRect(wbRects);
-    },
-
-    getRect: function() {
-      if ($.popline.utils.browser.firefox || $.popline.utils.browser.opera) {
-        return $.popline.boundingRect();
-      }else if ($.popline.utils.browser.chrome || $.popline.utils.browser.safari) {
-        return $.popline.webkitBoundingRect();
-      }
     },
 
     utils: {
@@ -469,14 +386,7 @@
       trim: function(string) {
         return string.replace(/^\s+|\s+$/g, '');
       },
-      browser: {
-        chrome: navigator.userAgent.match(/chrome/i) ? true : false,
-        safari: navigator.userAgent.match(/safari/i) && !navigator.userAgent.match(/chrome/i) ? true : false,
-        firefox: navigator.userAgent.match(/firefox/i) ? true : false,
-        opera: navigator.userAgent.match(/opera/i) ? true : false,
-        ie: navigator.userAgent.match(/msie/i) ? true : false,
-        webkit: navigator.userAgent.match(/webkit/i) ? true : false
-      },
+
       findNodeWithTags: function(node, tags) {
         if (!$.isArray(tags)) {
           tags = [tags];

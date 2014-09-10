@@ -14,7 +14,6 @@ rangy.init();
 
 $(document).ready(function() {
   var iframe;
-  console.log("the modules are ", processor.modules);
   
   var host = window.location.host;
   if (host === "twitter.com"){
@@ -33,7 +32,6 @@ $(document).ready(function() {
   processor.initializeUpdateEvent();
   $(window).on("postUpdated", function() {
     processor.updateAnnotations();
-    console.log("init post update event trigger");
   })
 
   //pull user info from chrome local storage 
@@ -42,13 +40,11 @@ $(document).ready(function() {
     if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
         data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
           setTimeout(function(){
-
             //need to adjust the delay time for iframe
             processor.updateAnnotations();
             $(processor.initElements).popline();
           }, 1000);
     }
-    console.log("processor author is:", processor.author);
   });
   
   //listen to popup page login/logout, update user info

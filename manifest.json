@@ -24,7 +24,6 @@
   
   "background": {
     "scripts": ["js/background.js"],
-    //not recommended by google
     "persistent": true 
   },
 
@@ -58,10 +57,9 @@
         "js/processor/processor.js",
         "js/processor/modules/processor.platformModules.js",
         "js/popline/jquery.popline.js",
-        "js/popline/jquery.popinfo.js",
         "js/popline/plugins/jquery.popline.vote.js",
         "js/popline/plugins/jquery.popline.link.js",
-        "js/popline/plugins/jquery.popinfo.infolist.js",
+        "js/popline/plugins/jquery.popline.infolist.js",
         "js/slick/slick.min.js",
         "js/main.js"
       ],

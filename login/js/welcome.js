@@ -15,7 +15,7 @@ $(document).ready(function(){
         Parse.User.logOut();
         //sendToContentLogout();
         removeStorage();
-        chrome.browserAction.setIcon({path:'../../util/T-400_white.png'}, function()
+        chrome.browserAction.setIcon({path:'../../img/T-400_white.png'}, function()
         {
           console.log('iconCC');
           window.close();

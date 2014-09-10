@@ -1,6 +1,6 @@
 *.ta-annotation-highlight {
   font-style: normal;
-  background-color: yellow;
+  background-color: rgba(136, 153, 166, 0.4);
 }
 
 *.boldRed {

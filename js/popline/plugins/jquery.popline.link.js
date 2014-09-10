@@ -6,7 +6,6 @@
 
   (c) 2013 by kenshin54
 */
-Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak","anMcouVSWbzeHoJmFJBcJYrmg8XtzUatOt7hrgJX");
 
 ;(function(processor, $) {
 
@@ -51,7 +50,7 @@ Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak","anMcouVSWbzeHoJmFJB
   $.popline.addButton({
     link: {
       iconClass: "fa fa-link",
-      mode: "edit",
+      mode: "annotation",
       beforeShow: function(popline) {
         if (selectionHasLink()) {
           this.find("i").removeClass("fa fa-unlink").addClass("fa fa-link");
@@ -71,7 +70,7 @@ Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak","anMcouVSWbzeHoJmFJB
             if (!$_this.hasClass("boxed")) {
               $_this.children(":text").val('');
               popline.switchBar($_this, function() {
-                $_this.siblings("li").hide().end()
+                $_this.siblings("div").hide().end()
                   .children(":text").show().end()
               }, function() {
                 $_this.children(":text").focus()
@@ -91,9 +90,7 @@ Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak","anMcouVSWbzeHoJmFJB
         window.getSelection().addRange($(this).data('selection'));
         
         //for iframe, the window.lcoation.host only return iframe domain, not the host domain
-        //console.log(window.location.host);
         chrome.runtime.sendMessage({question:"what is the host domain?"}, function(response){
-          //console.log(response.answer);
           $.extend($.popline.selection, {sourceURL: response.answer}, {hostDomain: window.location.host});
           if ($.popline.selection.opinion === 1 | $.popline.selection.opinion === -1) {
             console.log($.popline.selection.opinion);

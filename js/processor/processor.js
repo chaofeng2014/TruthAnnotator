@@ -38,20 +38,16 @@
 
     //init popinf right after the new annotation is saved 
     updateCurrentAnnotation: function(entry, objectId){
-      //console.log(objectId);
       var selectedObject = [{id: objectId, text: entry.selectedText, range: entry.textRange, agree: entry.numberOfAgree, disagree:
       entry.numberOfDisagree}];
-      //console.log(selectedObject);
+
       var postElement  = processor.postList[entry.postId].element;
       //FIXME add annotation-group attribute
-      //var annotationGroup = $(tweetElement).find("[annotation-group]");
 
       var currentElements = $(postElement).find(".ta-annotation-highlight").not("[annotation-group]");
-      //var currentElement = processor.postList[entry.postId].element;
-      //console.log(currentElement);
+
       for( var i = 0; i < currentElements.size(); i++){
-        $(currentElements.get(i)).popinfo({"selectedText": selectedObject});
-        console.log("new popinfo inited");
+        $(currentElements.get(i)).popline({"mode": "display","selectedText": selectedObject});
       }
     },
 
@@ -91,7 +87,7 @@
           }
 
             //query the author vote
-            processor.updateAuthorVote(function (results){
+            processor.updateAuthorVote(function (results) {
               for (var id in processor.postList) {
                 post = processor.postList[id];
                 if ("selectedTexts" in post) {
@@ -109,7 +105,7 @@
                       processor.utils.highlight(post.element, groupSel[j].range, 
                                                 {"annotation-group": i});
                     }
-                    $(post.element).find("[annotation-group = '" + i + "']").popinfo({"selectedText": groupSel});
+                    $(post.element).find("[annotation-group = '" + i + "']").popline({"mode": "display", "selectedText": groupSel});
                   }
                 }
               }
@@ -167,14 +163,10 @@
             var characterRange = textRange.characterRange;
             range.selectCharacters(element, characterRange.start, characterRange.end);
             cssApplier.applyToRange(range);
-          }
-          else if (window.getSelection().toString().length > 0) {
-              //var range = rangy.Selection(window.getSelection());
-              //console.log(range.getNodes());
+          } else if (window.getSelection().toString().length > 0) {
               cssApplier.applyToSelection();
-              //return range.getNodes();
-            }
           }
+        }
       },
 
       toggleHighlight: function(element, textRange) {
@@ -223,6 +215,8 @@
           success: function(newEntry) {
             console.log('New annotation saved');
             processor.utils.highlight();
+            window.getSelection().removeAllRanges();
+
             processor.updateCurrentAnnotation(entry, newEntry.id);
             var UserAnnotation = Parse.Object.extend(USER_ANNOTATION_TABLE_NAME);
             var userannotation = new UserAnnotation();
