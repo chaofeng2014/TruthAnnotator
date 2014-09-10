@@ -10,7 +10,13 @@
 ;(function($) {
 
   var opinion = 0;
-  var userOpinion = {};
+  var userOpinions = {};
+
+  // A table mapping the original opinion and new opinion
+  // to the increment/decrement of the number of agree/disagree
+  var updateNumberTable = {"0,1":  [1, 0],  "0,-1": [0, 1],
+                           "1,-1": [-1, 1], "-1,1": [1, -1],
+                           "1,0":  [-1, 0], "-1,0": [0, -1]};
 
   var calcOpinion = function(buttonType) {
     if (buttonType === "thumbsUp") {
@@ -31,8 +37,16 @@
 
     thumbsUpButton.css("color", newOpinion > 0 ? highlightColor : defaultColor);
     thumbsDownButton.css("color", newOpinion < 0 ? highlightColor : defaultColor);
+  };
 
-    opinion = newOpinion;
+  var updateNumber = function(popline, newOpinion) {
+    var bar = popline.bar;
+    var numThumbsUp = bar.find(".popline-numThumbsUp-button").find(".text");
+    var numThumbsDown = bar.find(".popline-numThumbsDown-button").find(".text");
+
+    var increment = updateNumberTable[[opinion, newOpinion]];
+    numThumbsUp.text(parseInt(numThumbsUp.text()) + increment[0]);
+    numThumbsDown.text(parseInt(numThumbsDown.text()) + increment[1]);
   };
 
   $.popline.addButton({
@@ -48,7 +62,13 @@
         // Bind the click behavior of the button if not set yet
         if (!this.data("click-event-binded")) {
           this.click(function(event) {
-            toggleButton(popline, calcOpinion("thumbsUp"));
+            var newOpinion = calcOpinion("thumbsUp");
+            toggleButton(popline, newOpinion);
+            if (popline.settings.mode === "display") {
+              updateNumber(popline, newOpinion);
+            }
+            userOpinions[popline.currentAnnotation.id] = newOpinion;
+            opinion = newOpinion;
           });
 
           this.on("slideChange", function() {
@@ -57,6 +77,7 @@
               newOpinion = popline.currentAnnotation.opinion;
             }
             toggleButton(popline, newOpinion);
+            opinion = newOpinion;
           });
 
           this.data("click-event-binded", true);
@@ -68,8 +89,8 @@
         var mode = popline.settings.mode;
 
         if (mode === "annotation") {
-          //FIXME: the number of the agree/disagree
-          $.extend($.popline.selection, {numberOfAgree: 1, numberOfDisagree: 0,
+          $.extend($.popline.selection, {numberOfAgree: opinion > 0 ? 1 : 0,
+                                         numberOfDisagree: opinion < 0 ? 1 : 0,
                                          opinion : opinion});
         } else if (mode === "display") {
           popline.target.css("background-color", "rgba(136, 153, 166, 0.4)");
@@ -80,8 +101,9 @@
             }, 200);
           });
 
-          for (var objectId in userOpinion) {
-            processor.database.update(objectId, userOpinion[objectId]);
+          for (var objectId in userOpinions) {
+            console.log(userOpinions);
+            processor.database.update(objectId, userOpinions[objectId]);
           }
         }
 
@@ -90,7 +112,15 @@
 
     numThumbsUp: {
       text: " ",
-      mode: "display"
+      mode: "display",
+      beforeShow: function(popline) {
+        if (!this.data("slide-event-binded")) {
+          this.on("slideChange", function() {
+            $(this).find(".text").text(popline.currentAnnotation.agree);
+          });
+          this.data("slide-event-binded", true);
+        }
+      }
     },
 
     thumbsDown: {
@@ -100,7 +130,13 @@
 
         if (!this.data("click-event-binded")) {
           this.click(function(event) {
-            toggleButton(popline, calcOpinion("thumbsDown"));
+            var newOpinion = calcOpinion("thumbsDown");
+            toggleButton(popline, newOpinion);
+            if (popline.settings.mode === "display") {
+              updateNumber(popline, newOpinion);
+            }
+            userOpinions[popline.currentAnnotation.id] = newOpinion;
+            opinion = newOpinion;
           });
           this.data("click-event-binded", true);
         }
@@ -110,7 +146,15 @@
 
     numThumbsDown: {
       text: " ",
-      mode: "display"
+      mode: "display",
+      beforeShow: function(popline) {
+        if (!this.data("slide-event-binded")) {
+          this.on("slideChange", function() {
+            $(this).find(".text").text(popline.currentAnnotation.disagree);
+          });
+          this.data("slide-event-binded", true);
+        }
+      }
     }
 
   });

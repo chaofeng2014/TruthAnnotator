@@ -36,7 +36,7 @@ $(document).ready(function() {
 
   //pull user info from chrome local storage 
   chrome.storage.sync.get(['objectId', 'username','nickname'], function(data){
-    processor.author = data;
+    processor.user = data;
     if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
         data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
           setTimeout(function(){
@@ -54,7 +54,7 @@ $(document).ready(function() {
       function(changes, namespace){
         console.log("local storage changed!");
         chrome.storage.sync.get(['objectId', 'username','nickname'], function(data){
-          processor.author = data;
+          processor.user = data;
           if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
               data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
                   $(processor.initElements).popline();
@@ -70,7 +70,7 @@ $(document).ready(function() {
             }
               processor.updateAnnotations();
           }
-            console.log("processor author is:", processor.author);
+            console.log("processor user is:", processor.user);
         });
       });
   }

@@ -57,9 +57,9 @@
         "js/processor/processor.js",
         "js/processor/modules/processor.platformModules.js",
         "js/popline/jquery.popline.js",
-        "js/popline/plugins/jquery.popline.vote.js",
+        "js/popline/plugins/jquery.popline.opinion.js",
+        "js/popline/plugins/jquery.popline.annotation.js",
         "js/popline/plugins/jquery.popline.link.js",
-        "js/popline/plugins/jquery.popline.infolist.js",
         "js/slick/slick.min.js",
         "js/main.js"
       ],

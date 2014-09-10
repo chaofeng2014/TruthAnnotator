@@ -15,7 +15,7 @@
     },
 
     modules: {},
-    author: {},
+    user: {},
     postList: {},
     annotationIdList: [],  
 
@@ -30,20 +30,16 @@
       });
     },
 
-    updateAuthorVote: function(callback2){
-      processor.database.queryAuthor(function(results){
-        callback2(results);
-      });
-    },
-
-    //init popinf right after the new annotation is saved 
-    updateCurrentAnnotation: function(entry, objectId){
-      var selectedObject = [{id: objectId, text: entry.selectedText, range: entry.textRange, agree: entry.numberOfAgree, disagree:
-      entry.numberOfDisagree}];
+    //init popline right after the new annotation is saved 
+    addAnnotationDisplay: function(entry) {
+      var selectedObject = [{id: entry.id, text: entry.get("selectedText"),
+                             range: entry.get("textRange"),
+                             agree: entry.get("numberOfAgree"),
+                             disagree: entry.get("numberOfDisagree") }];
 
       var postElement  = processor.postList[entry.postId].element;
+      
       //FIXME add annotation-group attribute
-
       var currentElements = $(postElement).find(".ta-annotation-highlight").not("[annotation-group]");
 
       for( var i = 0; i < currentElements.size(); i++){
@@ -86,31 +82,32 @@
             }
           }
 
-            //query the author vote
-            processor.updateAuthorVote(function (results) {
-              for (var id in processor.postList) {
-                post = processor.postList[id];
-                if ("selectedTexts" in post) {
-                  var selectedTexts = post.selectedTexts;
-                  selectedTexts.sort(function(a, b) {
-                     return parseInt(a.range.characterRange.start) -
-                            parseInt(b.range.characterRange.start)
-                  });
+          processor.database.queryUserAnnotation(function(userAnnotations) {
+            for (var id in processor.postList) {
+              post = processor.postList[id];
+              if ("selectedTexts" in post) {
+                var selectedTexts = post.selectedTexts;
+                selectedTexts.sort(function(a, b) {
+                   return parseInt(a.range.characterRange.start) -
+                          parseInt(b.range.characterRange.start)
+                });
 
-                  var groupTexts = processor.utils.groupTextRanges(selectedTexts);
+                var groupTexts = processor.utils.groupTextRanges(selectedTexts);
 
-                  for (var i = 0; i < groupTexts.length; i++) {
-                    var groupSel = groupTexts[i].selections;
-                    for (var j = 0; j < groupSel.length; j++) {
-                      processor.utils.highlight(post.element, groupSel[j].range, 
-                                                {"annotation-group": i});
-                    }
-                    $(post.element).find("[annotation-group = '" + i + "']").popline({"mode": "display", "selectedText": groupSel});
+                for (var i = 0; i < groupTexts.length; i++) {
+                  var groupSel = groupTexts[i].selections;
+                  for (var j = 0; j < groupSel.length; j++) {
+                    processor.utils.highlight(post.element, groupSel[j].range, 
+                                              {"annotation-group": i});
+                    $.extend(groupSel[j], userAnnotations[groupSel[j].id]);
                   }
+                  console.log(groupSel);
+                  $(post.element).find("[annotation-group = '" + i + "']").popline({"mode": "display", "selectedText": groupSel});
                 }
               }
-            });
-          }
+            }
+          });
+        }
       });
 
     },
@@ -206,30 +203,38 @@
         var Annotation = Parse.Object.extend(ANNOTATION_TABLE_NAME);
         var annotation = new Annotation();
 
-        annotation.save({postId : entry.postId, userName: entry.userName, selectedText:entry.selectedText,
-                         textRange : entry.textRange, numberOfAgree: entry.numberOfAgree, 
-                         numberOfDisagree: entry.numberOfDisagree, sourceURL: entry.sourceURL, hostDomain:
-                         entry.hostDomain},
-        //annotation.save(entry,
+        annotation.save(entry,
         {
-          success: function(newEntry) {
+          success: function(result) {
             console.log('New annotation saved');
+
             processor.utils.highlight();
             window.getSelection().removeAllRanges();
 
-            processor.updateCurrentAnnotation(entry, newEntry.id);
-            var UserAnnotation = Parse.Object.extend(USER_ANNOTATION_TABLE_NAME);
-            var userannotation = new UserAnnotation();
-            userannotation.save({userId:processor.author.objectId, username:processor.author.username, annotationId: newEntry.id, opinion: entry.opinion, link:
-            entry.link}, {success: function(newUserEntry){
-                          console.log('New annotation user saved');
-                        },
-                          error: function(newUserEntry, error){
-                            alert("Failed to create new object, with error code: " + error.message);
-                          }
-                        });
+            processor.addCurrentAnnotation(result);
           },
           error: function(newEntry, error) {
+            alert("Failed to create new object, with error code: " + error.message);
+          }
+        });
+      },
+
+      saveUserAnnotation: function(entry) {
+        // Here entry is the result return from Parse
+        var UserAnnotation = Parse.Object.extend(USER_ANNOTATION_TABLE_NAME);
+        var userAnnotation = new UserAnnotation();
+
+        var entrySave = {userId: processor.user.objectId,
+                         username: processor.user.username,
+                         annotationId: entry.id,
+                         opinion: entry.get("opinion"),
+                         link: entry.get("link")}
+
+        userAnnotation.save(entrySave, {
+          success: function(newUserEntry){
+            console.log('New annotation user saved');
+          },
+          error: function(newUserEntry, error){
             alert("Failed to create new object, with error code: " + error.message);
           }
         });
@@ -237,8 +242,6 @@
     
     /*
       processor.database.update:
-
-      FIXME: Complete the update logic, change the update to updateAnnotation
     */
       update: function(objectId, opinion) {
         var Annotation = Parse.Object.extend(ANNOTATION_TABLE_NAME);
@@ -293,18 +296,24 @@
         });
       },
       
-      queryAuthor: function(callback) {
-      // Query through USER_ANNOTATION table 
-        var userAnnotation = Parse.Object.extend(USER_ANNOTATION_TABLE_NAME);
+      queryUserAnnotation: function(callback) {
+        var UserAnnotation = Parse.Object.extend(USER_ANNOTATION_TABLE_NAME);
 
-        var query = new Parse.Query(userAnnotation);
+        var query = new Parse.Query(UserAnnotation);
 
-        query.equalTo("userId", processor.author.objectId);
+        query.equalTo("userId", processor.user.objectId);
         query.containedIn("annotationId", processor.annotationIdList);
 
         query.find({
           success: function(results) {
-            callback(results);
+            var userAnnotations = {};
+            for (var i = 0; i < results.length; i++) {
+              var annotationId = results[i].get("annotationId");
+              var opinion = results[i].get("opinion");
+              var link = results[i].get("link");
+              userAnnotations[annotationId] = {opinion: opinion, link: link};
+            }
+            callback(userAnnotations);
           },
           error: function(error) {
             console.log("Could not finish the Main query!");

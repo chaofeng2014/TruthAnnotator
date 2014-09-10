@@ -9,12 +9,15 @@
 
 ;(function(processor, $) {
 
-  var slideChange =  function(popline) {
-    var currentAnnotation = selectedText[this.currentSlide];
+  var slideChange = function(popline) {
+    var currentAnnotation = popline.settings["selectedText"][this.currentSlide];
     var currentId = currentAnnotation.id;
     popline.currentAnnotation = currentAnnotation;
-    
+
+    var bar = popline.bar;
     bar.find(".popline-thumbsUp-button").find("i").trigger("slideChange");
+    bar.find(".popline-numThumbsUp-button").find(".text").trigger("slideChange");
+    bar.find(".popline-numThumbsDown-button").find(".text").trigger("slideChange");
   };
 
   $.popline.addButton({
@@ -39,10 +42,10 @@
             fade: true,
             slide: 'div',
             cssEase: 'linear',
-            onInit: slideChange,
-            onReInit: slideChange,
-            onAfterChange: slideChange,
-            onBeforeChange: slideChange
+            onInit: function() {slideChange.call(this, popline)},
+            onReInit: function() {slideChange.call(this, popline)},
+            onAfterChange: function() {slideChange.call(this, popline)},
+            onBeforeChange: function() {slideChange.call(this, popline)}
           });
         }
 
