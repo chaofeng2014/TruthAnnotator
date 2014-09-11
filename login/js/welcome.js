@@ -6,7 +6,7 @@ $(document).ready(function(){
         window.location.href = "login.html";
     }
 
-    var inHtml1 = '<h1>Hello, <br>'; 
+    var inHtml1 = '<h1>Hello, '; 
     var inHtml2 = currentUser.get("nickname") + ' !' + '</h1>';
     var inHtml = inHtml1 + inHtml2;
     $("#welcome-toggle").html(inHtml);

@@ -49,7 +49,7 @@ $(document).ready(function(){
                 console.log(objectId);
                 //sendToContentLogin(objectId, username, nickname);
                 saveToStorage(objectId, username, nickname);
-                chrome.browserAction.setIcon({path:'../../util/T-400.png'}, function()
+                chrome.browserAction.setIcon({path:'../../img/T-400.png'}, function()
                 { 
                   window.location.reload();
                 });

@@ -50,6 +50,8 @@
            && rangy.getSelection().toString().length > 0)) {
         $.popline.current = $(this).data("popline");
       }
+
+      $.popline.utils.getWholeWord(); 
     },
 
     mouseenter: function(event) {
@@ -374,6 +376,53 @@
     },
 
     utils: {
+      getWholeWord: function(){
+        var sel;
+
+      // Check for existence of window.getSelection() and that it has a
+      // modify() method. IE 9 has both selection APIs but no modify() method.
+        if (window.getSelection && (sel = window.getSelection()).modify) {
+          sel = window.getSelection();
+        if (!sel.isCollapsed) {
+
+      // Detect if selection is backwards
+          var range = document.createRange();
+          range.setStart(sel.anchorNode, sel.anchorOffset);
+          range.setEnd(sel.focusNode,sel.focusOffset);
+          var backwards = range.collapsed;
+          range.detach();
+
+          var endNode=sel.focusNode;
+          var endOffset=sel.focusOffset;
+          sel.collapse(sel.anchorNode,sel.anchorOffset);
+
+          var direction=[];
+          if(backwards){
+            direction= ['backward','forward'];
+          }else{
+            direction=['forward','backward'];
+          }
+
+          sel.modify("move",direction[0],"character");
+          sel.modify("move",direction[1],"word");
+          sel.extend(endNode,endOffset);
+          sel.modify("extend",direction[1],"character");
+          sel.modify("extend",direction[0],"word");
+          }
+        }
+        else if((sel=document.selection)&&sel.type!="Control"){
+            var textRange=sel.createRange();
+            if(textRange.text)
+            {
+            textRange.expand("word");
+            while(/\s$/.test(textRange.text)){
+              textRange.moveEnd("character",-1);
+            }
+              textRange.select();
+            }
+        }
+      },
+        
       isNull: function(data) {
         if (typeof(data) === "undefined" || data === null) {
           return true;

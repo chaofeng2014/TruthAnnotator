@@ -238,7 +238,7 @@ body {
 
 /*Welcome page*/
 .welcome-card{
-  padding-bottom: 30px;
+  padding-bottom: 100px;
   padding-left: 20px;
   padding-right: 20px;
   width: 225px;
@@ -255,6 +255,21 @@ body {
   margin-bottom: auto;
   margin-top:x;
 }
+
+.welcome-card p {
+  font-weight: 100;
+  text-align: center;
+  font-size: 1em;
+  /*
+  margin-bottom: auto;
+  margin-top:x;
+  */
+  position: relative;
+  top: -10px;
+}
+
+#welcome-toggle {
+}
     
 .welcome-logout {
   width: 100%;
@@ -264,7 +279,7 @@ body {
 
 #welcome-logout {
   position: relative;
-  top: 10px;
+  top: 5px;
   left: 100px;
 }
 
