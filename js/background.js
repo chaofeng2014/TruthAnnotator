@@ -5,7 +5,7 @@ function pullLocalStorage(){
   chrome.storage.sync.get(['objectId', 'username','nickname'], function(data){
     if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
         data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
-        chrome.browserAction.setIcon({path:'../../util/T-400.png'}, function(){console.log("icon changed")});
+        chrome.browserAction.setIcon({path:'../../img/T-400.png'}, function(){console.log("icon changed")});
     }
   });
 }

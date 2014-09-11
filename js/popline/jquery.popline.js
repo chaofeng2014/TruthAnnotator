@@ -376,6 +376,7 @@
     },
 
     utils: {
+      //this function is copied from StackOverFlow by author Tim Down
       getWholeWord: function(){
         var sel;
 
