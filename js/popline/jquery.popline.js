@@ -344,7 +344,7 @@
         if (this.settings.mode === "annotation" && selection.toString().length > 0 && !this.keepSlientWhenBlankSelected()) {
           if (selection.rangeCount > 0) {
             // Check if the selection is in container
-            var containerElement = processor.getContainerFromRange(processor.container, selection.getRangeAt(0));
+            var containerElement = processor.utils.getContainerFromRange(processor.container, selection.getRangeAt(0));
             if (containerElement != null) {
               $.extend($.popline.selection, processor.getInfoFromContainer(containerElement), {
                 selectedText: selection.toString(),

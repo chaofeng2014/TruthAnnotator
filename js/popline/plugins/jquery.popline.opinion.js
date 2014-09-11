@@ -47,6 +47,19 @@
     var increment = updateNumberTable[[opinion, newOpinion]];
     numThumbsUp.text(parseInt(numThumbsUp.text()) + increment[0]);
     numThumbsDown.text(parseInt(numThumbsDown.text()) + increment[1]);
+
+    $.extend(userOpinions[popline.currentAnnotation.id], {increment: increment});
+  };
+
+  var isAnnotatedChanged = function(objectId) {
+    if (!(objectId in processor.userAnnotations)) {
+      processor.userAnnotations[objectId] = {opinion: userOpinions[objectId].opinion};
+      return true;
+    } else if (processor.userAnnotations[objectId].opinion !== userOpinions[objectId].opinion) {
+      processor.userAnnotations[objectId].opinion = userOpinions[objectId].opinion;
+      return true;
+    }
+    return false;
   };
 
   $.popline.addButton({
@@ -64,10 +77,12 @@
           this.click(function(event) {
             var newOpinion = calcOpinion("thumbsUp");
             toggleButton(popline, newOpinion);
+            
             if (popline.settings.mode === "display") {
+              userOpinions[popline.currentAnnotation.id] = {opinion: newOpinion};
               updateNumber(popline, newOpinion);
             }
-            userOpinions[popline.currentAnnotation.id] = newOpinion;
+
             opinion = newOpinion;
           });
 
@@ -102,11 +117,12 @@
           });
 
           for (var objectId in userOpinions) {
-            console.log(userOpinions);
-            processor.database.update(objectId, userOpinions[objectId]);
+            if (isAnnotatedChanged(objectId)) {
+              processor.database.updateAnnotation(objectId, userOpinions[objectId]);
+            }
           }
-        }
 
+        }
       }
     },
 
@@ -132,10 +148,12 @@
           this.click(function(event) {
             var newOpinion = calcOpinion("thumbsDown");
             toggleButton(popline, newOpinion);
+
             if (popline.settings.mode === "display") {
+              userOpinions[popline.currentAnnotation.id] = {opinion: newOpinion};
               updateNumber(popline, newOpinion);
             }
-            userOpinions[popline.currentAnnotation.id] = newOpinion;
+
             opinion = newOpinion;
           });
           this.data("click-event-binded", true);

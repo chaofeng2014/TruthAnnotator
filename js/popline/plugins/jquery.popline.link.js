@@ -85,15 +85,14 @@
       },
       afterHide: function(popline) {
         var linkText = this.find(":text").val();
-        $.extend($.popline.selection, {link:linkText});
+        $.extend($.popline.selection, {link: linkText});
         window.getSelection().removeAllRanges();
         window.getSelection().addRange($(this).data('selection'));
         
         //for iframe, the window.lcoation.host only return iframe domain, not the host domain
         chrome.runtime.sendMessage({question:"what is the host domain?"}, function(response){
           $.extend($.popline.selection, {sourceURL: response.answer}, {hostDomain: window.location.host});
-          if ($.popline.selection.opinion === 1 | $.popline.selection.opinion === -1) {
-            console.log($.popline.selection.opinion);
+          if ($.popline.selection.opinion === 1 || $.popline.selection.opinion === -1) {
             processor.database.saveAnnotation($.popline.selection);
           }
         });
