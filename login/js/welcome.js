@@ -25,13 +25,27 @@ function queryStat() {
       var selectedText = object.get('selectedText');
       var author = object.get('userName');
       var agree = object.get('numberOfAgree');
-      var inHtml1 = '<p>Most Agree: <br>'; 
-      var inHtml2 =  '"' + selectedText + '"</p>';
-      var inHtml = inHtml1 + inHtml2;
-      $("#tweet-stat").html(inHtml);
-     // console.log(selectedText, author, agree);
-      
-    // Successfully retrieved the object.
+      var inHtml1 = '<p class=stat-mostAgree>Most Agree <br></p>'; 
+      var inHtml2 = '<p class=stat-text>'+'"' + selectedText + '"</p>';
+      var inHtml3 = inHtml1 + inHtml2;
+      query.descending("numberOfDisagree");
+      query.first({
+        success: function(object) {
+          //console.log(object);
+          var selectedText = object.get('selectedText');
+          var author = object.get('userName');
+          var agree = object.get('numberOfDisagree');
+          var inHtml4 = '<p class=stat-mostDisagree>Most disagree <br></p>'; 
+          var inHtml5 = '<p class=stat-text>'+'"' + selectedText + '"</p>';
+          var inHtml6 = inHtml4 + inHtml5;
+          inHtml= inHtml3 + inHtml6;
+          $("#tweet-stat").html(inHtml);
+
+        },
+        error: function(error) {
+          alert("Error: " + error.code + " " + error.message);
+        }
+      });
     },
     error: function(error) {
       alert("Error: " + error.code + " " + error.message);
