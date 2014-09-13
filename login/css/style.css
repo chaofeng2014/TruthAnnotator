@@ -68,7 +68,6 @@ body {
   padding: 0 8px;
 }
 
-
 .login-submit {
   border: 0px;
   color: #fff;
@@ -123,11 +122,10 @@ body {
 }
 
 #login-info {
+  font-weight: 100;
   width: 100%;
-  /*font-weight:100;*/
   text-align: center;
   font-size: 15px;
-  color: blue;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -238,7 +236,7 @@ body {
 
 /*Welcome page*/
 .welcome-card{
-  padding-bottom: 40px;
+  padding-bottom: 20px;
   padding-left: 20px;
   padding-right: 20px;
   width: 225px;
@@ -260,30 +258,80 @@ body {
   font-weight: 100;
   text-align: center;
   font-size: 1em;
-  /*
-  margin-bottom: auto;
-  margin-top:x;
-  */
   position: relative;
-  top: -10px;
+  top: 0px;
 }
 
 #welcome-toggle {
 }
 
+.welcome-card .stat-author{
+  text-align: right;
+  margin-top: 0px;
+  margin-bottom:0px;
+}
+
+#pop_agree{
+  position: relative;
+  right: -20px;
+}
+
+#pop_disagree{
+  position: relative;
+  right: -42px;
+}
+
+#con_agree{
+  position: relative;
+  right: -20px;
+}
+
+#con_disagree{
+  position: relative;
+  right: -42px;
+}
+
+#thumbup{
+  color: gray;
+  position: relative;
+  top: 0px;
+  right: -10px;
+}
+
+#thumbup:hover{
+  color:blue;
+  cursor:pointer;
+}
+
+#thumbdown{
+  color: gray;
+  position: relative;
+  top: 0px;
+  right: -35px;
+}
+
+#thumbdown:hover{
+  color:blue;
+  cursor:pointer;
+}
+
 .stat-mostAgree {
+  width: 110px; 
+  /*border:5px solid navy;*/
   background-color:green; 
   color:white;
 }
 
 .stat-mostDisagree {
-  background-color:red; 
+  width: 150px; 
+  background-color:orange; 
   color:white;
 }
 
 .stat-text {
   font-family: "Times New Roman", Times, serif;
   font-style: italic;
+  margin-bottom: 5px;
 }
     
 .welcome-logout {
