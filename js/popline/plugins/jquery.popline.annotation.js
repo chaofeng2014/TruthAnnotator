@@ -9,8 +9,8 @@
 
 ;(function(processor, $) {
 
-  var slideChange = function(popline) {
-    var currentAnnotation = popline.settings["selectedText"][this.currentSlide];
+  var slideChange = function(current, popline) {
+    var currentAnnotation = popline.settings["selectedText"][current];
     var currentId = currentAnnotation.id;
     popline.currentAnnotation = currentAnnotation;
 
@@ -21,32 +21,56 @@
   };
 
   $.popline.addButton({
+    nextArrow: {
+      iconClass: "fa fa-angle-right",
+      mode: "display"
+    },
+
+    prevArrow: {
+      iconClass: "fa fa-angle-left",
+      mode: "display"
+    },
+
     selectedText: {
       text: " ",
       textClass: "opinions",
       mode: "display",
       beforeShow: function(popline) {
-        var textField = this.find(".text");
-        if (this.find(".opinion").length === 0) {
+        this.find(".text").append("<ul id=annotation-carousel></ul>");
+        var textField = this.find("#annotation-carousel");
+        if (textField.find(".opinion").length === 0) {
           var selectedText = popline.settings["selectedText"];
           for (var i = 0; i < selectedText.length; i++) {
-            textField.append("<div " + "class=" + "opinion " 
+            textField.append("<li " + "class=" + "opinion " 
                              + "index=" + i + ">"
-                             + selectedText[i].text + "</div>");
+                             + selectedText[i].text + "</li>");
           }
 
-          textField.slick({
-            dots: false,
-            infinite: true,
-            speed: 100,
-            fade: true,
-            slide: 'div',
-            cssEase: 'linear',
-            onInit: function() {slideChange.call(this, popline)},
-            onReInit: function() {slideChange.call(this, popline)},
-            onAfterChange: function() {slideChange.call(this, popline)},
-            onBeforeChange: function() {slideChange.call(this, popline)}
+          textField.simplecarousel({
+            next: popline.bar.find(".popline-nextArrow-button").find("i"),
+            prev: popline.bar.find(".popline-prevArrow-button").find("i"),
+            slidespeed: 700,
+            fade: 200,
+            width: 220,
+            height: 120,
+            auto: false,
+            onslidechange: function(current) {
+              slideChange(current, popline);
+            }
           });
+
+          // textField.slick({
+          //   dots: false,
+          //   infinite: true,
+          //   speed: 100,
+          //   fade: true,
+          //   slide: 'div',
+          //   cssEase: 'linear',
+          //   onInit: function() {slideChange.call(this, popline)},
+          //   onReInit: function() {slideChange.call(this, popline)},
+          //   onAfterChange: function() {slideChange.call(this, popline)},
+          //   onBeforeChange: function() {slideChange.call(this, popline)}
+          // });
         }
 
       }

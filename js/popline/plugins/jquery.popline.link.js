@@ -87,12 +87,13 @@
         var linkText = this.find(":text").val();
         $.extend($.popline.selection, {link: linkText});
         window.getSelection().removeAllRanges();
-        window.getSelection().addRange($(this).data('selection'));
         
+        var $_this = $(this)
         //for iframe, the window.lcoation.host only return iframe domain, not the host domain
         chrome.runtime.sendMessage({question:"what is the host domain?"}, function(response){
           $.extend($.popline.selection, {sourceURL: response.answer}, {hostDomain: window.location.host});
           if ($.popline.selection.opinion === 1 || $.popline.selection.opinion === -1) {
+            window.getSelection().addRange($_this.data('selection'));
             processor.database.saveAnnotation($.popline.selection);
           }
         });
