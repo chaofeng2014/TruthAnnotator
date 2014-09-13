@@ -345,7 +345,7 @@ body {
   margin-bottom: 5px;
 }
     
-.welcome-logout {
+.welcome-util {
   width: 100%;
   text-align: center;
   font-size: 12px;
@@ -354,7 +354,13 @@ body {
 #welcome-logout {
   position: relative;
   top: 5px;
-  left: 160px;
+  left: -150px;
+}
+
+#welcome-close {
+  position: relative;
+  top: 5px;
+  left: 150px;
 }
 
 .welcome-card a {
