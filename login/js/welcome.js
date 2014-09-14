@@ -3,13 +3,13 @@ Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak", "anMcouVSWbzeHoJmFJ
 var _userOpinion;
 $(document).ready(function(){
     var currentUserId = showNickname();
-    queryStat(currentUserId, function(result){
-      console.log(result);
-      bindEvent();
+    queryStat(currentUserId, function(){
+      bindEvent(currentUserId);
     });
 });
 
 function queryStat(currentUserId, _callback) {
+
   var btnup_pop = '<span class="btnup" id=thumbup_pop style="color:gray;"><i class="fa fa-thumbs-up"></i></span>';
   var btndown_pop = '<span class="btndown" id=thumbdown_pop style="color:gray;"><i class="fa fa-thumbs-down"></i></span>';
   var btnup_con = '<span class="btnup" id=thumbup_con style="color:gray;"><i class="fa fa-thumbs-up"></i></span>';
@@ -33,14 +33,16 @@ function queryStat(currentUserId, _callback) {
           var inHtml_text = '<p class=stat-text>'+'" ' + selectedText + ' "</p>';
           var inHtml_author = '<p class=stat-author>' +'--by '+ author + '</p>';
           var inHtml_agree = '<span class=stat-agree id=pop_agree>' + agree + '</span>';
-          var inHtml_disagree = '<span class=stat-agree id=pop_disagree>' + disagree + '</span>';
+          var inHtml_disagree = '<span class=stat-disagree id=pop_disagree>' + disagree + '</span>';
           if(opinion === 1){
             btnup_pop = '<span class="btnup" id=thumbup_pop style="color: blue;"><i class="fa fa-thumbs-up"></i></span>';
           }
           else if(opinion === -1){
             btndown_pop = '<span class="btndown" id=thumbdown_pop style="color: blue;"><i class="fa fa-thumbs-down"></i></span>';
           }
-          var inHtml_pop = inHtml_title + inHtml_text + inHtml_author + btnup_pop +inHtml_agree +  btndown_pop + inHtml_disagree;
+          var inHtml_pop = inHtml_title + inHtml_text + inHtml_author + btnup_pop + inHtml_agree + btndown_pop + inHtml_disagree;
+          $("#post-stat-pop").html(inHtml_pop);
+          $(".stat-mostAgree").data("object", object);
           query.descending("numberOfDisagree");
           query.first({
             success: function(object) {
@@ -57,7 +59,7 @@ function queryStat(currentUserId, _callback) {
                 var inHtml_text = '<p class=stat-text>'+'" ' + selectedText + ' "</p>';
                 var inHtml_author = '<p class=stat-author>' +'--by '+ author + '</p>';
                 var inHtml_agree = '<span class=stat-agree id=con_agree>' + agree + '</span>';
-                var inHtml_disagree = '<span class=stat-agree id=con_disagree>' + disagree + '</span>';
+                var inHtml_disagree = '<span class=stat-disagree id=con_disagree>' + disagree + '</span>';
                 if(opinion === 1){
                   btnup_con = '<span class="btnup" id=thumbup_con style="color: blue;"><i class="fa fa-thumbs-up"></i></span>';
                 }
@@ -65,10 +67,10 @@ function queryStat(currentUserId, _callback) {
                   btndown_con = '<span class="btndown" id=thumbdown_con style="color: blue;"><i class="fa fa-thumbs-down"></i></span>';
                 }
                 var inHtml_con = inHtml_title + inHtml_text + inHtml_author + btnup_con +inHtml_agree +  btndown_con + inHtml_disagree;
-                inHtml= '<hr>' + inHtml_pop + '<hr>'+ inHtml_con;
-                $("#tweet-stat").html(inHtml);
-                var result = 'testt';
-                _callback(result);
+                $("#post-stat-con").html(inHtml_con);
+                $(".stat-mostDisagree").data("object", object);
+
+                _callback();
               });
             },
             error: function(error) {
@@ -98,21 +100,9 @@ function queryCurrentUser(annotationId, userId, _callback){
   });
 }
   
-function bindEvent(){
-  $("#thumbup_pop").click(function(){
-    processClick($(this));
-  });
-  
-  $("#thumbdown_pop").click(function(event){
-    processClick($(this));
-  });
-
-  $("#thumbup_con").click(function(event){
-    processClick($(this));
-  });
-  
-  $("#thumbdown_con").click(function(event){
-    processClick($(this));
+function bindEvent(userId){
+  $('#thumbup_pop, #thumbdown_pop, #thumbup_con, #thumbdown_con').click(function(){
+    processClick($(this), userId);
   });
  
   $("#welcome-logout").click(function(){
@@ -128,25 +118,24 @@ function bindEvent(){
   $("#welcome-close").click(function(){
     window.close();
   });
-
-  $(window).unload(function(){
-    updateParse();   
-  });
 }
 
-function processClick(node){
+function processClick(node,userId){
   var num;
   var numNode;
 
   var counterBtn; 
   var counterNumNode;
   var counterNum;
+
+  var annotationObject;
   if (node.attr('id') === 'thumbup_pop'){
     numNode = $("#pop_agree");
     num = parseInt(numNode.html());
     counterBtn = $('#thumbdown_pop');
     counterNumNode = $('#pop_disagree');
     counterNum = parseInt(counterNumNode.html());
+    annotationObject = $("stat-mostAgree").data("object");
   }
 
   else if (node.attr('id') === 'thumbdown_pop'){
@@ -155,6 +144,7 @@ function processClick(node){
     counterBtn = $('#thumbup_pop');
     counterNumNode = $('#pop_agree');
     counterNum = parseInt(counterNumNode.html());
+    annotationObject = $("stat-mostAgree").data("object");
   }
   
   else if (node.attr('id') === 'thumbup_con'){
@@ -163,6 +153,7 @@ function processClick(node){
     counterBtn = $('#thumbdown_con');
     counterNumNode = $('#con_disagree');
     counterNum = parseInt(counterNumNode.html());
+    annotationObject = $("stat-mostDisagree").data("object");
   }
   
   else {
@@ -171,12 +162,15 @@ function processClick(node){
     counterBtn = $('#thumbup_con');
     counterNumNode = $('#con_agree');
     counterNum = parseInt(counterNumNode.html());
+    annotationObject = $("stat-mostDisagree").data("object");
   }
 
   if(node.css("color") === "rgb(0, 0, 255)") {
     node.css({"color" : "gray"});
     num--;
     numNode.html(num);
+    //FIXME need better logic to update parse
+    //updateAnnotation();
     //counterBtn.css({"color":""});
   }
   else {
@@ -186,14 +180,11 @@ function processClick(node){
     }
       node.css({"color" : "blue"});
       num++;
-      console.log(counterBtn);
+      //console.log(counterBtn);
       counterBtn.css({"color":"gray"});
       numNode.html(num);
   }
 }
-
-  
-  
 
 function removeStorage(){
   chrome.storage.sync.set({objectId: "", username: "", nickname:""}, function(){
