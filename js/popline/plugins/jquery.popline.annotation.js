@@ -22,23 +22,33 @@
 
   $.popline.addButton({
     nextArrow: {
-      iconClass: "fa fa-angle-right",
-      mode: "display"
+      iconClass: "fa fa-angle-right fa-2x",
+      mode: "display",
+      beforeShow: function(popline) {
+        if (popline.settings["selectedText"].length === 1) {
+          this.css("color", "rgba(189, 189, 189, 0.5)");
+        }
+      }
     },
 
     prevArrow: {
-      iconClass: "fa fa-angle-left",
-      mode: "display"
-    },
-
-    selectedText: {
-      text: " ",
-      textClass: "opinions",
+      iconClass: "fa fa-angle-left fa-2x",
       mode: "display",
       beforeShow: function(popline) {
-        this.find(".text").append("<ul id=annotation-carousel></ul>");
+        if (popline.settings["selectedText"].length === 1) {
+          this.css("color", "rgba(189, 189, 189, 0.5)");
+        }
+      }
+    },
+
+    annotationText: {
+      mode: "display",
+      beforeShow: function(popline) {
         var textField = this.find("#annotation-carousel");
-        if (textField.find(".opinion").length === 0) {
+        if (textField.length === 0) {
+          this.find(".pop-btn").append("<div class=carousel><ul id=annotation-carousel></ul></div>");
+          textField = this.find("#annotation-carousel");
+
           var selectedText = popline.settings["selectedText"];
           for (var i = 0; i < selectedText.length; i++) {
             textField.append("<li " + "class=" + "opinion " 
@@ -51,26 +61,14 @@
             prev: popline.bar.find(".popline-prevArrow-button").find("i"),
             slidespeed: 700,
             fade: 200,
-            width: 220,
-            height: 120,
+            width: 252,
+            height: 100,
             auto: false,
             onslidechange: function(current) {
               slideChange(current, popline);
             }
           });
 
-          // textField.slick({
-          //   dots: false,
-          //   infinite: true,
-          //   speed: 100,
-          //   fade: true,
-          //   slide: 'div',
-          //   cssEase: 'linear',
-          //   onInit: function() {slideChange.call(this, popline)},
-          //   onReInit: function() {slideChange.call(this, popline)},
-          //   onAfterChange: function() {slideChange.call(this, popline)},
-          //   onBeforeChange: function() {slideChange.call(this, popline)}
-          // });
         }
 
       }

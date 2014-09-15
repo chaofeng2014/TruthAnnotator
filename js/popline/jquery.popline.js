@@ -56,7 +56,7 @@
 
     mouseenter: function(event) {
       if ($(this).data("popline").settings.mode === "display") {
-        $(this).css("background-color", "rgba(255, 178, 0, 0.7)");
+        $(this).css("background-color", "rgba(255, 178, 0, 0.4)");
       }
     },
 
@@ -64,7 +64,7 @@
       if ($(this).data("popline").settings.mode === "display") {
         var _this = this;
         setTimeout(function() {
-          $(_this).css("background-color", "rgba(136, 153, 166, 0.4)");
+          $(_this).css("background-color", "rgba(136, 153, 166, 0.3)");
         }, 200);
       }
     },
@@ -215,7 +215,7 @@
               continue;
             }
 
-            var $button = $("<div><span class='pop-btn'></span></div>");
+            var $button = $("<div><div class='pop-btn'></div></div>");
 
             $button.addClass("popline-button popline-" + name + "-button")
 

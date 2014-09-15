@@ -9,22 +9,26 @@
   display: none;
   margin: 0;
   list-style: none;
-  padding: 0px 5px;
+  padding: 0px 10px;
   font-family: "Segoe UI Semilight", Helvetica, "Hiragino Sans GB", sans-serif;
   text-rendering: optimizeLegibility;
   white-space: pre-wrap; }
+  .popline-display {
+    height: 204px;
+    width: 350px;
+  }
   .popline .popline-button {
     color: white;
     font-size: 18px;
     font-weight: normal;
     cursor: pointer;
-    padding: 0 10px;
     min-width: 24px;
     text-align: center;
     display: inline-block; }
     @media screen and (-webkit-min-device-pixel-ratio: 0) {
     .popline .popline-button i {
-      font-weight: normal; } }
+      font-weight: normal;
+      line-height: 20px; } }
     .popline .popline-button .text {
       font-size: 14px; 
       line-height: 20px; }
@@ -60,18 +64,62 @@
   .popline .textfield:-ms-input-placeholder {
     color: #EEE; }
 
-  .popline .opinions {
+  .popline .carousel {
     border: none;
     height: 100px;
-    width: 280px;
-    padding: 0 30px;
-    margin-bottom: -30px;
+    width: 252px;
     color: #FFFFFF;
     outline: none;
-    text-align: left;}
+    text-align: left;
+    font-size: 14px; 
+    line-height: 20px;}
   
-  .popline .popline-selectedText-button {
-    height: 120px;
+  .popline .popline-annotationText-button {
+    position: absolute;
+    left: 46px;
+    top: 40px;
+    height: 90px;
     font-weight: normal; 
-    padding: 0 25px;
+  }
+
+  .popline .popline-prevArrow-button {
+    position: absolute;
+    left: 12px;
+    top: 82px;
+    font-weight: normal; 
+  }
+
+  .popline .popline-nextArrow-button {
+    position: absolute;
+    left: 322px;
+    top: 82px;
+    font-weight: normal; 
+  }
+
+  .popline .popline-numThumbsDown-button {
+    position: absolute;
+    left: 322px;
+    top: 160px;
+    font-weight: normal; 
+  }
+
+  .popline-display .popline-thumbsDown-button {
+    position: absolute;
+    left: 298px;
+    top: 160px;
+    font-weight: normal; 
+  }
+
+  .popline .popline-numThumbsUp-button {
+    position: absolute;
+    left: 274px;
+    top: 160px;
+    font-weight: normal; 
+  }
+
+  .popline-display .popline-thumbsUp-button {
+    position: absolute;
+    left: 250px;
+    top: 160px;
+    font-weight: normal; 
   }
