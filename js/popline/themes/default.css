@@ -12,114 +12,120 @@
   padding: 0px 10px;
   font-family: "Segoe UI Semilight", Helvetica, "Hiragino Sans GB", sans-serif;
   text-rendering: optimizeLegibility;
-  white-space: pre-wrap; }
-  .popline-display {
-    height: 204px;
-    width: 350px;
-  }
-  .popline .popline-button {
-    color: white;
-    font-size: 18px;
+  white-space: pre-wrap;
+}
+
+.popline-display {
+  height: 204px;
+  width: 350px;
+}
+
+.popline .popline-button {
+  color: white;
+  font-size: 18px;
+  font-weight: normal;
+  cursor: pointer;
+  min-width: 24px;
+  text-align: center;
+  display: inline-block; }
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .popline-display .popline-button i {
     font-weight: normal;
-    cursor: pointer;
-    min-width: 24px;
-    text-align: center;
-    display: inline-block; }
-    @media screen and (-webkit-min-device-pixel-ratio: 0) {
-    .popline .popline-button i {
-      font-weight: normal;
-      line-height: 20px; } }
-    .popline .popline-button .text {
-      font-size: 14px; 
-      line-height: 20px; }
-  .popline .boxed {
-    padding: 0 9px; }
-  .popline .lighter {
-    font-weight: lighter; }
-  .popline .subbar {
-    display: none;
-    list-style: none;
-    padding: 0; }
-  .popline .textfield {
-    border: none;
-    height: 104px;
-    font-size: 24px;
+    line-height: 20px; }
+  .popline-annotation .popline-button i {
     padding: 0 10px;
-    -webkit-box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
-    box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
-    background: rgba(74, 74, 74, 0.15);
-    color: #FFFFFF;
-    line-height: 31px;
-    margin-left: 10px;
-    display: none;
-    outline: none;
-    width: 300px; }
-  .popline .textfield::-webkit-input-placeholder {
-    color: #EEE; }
-  .popline .textfield:-moz-placeholder {
-    color: #EEE; }
-  .popline .textfield::-moz-placeholder {
-    color: #EEE; }
-  .popline .textfield:-ms-input-placeholder {
-    color: #EEE; }
-
-  .popline .carousel {
-    border: none;
-    height: 100px;
-    width: 252px;
-    color: #FFFFFF;
-    outline: none;
-    text-align: left;
+    } }
+  .popline .popline-button .text {
     font-size: 14px; 
-    line-height: 20px;}
-  
-  .popline .popline-annotationText-button {
-    position: absolute;
-    left: 46px;
-    top: 40px;
-    height: 90px;
-    font-weight: normal; 
-  }
+    line-height: 20px; }
+.popline .boxed {
+  padding: 0 9px; }
+.popline .lighter {
+  font-weight: lighter; }
+.popline .subbar {
+  display: none;
+  list-style: none;
+  padding: 0; }
+.popline .textfield {
+  border: none;
+  height: 104px;
+  font-size: 24px;
+  padding: 0 10px;
+  -webkit-box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
+  background: rgba(74, 74, 74, 0.15);
+  color: #FFFFFF;
+  line-height: 31px;
+  margin-left: 10px;
+  display: none;
+  outline: none;
+  width: 300px; }
+.popline .textfield::-webkit-input-placeholder {
+  color: #EEE; }
+.popline .textfield:-moz-placeholder {
+  color: #EEE; }
+.popline .textfield::-moz-placeholder {
+  color: #EEE; }
+.popline .textfield:-ms-input-placeholder {
+  color: #EEE; }
 
-  .popline .popline-prevArrow-button {
-    position: absolute;
-    left: 12px;
-    top: 82px;
-    font-weight: normal; 
-  }
+.popline .carousel {
+  border: none;
+  height: 100px;
+  width: 252px;
+  color: #FFFFFF;
+  outline: none;
+  text-align: left;
+  font-size: 14px; 
+  line-height: 20px;}
 
-  .popline .popline-nextArrow-button {
-    position: absolute;
-    left: 322px;
-    top: 82px;
-    font-weight: normal; 
-  }
+.popline .popline-annotationText-button {
+  position: absolute;
+  left: 56px;
+  top: 40px;
+  height: 90px;
+  font-weight: normal; 
+}
 
-  .popline .popline-numThumbsDown-button {
-    position: absolute;
-    left: 322px;
-    top: 160px;
-    font-weight: normal; 
-  }
+.popline .popline-prevArrow-button {
+  position: absolute;
+  left: 12px;
+  top: 82px;
+  font-weight: normal; 
+}
 
-  .popline-display .popline-thumbsDown-button {
-    position: absolute;
-    left: 298px;
-    top: 160px;
-    font-weight: normal; 
-  }
+.popline .popline-nextArrow-button {
+  position: absolute;
+  left: 322px;
+  top: 82px;
+  font-weight: normal; 
+}
 
-  .popline .popline-numThumbsUp-button {
-    position: absolute;
-    left: 274px;
-    top: 160px;
-    font-weight: normal; 
-  }
+.popline .popline-numThumbsDown-button {
+  position: absolute;
+  left: 322px;
+  top: 160px;
+  font-weight: normal; 
+}
 
-  .popline-display .popline-thumbsUp-button {
-    position: absolute;
-    left: 250px;
-    top: 160px;
-    font-weight: normal; 
-  }
+.popline-display .popline-thumbsDown-button {
+  position: absolute;
+  left: 298px;
+  top: 160px;
+  font-weight: normal; 
+}
+
+.popline .popline-numThumbsUp-button {
+  position: absolute;
+  left: 274px;
+  top: 160px;
+  font-weight: normal; 
+}
+
+.popline-display .popline-thumbsUp-button {
+  position: absolute;
+  left: 250px;
+  top: 160px;
+  font-weight: normal; 
+}

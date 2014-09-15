@@ -42,7 +42,6 @@
       "css": [
         "css/font-awesome.css",
         "css/highlight.css",
-        "js/slick/slick.css",
         "js/popline/themes/default.css"
       ],
 
@@ -61,7 +60,6 @@
         "js/popline/plugins/jquery.popline.annotation.js",
         "js/popline/plugins/jquery.popline.link.js",
         "js/simple.carousel.js",
-        "js/slick/slick.min.js",
         "js/main.js"
       ],
 
