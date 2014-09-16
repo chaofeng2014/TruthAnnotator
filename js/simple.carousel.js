@@ -148,13 +148,13 @@ $.fn.simplecarousel = function( params ) {
     }
         
     // set event handler for next and prev
-    if(config.next!=false && config.visible>1)
+    if(config.next!=false && config.items>1)
         config.next.click(function() {
             slide('next',true);
         });
         
         
-    if(config.prev!=false && config.visible>1)
+    if(config.prev!=false && config.items>1)
         config.prev.click(function() {
             slide('prev',true);
         });
