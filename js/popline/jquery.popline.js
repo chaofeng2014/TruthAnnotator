@@ -310,7 +310,6 @@
       destroy: function() {
         this.target.unbind(targetEvent);
         this.target.removeData("popline");
-        this.target.removeData("lastKeyPos");
         this.bar.remove();
       },
 

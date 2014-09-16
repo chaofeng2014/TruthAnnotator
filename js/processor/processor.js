@@ -40,8 +40,10 @@
 
       var postElement  = processor.postList[entry.postId].element;
       
-      //FIXME add annotation-group attribute
-      var currentElements = $(postElement).find(".ta-annotation-highlight").not("[annotation-group]");
+      //FIXME add annotation-group elementAttributes
+      $(postElement).find(".ta-annotation-highlight").each(fucntion() {
+
+      });
 
       for( var i = 0; i < currentElements.size(); i++) {
         $(currentElements.get(i)).popline({"mode": "display","selectedText": selectedObject});
@@ -66,7 +68,6 @@
 
             post = processor.postList[postId];
 
-            //update annotationList
             if (!(objectId in processor.annotationIdList)){
               processor.annotationIdList.push(objectId);
             }
@@ -102,18 +103,25 @@
                                               {"annotation-group": i});
                     $.extend(groupSel[j], userAnnotations[groupSel[j].id]);
                   }
-                  $(post.element).find("[annotation-group = '" + i + "']").popline({"mode": "display", "selectedText": groupSel});
+                  var $annotationGroup = $(post.element).find("[annotation-group = '" + i + "']");
+                  $annotationGroup.data("groupRange", {end: groupSel.end, start: groupSel.start});
+                  $annotationGroup.popline({"mode": "display", "selectedText": groupSel});
                 }
               }
             }
           });
+
         }
       });
 
     },
 
-    // The structure: userAnnotations: {opinion: opinion, link: link}
     user: null,
+
+    /* 
+      userAnnotations: {opinion: opinion, link: link}
+      The annotations made by the current user 
+    */
     userAnnotations: {},
 
     utils: {
@@ -130,23 +138,29 @@
       },
 
       groupTextRanges: function(textRanges) {
-        var groupRanges = [{maxEnd: textRanges[0].range.characterRange.end,
+        var groupRanges = [{end: textRanges[0].range.characterRange.end,
+                            start: textRanges[0].range.characterRange.start,
                             selections: [textRanges[0]]}];
         var groupOrder = 0;
         for (var i = 1; i < textRanges.length; i++) {
           var characterRange = textRanges[i].range.characterRange;
           var group = groupRanges[groupOrder];
 
-          if (characterRange.start < group.maxEnd) {
+          if (characterRange.start < group.end) {
             group.selections.push(textRanges[i]);
-            group.maxEnd = (characterRange.end < group.maxEnd) ? group.maxEnd : characterRange.end;
+            group.end = (characterRange.end < group.end) ? group.end : characterRange.end;
           } else {
-            groupRanges.push({maxEnd: characterRange.end,
+            groupRanges.push({end: characterRange.end,
+                              start: characterRange.start,
                               selections: [textRanges[i]]});
             groupOrder = groupOrder + 1;
           }
         }
         return groupRanges;
+      },
+
+      updateGroupTextRanges: function(element, selection) {
+
       },
 
       highlight: function(element, textRange, group) {
