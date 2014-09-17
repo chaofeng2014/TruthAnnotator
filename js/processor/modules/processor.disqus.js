@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
   processor.platformModules.js
+=======
+  processor.twitter.js
+>>>>>>> 1ba097a100a0901ef8bcc27e9d678543ba28d1eb
 
   (c) 2014 by archlyx
 */
@@ -8,28 +12,33 @@
   processor.addModule({
     disqus: {
       initElements: "#post-list",
-      container: ".post",
+      container: ".post-body",
 
       getInfoFromContainer: function(element) {
-        var userName   = $(element).find(".author").children().html();
-        var commentId  = $(element).attr("id");
+        var post-byline = $(element).find('.post-byline');
+        var post-meta = $(element).find('.post-meta');
+        
+        var userName   = $(post-byline).find("a[data-role=username]").val();
+        var commentURL = $(post-meta).find("a").attr("href");
+        //var commentID = 
+        //console.log("userName is : ", userName, "  commentURL is: ", commentURL);
 
-        return {postId: commentId, userName: userName};
+        return {postId: commentURL, userName: userName};
       },
 
       initializeUpdateEvent: function() {
-      //FIXME this does not seem to work 
-        $('.load-more').click(function() {
-          console.log("load more comments clicked");
-          var origPostNumber = Object.keys(processor.postList).length;
-          var newPostNumber = $(processor.container).length;
+      console.log("init update event");
+      /*
+        $(window).scroll(function() {
+          var origTweetNumber = Object.keys(processor.postList).length;
+          var newTweetNumber = $(processor.container).length;
 
-          if (newPostumber > origPostNumber) {
+          if (newTweetNumber > origTweetNumber) {
             $(window).trigger("postUpdated");
-            //console.log("load more comments clicked");
           }
         });
-        console.log("init update event");
+        */
+
       }
     }
   });

@@ -10,6 +10,7 @@
 */
 
 ;(function(processor, rangy, $) {
+  //var MARKSYMBOL = [',', '.', '!', '@', '#', '$ 
 
   var isIMEMode = false;
   $(document).on('compositionstart', function(event) {
@@ -405,6 +406,7 @@
       // Check for existence of window.getSelection() and that it has a
       // modify() method. IE 9 has both selection APIs but no modify() method.
         if (window.getSelection && (sel = window.getSelection()).modify) {
+          console.log("the first if");
           sel = window.getSelection();
         if (!sel.isCollapsed) {
 
@@ -417,23 +419,48 @@
 
           var endNode=sel.focusNode;
           var endOffset=sel.focusOffset;
+          var startNode = sel.anchorNode;
+          var startOffset = sel.anchorOffset;
           sel.collapse(sel.anchorNode,sel.anchorOffset);
 
           var direction=[];
           if(backwards){
             direction= ['backward','forward'];
+            endOffset--;
+            var nextOffset = startOffset - 1;
+            var previousOffset = endOffset + 1;
+            if(endOffset < 0){
+              endOffset = 0;
+            }
           }else{
             direction=['forward','backward'];
+            startOffset--;
+            var nextOffset = startOffset + 1;
+            var previousOffset = endOffset - 1;
           }
+          
 
-          sel.modify("move",direction[0],"character");
-          sel.modify("move",direction[1],"word");
-          sel.extend(endNode,endOffset);
-          sel.modify("extend",direction[1],"character");
-          sel.modify("extend",direction[0],"word");
+          var nextChar = startNode.nodeValue.charAt(startOffset);
+          var firstChar = startNode.nodeValue.charAt(nextOffset);
+          var lastChar = endNode.nodeValue.charAt(previousOffset);
+          var previousChar = endNode.nodeValue.charAt(endOffset);
+          console.log(startOffset, endOffset);
+          console.log(firstChar, "||", lastChar, '||', nextChar, '||', previousChar);
+          if (firstChar !== " " & nextChar !== " "){
+            console.log("move");
+            sel.modify("move",direction[1],"word");
+          }
+            sel.extend(endNode,endOffset);
+          //sel.modify("extend",direction[1],"character");
+          //console.log(sel.toString());
+          if (lastChar !== " " & previousChar !== " "){
+            console.log("extend");
+            sel.modify("extend",direction[0],"word");
           }
         }
+        }
         else if((sel=document.selection)&&sel.type!="Control"){
+            console.log("the else");
             var textRange=sel.createRange();
             if(textRange.text)
             {
