@@ -24,7 +24,7 @@
     if (button.find(":text").length === 0) {
       var $textField = $("<input type='text' />");
       $textField.addClass("textfield");
-      $textField.attr("placeholder", "comments & reference");
+      $textField.attr("placeholder", "Your reference");
 
       $textField.keyup(function(event) {
         if (event.which === 13) {

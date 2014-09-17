@@ -9,10 +9,17 @@
 
 ;(function(processor, $) {
 
-  var slideChange = function(current, popline) {
+  var slideChange = function(popline, current, previous) {
     var currentAnnotation = popline.settings["selectedText"][current];
     var currentId = currentAnnotation.id;
     popline.currentAnnotation = currentAnnotation;
+
+    var element = popline.settings["element"];
+    if (previous !== null) {
+      var previousAnnotation = popline.settings["selectedText"][previous];
+      processor.utils.removeInnerHighlight(element, previousAnnotation.range);
+    }
+    processor.utils.innerHighlight(element, currentAnnotation.range);
 
     var bar = popline.bar;
     bar.find(".popline-thumbsUp-button").find("i").trigger("slideChange");
@@ -64,13 +71,19 @@
             width: 252,
             height: 100,
             auto: false,
-            onslidechange: function(current) {
-              slideChange(current, popline);
+            onslidechange: function(current, previous) {
+              slideChange(popline, current, previous);
             }
           });
 
+        } else {
+          processor.utils.innerHighlight(popline.settings["element"], popline.currentAnnotation.range);
         }
 
+      },
+
+      afterHide: function(popline) {
+        processor.utils.removeInnerHighlight(popline.settings["element"], popline.currentAnnotation.range);
       }
     }
 

@@ -40,14 +40,16 @@
 
   var allTargetEvent = {
     mouseEnterAny: function(event) {
+      window.clearTimeout($(this).data("timer"));
       $(this).addClass("current-target");
     },
 
     mouseLeaveAny: function(event) {
       var _this = this;
-      setTimeout(function() {
+      var timer = setTimeout(function() {
         $(_this).removeClass("current-target");
       }, 200);
+      $(this).data("timer", timer);
     }
   };
 
@@ -90,11 +92,12 @@
       },
       "display": {
         mouseup: function(event) {
-          var rect = target.get(0).getBoundingClientRect();
-          var left = rect.right;
+          var element = $.popline.current.settings.element;
+          var rect = element.getBoundingClientRect();
+          var left = rect.right + 20;
           var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
           if (left < 0) left = 10;
-          var top = scrollTop + rect.top - bar.outerHeight();
+          var top = scrollTop + rect.top;
           return {left: left, top: top};
         }
       }

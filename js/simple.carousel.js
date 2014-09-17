@@ -26,7 +26,7 @@ $.fn.simplecarousel = function( params ) {
             return '';
         },
         pauseOnClick: false,
-        onslidechange: function( index ) {
+        onslidechange: function( index, previous ) {
             return '';
         }
     };
@@ -72,7 +72,7 @@ $.fn.simplecarousel = function( params ) {
     });
     
     if(config.onslidechange!=false) {
-        config.onslidechange(config.current);
+        config.onslidechange(config.current, null);
     }
     // function for sliding the carousel
     var slide = function(dir, click) {
@@ -80,6 +80,7 @@ $.fn.simplecarousel = function( params ) {
         if(typeof click == "undefined" & config.auto==false)
             return;
     
+        var previous = config.current;
         if(dir=="next") {
             config.current += config.visible;
             if(config.current>=config.items)
@@ -96,7 +97,7 @@ $.fn.simplecarousel = function( params ) {
         }
         
         if(config.onslidechange!=false) {
-            config.onslidechange(config.current);
+            config.onslidechange(config.current, previous);
         }
         // set pagination
         if(config.pagination != false) {

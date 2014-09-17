@@ -29,6 +29,8 @@
   text-align: center;
   display: inline-block; }
   @media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .popline-annotation .popline-button div {
+    display: inline-block;}
   .popline-display .popline-button i {
     font-weight: normal;
     line-height: 20px; }
@@ -38,36 +40,30 @@
   .popline .popline-button .text {
     font-size: 14px; 
     line-height: 20px; }
-.popline .boxed {
-  padding: 0 9px; }
 .popline .lighter {
   font-weight: lighter; }
 .popline .subbar {
   display: none;
   list-style: none;
   padding: 0; }
+
 .popline .textfield {
   border: none;
-  height: 104px;
-  font-size: 24px;
+  height: 35px;
+  font-size: 14px;
   padding: 0 10px;
   -webkit-box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
   box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
   background: rgba(74, 74, 74, 0.15);
   color: #FFFFFF;
-  line-height: 31px;
+  line-height: 20px;
   margin-left: 10px;
+  margin-bottom: 5px;
   display: none;
   outline: none;
-  width: 300px; }
+  width: 250px; }
 .popline .textfield::-webkit-input-placeholder {
-  color: #EEE; }
-.popline .textfield:-moz-placeholder {
-  color: #EEE; }
-.popline .textfield::-moz-placeholder {
-  color: #EEE; }
-.popline .textfield:-ms-input-placeholder {
   color: #EEE; }
 
 .popline .carousel {

@@ -134,7 +134,8 @@
             processor.utils.highlight(element, groupSel[j].range, {"annotation-group": i});
             $.extend(groupSel[j], userAnnotations[groupSel[j].id]);
           }
-          $(element).find("[annotation-group = " + i + "]").popline({"mode": "display", "selectedText": groupSel});
+          $(element).find("[annotation-group = " + i + "]").popline({mode: "display", selectedText: groupSel, 
+                                                                     element: element});
         }
       },
 
@@ -151,6 +152,7 @@
               processor.utils.removeHighlight(element, groupSel[j].range, {"annotation-group": i});
             }
           }
+          $(element).removeData("groupTexts");
         }
       },
 
@@ -198,16 +200,30 @@
         }
       },
 
-      toggleHighlight: function(element, textRange) {
+      innerHighlight: function(element, textRange) {
         var classApplierModule = rangy.modules.ClassApplier || rangy.modules.CssClassApplier;
 
         if (rangy.supported && classApplierModule && classApplierModule.supported) {
-          var cssApplier = rangy.createCssClassApplier("ta-annotation-highlight");
+          var cssApplier = rangy.createCssClassApplier("ta-annotation-inner-highlight");
           if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
             var range = rangy.createRange(element);
             var characterRange = textRange.characterRange;
             range.selectCharacters(element, characterRange.start, characterRange.end);
-            cssApplier.toggleRange(range);
+            cssApplier.applyToRange(range);
+          }
+        }
+      },
+
+      removeInnerHighlight: function(element, textRange) {
+        var classApplierModule = rangy.modules.ClassApplier || rangy.modules.CssClassApplier;
+
+        if (rangy.supported && classApplierModule && classApplierModule.supported) {
+          var cssApplier = rangy.createCssClassApplier("ta-annotation-inner-highlight");
+          if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
+            var range = rangy.createRange(element);
+            var characterRange = textRange.characterRange;
+            range.selectCharacters(element, characterRange.start, characterRange.end);
+            cssApplier.undoToRange(range);
           }
         }
 
