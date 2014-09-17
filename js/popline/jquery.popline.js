@@ -39,6 +39,19 @@
     }
   };
 
+  var allTargetEvent = {
+    mouseEnterAny: function(event) {
+      $(this).addClass("current-target");
+    },
+
+    mouseLeaveAny: function(event) {
+      var _this = this;
+      setTimeout(function() {
+        $(_this).removeClass("current-target");
+      }, 200);
+    }
+  };
+
   var targetEvent = {
     mousedown: function(event) {
       $.popline.hideAllBar();
@@ -55,27 +68,12 @@
       $.popline.utils.getWholeWord(); 
     },
 
-    mouseenter: function(event) {
-      if ($(this).data("popline").settings.mode === "display") {
-        $(this).css("background-color", "rgba(255, 178, 0, 0.4)");
-      }
-    },
-
-    mouseleave: function(event) {
-      if ($(this).data("popline").settings.mode === "display") {
-        var _this = this;
-        setTimeout(function() {
-          $(_this).css("background-color", "rgba(136, 153, 166, 0.3)");
-        }, 200);
-      }
-    },
-
     click: function(event) {
       if (rangy.getSelection().toString().length === 0) {
         event.stopPropagation();
       }
     }
-  }
+  };
 
   var Position = function() {
     var target= $.popline.current.target, bar = $.popline.current.bar, positionType = $.popline.current.settings.mode;
@@ -119,6 +117,22 @@
         var popline = new $.popline(options, this);
       }
     });
+
+    if (options) {
+      if (options.mode === "display") {
+        var _this = this;
+        this.on("mouseEnterAny", allTargetEvent.mouseEnterAny);
+        this.on("mouseLeaveAny", allTargetEvent.mouseLeaveAny);
+        this.mouseenter(function(event) {
+          _this.trigger("mouseEnterAny");
+        });
+        this.mouseleave(function(event) {
+          if (!$.popline.isShow) {
+            _this.trigger("mouseLeaveAny");
+          }
+        });
+      }
+    }
 
     if (!$(document).data("popline-global-binded")) {
       $(document).mouseup(function(event){
@@ -282,6 +296,8 @@
       },
       
       show: function(options) {
+        $.popline.isShow = true;
+
         for (var i = 0, l = this.beforeShowCallbacks.length; i < l; i++) {
           var obj = this.beforeShowCallbacks[i];
           var $button = this.bar.find("div.popline-" + obj.name + "-button");
@@ -294,6 +310,7 @@
       hide: function() {
         var _this = this;
         if (this.bar.is(":visible") && !this.bar.is(":animated")) {
+          this.target.trigger("mouseleave");
           this.bar.fadeOut(function(){
             _this.bar.find("div").removeClass("boxed").show();
             _this.bar.find(".subbar").hide();
@@ -311,7 +328,6 @@
       destroy: function() {
         this.target.unbind(targetEvent);
         this.target.removeData("popline");
-        this.target.removeData("lastKeyPos");
         this.bar.remove();
       },
 
@@ -367,6 +383,7 @@
     },
 
     hideAllBar: function() {
+      $.popline.isShow = false;
       for (var i = 0, l = $.popline.instances.length; i < l; i++) {
         $.popline.instances[i].hide();
       }
@@ -375,6 +392,8 @@
     addInstance: function(popline){
       $.popline.instances.push(popline);
     },
+
+    isShow: false,
 
     utils: {
       //this function is copied from StackOverFlow by author Tim Down
