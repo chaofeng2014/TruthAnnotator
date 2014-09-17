@@ -29,7 +29,7 @@
 
   $.popline.addButton({
     nextArrow: {
-      iconClass: "fa fa-angle-right fa-2x",
+      iconClass: "fa fa-chevron-right",
       mode: "display",
       beforeShow: function(popline) {
         if (popline.settings["selectedText"].length === 1) {
@@ -39,7 +39,7 @@
     },
 
     prevArrow: {
-      iconClass: "fa fa-angle-left fa-2x",
+      iconClass: "fa fa-chevron-left",
       mode: "display",
       beforeShow: function(popline) {
         if (popline.settings["selectedText"].length === 1) {
