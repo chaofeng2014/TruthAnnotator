@@ -33,7 +33,7 @@
       mode: "display",
       beforeShow: function(popline) {
         if (popline.settings["selectedText"].length === 1) {
-          this.css("color", "rgba(189, 189, 189, 0.5)");
+          this.css("color", "rgba(180, 180, 180, 0.7)");
         }
       }
     },
@@ -43,7 +43,7 @@
       mode: "display",
       beforeShow: function(popline) {
         if (popline.settings["selectedText"].length === 1) {
-          this.css("color", "rgba(189, 189, 189, 0.5)");
+          this.css("color", "rgba(180, 180, 180, 0.7)");
         }
       }
     },

@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD
-  processor.platformModules.js
-=======
-  processor.twitter.js
->>>>>>> 1ba097a100a0901ef8bcc27e9d678543ba28d1eb
-
-  (c) 2014 by archlyx
+  processor.disqus.js
+  (c) 2014 by Yu
 */
 
 ;(function(processor, $) {
@@ -15,11 +10,11 @@
       container: ".post-body",
 
       getInfoFromContainer: function(element) {
-        var post-byline = $(element).find('.post-byline');
-        var post-meta = $(element).find('.post-meta');
+        var postByLine = $(element).find('.post-byline');
+        var postMeta = $(element).find('.post-meta');
         
-        var userName   = $(post-byline).find("a[data-role=username]").val();
-        var commentURL = $(post-meta).find("a").attr("href");
+        var userName   = $(postByLine).find("a[data-role=username]").val();
+        var commentURL = $(postMeta).find("a").attr("href");
         //var commentID = 
         //console.log("userName is : ", userName, "  commentURL is: ", commentURL);
 

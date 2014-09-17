@@ -32,7 +32,7 @@
     var thumbsUpButton = bar.find(".popline-thumbsUp-button").find("i");
     var thumbsDownButton = bar.find(".popline-thumbsDown-button").find("i");
 
-    var highlightColor = "rgba(255, 178, 0, 0.7)";
+    var highlightColor = "rgba(200, 200, 200, 1.0)";
     var defaultColor = "rgba(255, 255, 255, 1.0)";
 
     thumbsUpButton.css("color", newOpinion > 0 ? highlightColor : defaultColor);
