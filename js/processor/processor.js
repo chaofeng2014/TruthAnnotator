@@ -39,15 +39,12 @@
       processor.userAnnotations[result.id] = {opinion: entry.opinion, link: entry.link};
 
       var post = processor.postList[entry.postId];
-      if (post.selectedTexts) {
-        post.selectedTexts.push(annotation);
-      } else {
-        post.selectedTexts = [annotation];
+      if (!post.selectedTexts) {
+        post.selectedTexts = [];
       }
+      post.selectedTexts.push(annotation);
 
-      if ($(post.element).data("annotation-groups")) {
-        processor.utils.destroyAnnotationDisplay(post);
-      }
+      processor.utils.destroyAnnotationDisplay(post);
       processor.utils.initAnnotationDisplay(post, processor.userAnnotations);
     },
 
@@ -134,25 +131,26 @@
         for (var i = 0; i < groupTexts.length; i++) {
           var groupSel = groupTexts[i].selections;
           for (var j = 0; j < groupSel.length; j++) {
-            processor.utils.highlight(element, groupSel[j].range, 
-                                      {"annotation-group": i});
+            processor.utils.highlight(element, groupSel[j].range, {"annotation-group": i});
             $.extend(groupSel[j], userAnnotations[groupSel[j].id]);
           }
-          $(element).find("[annotation-group = '" + i + "']").popline({"mode": "display", "selectedText": groupSel});
+          $(element).find("[annotation-group = " + i + "]").popline({"mode": "display", "selectedText": groupSel});
         }
       },
 
       destroyAnnotationDisplay: function(post) {
         var element = post.element;
         var groupTexts = $(element).data("annotation-groups");
-        for (var i = 0; i < groupTexts.length; i++) {
-          var groupSel = groupTexts[i].selections;
-          for (var j = 0; j < groupSel.length; j++) {
-            processor.utils.removeHighlight(element, groupSel[j].range);
+
+        if (groupTexts) {
+          for (var i = 0; i < groupTexts.length; i++) {
+            var groupSel = groupTexts[i].selections;
+            var $annotationGroup = $(element).find("[annotation-group = " + i + "]");
+            $annotationGroup.data("popline").destroy();
+            for (var j = 0; j < groupSel.length; j++) {
+              processor.utils.removeHighlight(element, groupSel[j].range, {"annotation-group": i});
+            }
           }
-          var $annotationGroup = $(element).find("[annotation-group = '" + i + "']");
-          $annotationGroup.data("popline").destroy();
-          $annotationGroup.removeAttr("annotation-group");
         }
       },
 
@@ -195,7 +193,7 @@
             range.selectCharacters(element, characterRange.start, characterRange.end);
             cssApplier.applyToRange(range);
           } else if (window.getSelection().toString().length > 0) {
-              cssApplier.applyToSelection();
+            cssApplier.applyToSelection();
           }
         }
       },
@@ -215,11 +213,11 @@
 
       },
 
-      removeHighlight: function(element, textRange) {
+      removeHighlight: function(element, textRange, group) {
         var classApplierModule = rangy.modules.ClassApplier || rangy.modules.CssClassApplier;
 
         if (rangy.supported && classApplierModule && classApplierModule.supported) {
-          var cssApplier = rangy.createCssClassApplier("ta-annotation-highlight");
+          var cssApplier = rangy.createCssClassApplier("ta-annotation-highlight", {elementAttributes : group});
           if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
             var range = rangy.createRange(element);
             var characterRange = textRange.characterRange;
@@ -245,7 +243,6 @@
           success: function(result) {
             console.log('New annotation saved');
 
-            processor.utils.highlight();
             window.getSelection().removeAllRanges();
 
             processor.addAnnotationDisplay(entry, result);

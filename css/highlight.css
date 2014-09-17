@@ -1,15 +1,8 @@
-*.ta-annotation-highlight {
+span.ta-annotation-highlight {
   font-style: normal;
   background-color: rgba(136, 153, 166, 0.4);
 }
 
-*.boldRed {
-  font-weight: bold;
-  color: red;
-}
-
-a.pinkLink {
-  color: #f66;
-  font-size:
-  1.2em;
+span.ta-annotation-highlight.current-target {
+  background-color: rgba(255, 178, 0, 0.4);
 }

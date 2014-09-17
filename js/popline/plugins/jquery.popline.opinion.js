@@ -69,8 +69,6 @@
       beforeShow: function(popline) {
         if (popline.settings.mode === "display") {
           popline.bar.addClass("popline-display");
-          popline.target.off("mouseleave");
-          popline.target.css("background-color", "rgba(255, 178, 0, 0.4)");
         } else if (popline.settings.mode === "annotation") {
           popline.bar.addClass("popline-annotation");
           opinion = 0;
@@ -113,14 +111,6 @@
                                          numberOfDisagree: opinion < 0 ? 1 : 0,
                                          opinion : opinion});
         } else if (mode === "display") {
-          popline.target.css("background-color", "rgba(136, 153, 166, 0.3)");
-          popline.target.on("mouseleave", function() {
-            var _this = this;
-            setTimeout(function() {
-              $(_this).css("background-color", "rgba(136, 153, 166, 0.3)");
-            }, 200);
-          });
-
           for (var objectId in userOpinions) {
             if (isAnnotatedChanged(objectId)) {
               processor.database.updateAnnotation(objectId, userOpinions[objectId]);
