@@ -424,21 +424,29 @@
           var direction=[];
           if(backwards){
             direction= ['backward','forward'];
-            if(endOffset !== 0) endOffset--;
+            //if(endOffset !== 0) endOffset--;
+            sel.collapse(endNode, endOffset);
           }
           else{
             direction=['forward','backward'];
-            if(startOffset !== 0) startOffset--;
+            //if(startOffset !== 0) startOffset--;
+            sel.collapse(startNode, startOffset);
           }
           
-          var headChar = startNode.nodeValue.charAt(startOffset);
-          var tailChar = endNode.nodeValue.charAt(endOffset);
-
+          //var headChar = startNode.nodeValue.charAt(startOffset);
+          //var tailChar = endNode.nodeValue.charAt(endOffset);
           //console.log("headChar:", headChar, "tailChar:", tailChar);
-          sel.collapse(sel.anchorNode,sel.anchorOffset);
+          /*
           sel.modify("move",direction[1],"word");
           sel.extend(endNode,endOffset);
           sel.modify("extend",direction[0],"word");
+          */
+          sel.modify("move","backward","word");
+          if(backwards)
+            sel.extend(startNode,startOffset);
+          else
+            sel.extend(endNode,endOffset);
+          sel.modify("extend","forward","word");
           if(sel.focusNode !== endNode | sel.anchorNode !== startNode){
             sel.removeAllRanges();
             sel.addRange(sel_backup);
