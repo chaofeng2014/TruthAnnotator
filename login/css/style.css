@@ -282,6 +282,34 @@ body {
   right: -42px;
 }
 
+#pop_goPost{
+  position: relative;
+  right: -60px;
+  opacity: 0.6;
+  text-decoration: underline;
+}
+
+#pop_goPost:hover{
+  position: relative;
+  right: -60px;
+  cursor:pointer;
+  opacity: 1;
+}
+
+#con_goPost{
+  position: relative;
+  right: -60px;
+  opacity: 0.6;
+  text-decoration: underline;
+}
+
+#con_goPost:hover{
+  position: relative;
+  right: -60px;
+  cursor:pointer;
+  opacity: 1;
+}
+
 #con_agree{
   position: relative;
   right: -18px;
