@@ -95,7 +95,7 @@
         mouseup: function(event) {
           var element = $.popline.current.settings.element;
           var rect = element.getBoundingClientRect();
-          var left = rect.right + 20;
+          var left = rect.left - 420;
           var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
           if (left < 0) left = 10;
           var top = scrollTop + rect.top;
