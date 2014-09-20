@@ -35,12 +35,12 @@ function generateHTML(currentUserId, _callback) {
           var agree = object.get('numberOfAgree');
           var disagree = object.get('numberOfDisagree');
           var source = object.get('hostDomain');
-          var inHtml_title = '<p class=stat-mostAgree>Most popular (' + source + ')<br></p>'; 
+          var inHtml_title = '<p class=stat-mostAgree>Most popular (' + source + '): <br></p>'; 
           var inHtml_text = '<p class=stat-text>'+'" ' + selectedText + ' "</p>';
           var inHtml_author = '<p class=stat-author>' +'--by '+ author + '</p>';
           var inHtml_agree = '<span class=stat-agree id=pop_agree>' + agree + '</span>';
           var inHtml_disagree = '<span class=stat-disagree id=pop_disagree>' + disagree + '</span>';
-          var inHtml_goPost = '<span class=stat-disagree id=pop_goPost> to post </span>';
+          var inHtml_goPost = '<span class=stat-disagree id=pop_goPost> original post </span>';
           if(opinion === 1){
             btnup_pop = '<span class="btnup" id=thumbup_pop style="color: blue;" title=""><i class="fa fa-thumbs-up"></i></span>';
           }
@@ -65,12 +65,12 @@ function generateHTML(currentUserId, _callback) {
                 var agree = object.get('numberOfAgree');
                 var disagree = object.get('numberOfDisagree');
                 var source = object.get('hostDomain');
-                var inHtml_title = '<p class=stat-mostDisagree>Most controversial (' + source + ')<br></p>'; 
+                var inHtml_title = '<p class=stat-mostDisagree>Most controversial (' + source + '): <br></p>'; 
                 var inHtml_text = '<p class=stat-text>'+'" ' + selectedText + ' "</p>';
                 var inHtml_author = '<p class=stat-author>' +'--by '+ author + '</p>';
                 var inHtml_agree = '<span class=stat-agree id=con_agree>' + agree + '</span>';
                 var inHtml_disagree = '<span class=stat-disagree id=con_disagree>' + disagree + '</span>';
-                var inHtml_goPost = '<span class=stat-disagree id=con_goPost> to post </span>';
+                var inHtml_goPost = '<span class=stat-disagree id=con_goPost> original post </span>';
                 if(opinion === 1){
                   btnup_con = '<span class="btnup" id=thumbup_con style="color: blue;"title=""><i class="fa fa-thumbs-up"></i></span>';
                 }
@@ -117,8 +117,8 @@ function bindEvent(userId){
   });
   
   $('#thumbup_pop, #thumbdown_pop, #thumbup_con, #thumbdown_con').tooltip(
-    {content:"This meaning may change in original post context"},
-    {position:{my:"left top-10", at:"right+10 center"}}
+    {content: "Note: see the original post to vote"},
+    {position: {my:"left top-30", at:"right+10 center"}}
   );
 
   $('#pop_goPost, #con_goPost').click(function(){

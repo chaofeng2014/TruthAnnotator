@@ -266,10 +266,9 @@ body {
 }
 
 .welcome-card .stat-author{
-  font-size:100%;
   text-align:right;
-  margin-top: 0px;
-  margin-bottom:0px;
+  margin-top: 20px;
+  margin-bottom:20px;
 }
 
 #pop_agree{
@@ -285,6 +284,7 @@ body {
 #pop_goPost{
   position: relative;
   right: -60px;
+  font-size:0.7em;
   opacity: 0.6;
   text-decoration: underline;
 }
@@ -299,6 +299,7 @@ body {
 #con_goPost{
   position: relative;
   right: -60px;
+  font-size:0.7em;
   opacity: 0.6;
   text-decoration: underline;
 }
@@ -355,17 +356,18 @@ body {
   cursor:pointer;
 }
 
-.stat-mostAgree {
-  width: 150px; 
-  /*border:5px solid navy;*/
-  background-color:green; 
-  color: white;
+.welcome-card .stat-mostAgree {
+  width: 300px; 
+  text-align:left;
+  position:relative;
+  left:0px;
 }
 
-.stat-mostDisagree {
-  width: 150px; 
-  background-color:green; 
-  color: white;
+.welcome-card .stat-mostDisagree {
+  width: 300px; 
+  text-align:left;
+  position:relative;
+  left:0px;
 }
 
 .welcome-card p {
