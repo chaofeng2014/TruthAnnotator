@@ -236,7 +236,7 @@ body {
 
 /*Welcome page*/
 .welcome-card{
-  padding-bottom: 20px;
+  padding-bottom: 25px;
   padding-left: 20px;
   padding-right: 20px;
   width: 350px;
@@ -320,12 +320,21 @@ body {
   right: -42px;
 }
 
+.ui-tooltip{
+  display:inline-block;
+  width:250px;
+  font-size: 1em;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
+
 /*thumb button style*/
 .btnup{
   color: gray;
   position: relative;
   top: 0px;
   right: -10px;
+  font-size:0.8em;
 }
 
 .btnup:hover{
@@ -338,6 +347,7 @@ body {
   position: relative;
   top: 0px;
   right: -35px;
+  font-size:0.8em;
 }
 
 .btndown:hover{

@@ -3,6 +3,8 @@ Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak", "anMcouVSWbzeHoJmFJ
 var _userOpinion;
 var _popUserName;
 var _conUserName;
+var _popPostId;
+var _conPostId;
 $(document).ready(function(){
     var currentUserId = showNickname();
     generateHTML(currentUserId, function(){
@@ -12,16 +14,17 @@ $(document).ready(function(){
 
 function generateHTML(currentUserId, _callback) {
 
-  var btnup_pop = '<span class="btnup" id=thumbup_pop style="color:gray;"><i class="fa fa-thumbs-up"></i></span>';
-  var btndown_pop = '<span class="btndown" id=thumbdown_pop style="color:gray;"><i class="fa fa-thumbs-down"></i></span>';
-  var btnup_con = '<span class="btnup" id=thumbup_con style="color:gray;"><i class="fa fa-thumbs-up"></i></span>';
-  var btndown_con = '<span class="btndown" id=thumbdown_con style="color:gray;"><i class="fa fa-thumbs-down"></i></span>';
+  var btnup_pop = '<span class="btnup" id=thumbup_pop style="color:gray;" title=""><i class="fa fa-thumbs-up"></i></span>';
+  var btndown_pop = '<span class="btndown" id=thumbdown_pop style="color:gray;" title=""><i class="fa fa-thumbs-down"></i></span>';
+  var btnup_con = '<span class="btnup" id=thumbup_con style="color:gray;"title=""><i class="fa fa-thumbs-up"></i></span>';
+  var btndown_con = '<span class="btndown" id=thumbdown_con style="color:gray;"title=""><i class="fa fa-thumbs-down"></i></span>';
   var Annotation = Parse.Object.extend("Annotation");
   var query = new Parse.Query(Annotation);
   query.descending("numberOfAgree");
   query.first({
     success: function(object) {
       _popUserName = object.get('userName'); 
+      _popPostId = object.get('postId');
       //chrome.storage.sync.set({popAnnotation: object});
       queryCurrentUser(object.id, currentUserId, function(result){
           var opinion;
@@ -39,10 +42,10 @@ function generateHTML(currentUserId, _callback) {
           var inHtml_disagree = '<span class=stat-disagree id=pop_disagree>' + disagree + '</span>';
           var inHtml_goPost = '<span class=stat-disagree id=pop_goPost> to post </span>';
           if(opinion === 1){
-            btnup_pop = '<span class="btnup" id=thumbup_pop style="color: blue;"><i class="fa fa-thumbs-up"></i></span>';
+            btnup_pop = '<span class="btnup" id=thumbup_pop style="color: blue;" title=""><i class="fa fa-thumbs-up"></i></span>';
           }
           else if(opinion === -1){
-            btndown_pop = '<span class="btndown" id=thumbdown_pop style="color: blue;"><i class="fa fa-thumbs-down"></i></span>';
+            btndown_pop = '<span class="btndown" id=thumbdown_pop style="color: blue;" title=""><i class="fa fa-thumbs-down"></i></span>';
           }
           var inHtml_pop = inHtml_title + inHtml_text + inHtml_author + btnup_pop + inHtml_agree + btndown_pop + inHtml_disagree + inHtml_goPost;
           $("#post-stat-pop").html(inHtml_pop);
@@ -52,6 +55,7 @@ function generateHTML(currentUserId, _callback) {
             success: function(object) {
               //chrome.storage.sync.set({conAnnotation: object});
               _conUserName = object.get('userName'); 
+              _conPostId = object.get('postId');
               queryCurrentUser(object.id, currentUserId, function(result){
                 var opinion;
                 if (result.length === 0){opinion = 0;}
@@ -68,10 +72,10 @@ function generateHTML(currentUserId, _callback) {
                 var inHtml_disagree = '<span class=stat-disagree id=con_disagree>' + disagree + '</span>';
                 var inHtml_goPost = '<span class=stat-disagree id=con_goPost> to post </span>';
                 if(opinion === 1){
-                  btnup_con = '<span class="btnup" id=thumbup_con style="color: blue;"><i class="fa fa-thumbs-up"></i></span>';
+                  btnup_con = '<span class="btnup" id=thumbup_con style="color: blue;"title=""><i class="fa fa-thumbs-up"></i></span>';
                 }
                 else if(opinion === -1){
-                  btndown_con = '<span class="btndown" id=thumbdown_con style="color: blue;"><i class="fa fa-thumbs-down"></i></span>';
+                  btndown_con = '<span class="btndown" id=thumbdown_con style="color: blue;"title=""><i class="fa fa-thumbs-down"></i></span>';
                 }
                 var inHtml_con = inHtml_title + inHtml_text + inHtml_author + btnup_con +inHtml_agree +  btndown_con + inHtml_disagree + inHtml_goPost;
                 $("#post-stat-con").html(inHtml_con);
@@ -111,6 +115,11 @@ function bindEvent(userId){
   $('#thumbup_pop, #thumbdown_pop, #thumbup_con, #thumbdown_con').click(function(){
     processVote($(this), userId);
   });
+  
+  $('#thumbup_pop, #thumbdown_pop, #thumbup_con, #thumbdown_con').tooltip(
+    {content:"This meaning may change in original post context"},
+    {position:{my:"left top-10", at:"right+10 center"}}
+  );
 
   $('#pop_goPost, #con_goPost').click(function(){
     generateNewTab($(this));
@@ -133,33 +142,14 @@ function bindEvent(userId){
 function generateNewTab(node){
   console.log('clicked');
   if(node.attr('id') === 'pop_goPost'){
-    var userName = _popUserName;
-    url = 'https://twitter.com/' + userName;
+    _popUserName;
+    url = 'https://twitter.com/' + _popUserName + '/status/' + _popPostId;
     window.open(url);
-    //console.log('pop');
-    /*
-    chrome.storage.sync.get(['popAnnotation'], function(data){
-      var userName = data.popAnnotation.get('userName');
-      console.log(userName);
-      url = 'https://twitter.com/' + userName;
-      console.log(url);
-      window.open(url);
-    });
-    */
   }
   else {
     var userName = _conUserName;
-    url = 'https://twitter.com/' + userName;
+    url = 'https://twitter.com/' + _conUserName + '/status/' + _conPostId;
     window.open(url);
-  /*
-    chrome.storage.sync.get(['conAnnotation'], function(data){
-      var userName = data.conAnnotation.get('userName');
-      console.log(userName);
-      url = 'https://twitter.com/' + userName;
-      console.log(url);
-      window.open(url);
-    });
-    */
    } 
 }
 
@@ -260,16 +250,3 @@ function showNickname(){
   return currentUser.id;
 }
 
-
-    /*
-    function sendToContentLogout(){
-        console.log("sending to content");
-        chrome.tabs.query({url:'*://twitter.com/'}, function(tabs) {
-          for (var i = 0; i < tabs.length; i++){
-            chrome.tabs.sendMessage(tabs[i].id, {objectId: "", username: "", nickname:""}, function(response) {
-              console.log("change sent to content script");
-            });
-          }
-        }); 
-    }
-    */
