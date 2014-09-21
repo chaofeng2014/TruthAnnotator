@@ -5,6 +5,8 @@ var _popUserName;
 var _conUserName;
 var _popPostId;
 var _conPostId;
+var _popObject;
+var _conObject;
 $(document).ready(function(){
     var currentUserId = showNickname();
     generateHTML(currentUserId, function(){
@@ -14,10 +16,10 @@ $(document).ready(function(){
 
 function generateHTML(currentUserId, _callback) {
 
-  var btnup_pop = '<span class="btnup" id=thumbup_pop style="color:gray;" title=""><i class="fa fa-thumbs-up"></i></span>';
-  var btndown_pop = '<span class="btndown" id=thumbdown_pop style="color:gray;" title=""><i class="fa fa-thumbs-down"></i></span>';
-  var btnup_con = '<span class="btnup" id=thumbup_con style="color:gray;"title=""><i class="fa fa-thumbs-up"></i></span>';
-  var btndown_con = '<span class="btndown" id=thumbdown_con style="color:gray;"title=""><i class="fa fa-thumbs-down"></i></span>';
+  var btnup_pop = '<span class="btnup" id=thumbup_pop style="color:gray;" title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-up"></i></span>';
+  var btndown_pop = '<span class="btndown" id=thumbdown_pop style="color:gray;" title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-down"></i></span>';
+  var btnup_con = '<span class="btnup" id=thumbup_con style="color:gray;"title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-up"></i></span>';
+  var btndown_con = '<span class="btndown" id=thumbdown_con style="color:gray;"title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-down"></i></span>';
   var Annotation = Parse.Object.extend("Annotation");
   var query = new Parse.Query(Annotation);
   query.descending("numberOfAgree");
@@ -25,7 +27,7 @@ function generateHTML(currentUserId, _callback) {
     success: function(object) {
       _popUserName = object.get('userName'); 
       _popPostId = object.get('postId');
-      //chrome.storage.sync.set({popAnnotation: object});
+      _popObject = object;
       queryCurrentUser(object.id, currentUserId, function(result){
           var opinion;
           if (result.length === 0){opinion = 0;}
@@ -40,14 +42,13 @@ function generateHTML(currentUserId, _callback) {
           var inHtml_author = '<p class=stat-author>' +'--by '+ author + '</p>';
           var inHtml_agree = '<span class=stat-agree id=pop_agree>' + agree + '</span>';
           var inHtml_disagree = '<span class=stat-disagree id=pop_disagree>' + disagree + '</span>';
-          var inHtml_goPost = '<span class=stat-disagree id=pop_goPost> original post </span>';
           if(opinion === 1){
-            btnup_pop = '<span class="btnup" id=thumbup_pop style="color: blue;" title=""><i class="fa fa-thumbs-up"></i></span>';
+            btnup_pop = '<span class="btnup" id=thumbup_pop style="color: blue;" title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-up"></i></span>';
           }
           else if(opinion === -1){
-            btndown_pop = '<span class="btndown" id=thumbdown_pop style="color: blue;" title=""><i class="fa fa-thumbs-down"></i></span>';
+            btndown_pop = '<span class="btndown" id=thumbdown_pop style="color: blue;" title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-down"></i></span>';
           }
-          var inHtml_pop = inHtml_title + inHtml_text + inHtml_author + btnup_pop + inHtml_agree + btndown_pop + inHtml_disagree + inHtml_goPost;
+          var inHtml_pop = inHtml_title + inHtml_text + inHtml_author + btnup_pop + inHtml_agree + btndown_pop + inHtml_disagree;
           $("#post-stat-pop").html(inHtml_pop);
           $(".stat-mostAgree").data("object", object);
           query.descending("numberOfDisagree");
@@ -56,6 +57,7 @@ function generateHTML(currentUserId, _callback) {
               //chrome.storage.sync.set({conAnnotation: object});
               _conUserName = object.get('userName'); 
               _conPostId = object.get('postId');
+              _conObject = object;
               queryCurrentUser(object.id, currentUserId, function(result){
                 var opinion;
                 if (result.length === 0){opinion = 0;}
@@ -70,14 +72,13 @@ function generateHTML(currentUserId, _callback) {
                 var inHtml_author = '<p class=stat-author>' +'--by '+ author + '</p>';
                 var inHtml_agree = '<span class=stat-agree id=con_agree>' + agree + '</span>';
                 var inHtml_disagree = '<span class=stat-disagree id=con_disagree>' + disagree + '</span>';
-                var inHtml_goPost = '<span class=stat-disagree id=con_goPost> original post </span>';
                 if(opinion === 1){
-                  btnup_con = '<span class="btnup" id=thumbup_con style="color: blue;"title=""><i class="fa fa-thumbs-up"></i></span>';
+                  btnup_con = '<span class="btnup" id=thumbup_con style="color: blue;"title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-up"></i></span>';
                 }
                 else if(opinion === -1){
-                  btndown_con = '<span class="btndown" id=thumbdown_con style="color: blue;"title=""><i class="fa fa-thumbs-down"></i></span>';
+                  btndown_con = '<span class="btndown" id=thumbdown_con style="color: blue;"title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-down"></i></span>';
                 }
-                var inHtml_con = inHtml_title + inHtml_text + inHtml_author + btnup_con +inHtml_agree +  btndown_con + inHtml_disagree + inHtml_goPost;
+                var inHtml_con = inHtml_title + inHtml_text + inHtml_author + btnup_con +inHtml_agree +  btndown_con + inHtml_disagree;
                 $("#post-stat-con").html(inHtml_con);
                 $(".stat-mostDisagree").data("object", object);
 
@@ -112,15 +113,16 @@ function queryCurrentUser(annotationId, userId, _callback){
 }
   
 function bindEvent(userId){
+/*
   $('#thumbup_pop, #thumbdown_pop, #thumbup_con, #thumbdown_con').click(function(){
     processVote($(this), userId);
   });
+*/
   
-  $('#thumbup_pop, #thumbdown_pop, #thumbup_con, #thumbdown_con').tooltip(
-    {content: "Note: see the original post to vote"},
-    {position: {my:"left top-30", at:"right+10 center"}}
-  );
-
+  $('#thumbup_pop, #thumbdown_pop, #thumbup_con, #thumbdown_con').click(function(){
+    generateModal($(this));
+  });
+  
   $('#pop_goPost, #con_goPost').click(function(){
     generateNewTab($(this));
   });
@@ -138,6 +140,36 @@ function bindEvent(userId){
     window.close();
   });
 }
+
+function generateModal(node){
+  if (node.attr('id') === 'thumbup_pop'){
+    var wholePost = _popObject.get('wholePost');
+    var textRange = _popObject.get('textRange');
+  }
+  else{
+    var wholePost = _conObject.get('wholePost');
+    var textRange = _conObject.get('textRange');
+  }
+  //console.log(wholePost);
+  $(".modal-body").html(wholePost);
+
+/*
+    //highlight the annotation
+    rangy.init(); 
+    var classApplierModule = rangy.modules.ClassApplier || rangy.modules.CssClassApplier;
+    if (rangy.supported && classApplierModule && classApplierModule.supported) {
+      var cssApplier = rangy.createCssClassApplier("whole-post-highlight");
+    }
+    var element = $(".modal-body").get(0);
+    if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
+      var range = rangy.createRange(element);
+      var characterRange = textRange.characterRange;
+      range.selectCharacters(element, characterRange.start, characterRange.end);
+      cssApplier.applyToRange(range);
+    } else return;
+  */
+}
+  
 
 function generateNewTab(node){
   console.log('clicked');

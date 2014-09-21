@@ -281,36 +281,6 @@ body {
   right: -42px;
 }
 
-#pop_goPost{
-  position: relative;
-  right: -60px;
-  font-size:0.7em;
-  opacity: 0.6;
-  text-decoration: underline;
-}
-
-#pop_goPost:hover{
-  position: relative;
-  right: -60px;
-  cursor:pointer;
-  opacity: 1;
-}
-
-#con_goPost{
-  position: relative;
-  right: -60px;
-  font-size:0.7em;
-  opacity: 0.6;
-  text-decoration: underline;
-}
-
-#con_goPost:hover{
-  position: relative;
-  right: -60px;
-  cursor:pointer;
-  opacity: 1;
-}
-
 #con_agree{
   position: relative;
   right: -18px;
@@ -319,14 +289,6 @@ body {
 #con_disagree{
   position: relative;
   right: -42px;
-}
-
-.ui-tooltip{
-  display:inline-block;
-  width:250px;
-  font-size: 1em;
-  text-align: center;
-  font-family: 'Roboto', sans-serif;
 }
 
 /*thumb button style*/
@@ -394,13 +356,13 @@ body {
 #welcome-logout {
   position: relative;
   top: 5px;
-  left: -150px;
+  left: -120px;
 }
 
 #welcome-close {
   position: relative;
   top: 5px;
-  left: 150px;
+  left: 120px;
 }
 
 .welcome-card a {
