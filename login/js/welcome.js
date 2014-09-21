@@ -42,13 +42,14 @@ function generateHTML(currentUserId, _callback) {
           var inHtml_author = '<p class=stat-author>' +'--by '+ author + '</p>';
           var inHtml_agree = '<span class=stat-agree id=pop_agree>' + agree + '</span>';
           var inHtml_disagree = '<span class=stat-disagree id=pop_disagree>' + disagree + '</span>';
+          var inHtml_goPost = '<span class=stat-disagree id=pop_goPost> see original post </span>';
           if(opinion === 1){
             btnup_pop = '<span class="btnup" id=thumbup_pop style="color: blue;" title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-up"></i></span>';
           }
           else if(opinion === -1){
             btndown_pop = '<span class="btndown" id=thumbdown_pop style="color: blue;" title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-down"></i></span>';
           }
-          var inHtml_pop = inHtml_title + inHtml_text + inHtml_author + btnup_pop + inHtml_agree + btndown_pop + inHtml_disagree;
+          var inHtml_pop = inHtml_title + inHtml_text + inHtml_author + btnup_pop + inHtml_agree + btndown_pop + inHtml_disagree + inHtml_goPost;
           $("#post-stat-pop").html(inHtml_pop);
           $(".stat-mostAgree").data("object", object);
           query.descending("numberOfDisagree");
@@ -72,13 +73,14 @@ function generateHTML(currentUserId, _callback) {
                 var inHtml_author = '<p class=stat-author>' +'--by '+ author + '</p>';
                 var inHtml_agree = '<span class=stat-agree id=con_agree>' + agree + '</span>';
                 var inHtml_disagree = '<span class=stat-disagree id=con_disagree>' + disagree + '</span>';
+                var inHtml_goPost = '<span class=stat-disagree id=con_goPost> see original post </span>';
                 if(opinion === 1){
                   btnup_con = '<span class="btnup" id=thumbup_con style="color: blue;"title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-up"></i></span>';
                 }
                 else if(opinion === -1){
                   btndown_con = '<span class="btndown" id=thumbdown_con style="color: blue;"title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-down"></i></span>';
                 }
-                var inHtml_con = inHtml_title + inHtml_text + inHtml_author + btnup_con +inHtml_agree +  btndown_con + inHtml_disagree;
+                var inHtml_con = inHtml_title + inHtml_text + inHtml_author + btnup_con +inHtml_agree +  btndown_con + inHtml_disagree + inHtml_goPost;
                 $("#post-stat-con").html(inHtml_con);
                 $(".stat-mostDisagree").data("object", object);
 
@@ -113,11 +115,10 @@ function queryCurrentUser(annotationId, userId, _callback){
 }
   
 function bindEvent(userId){
-/*
+
   $('#thumbup_pop, #thumbdown_pop, #thumbup_con, #thumbdown_con').click(function(){
     processVote($(this), userId);
   });
-*/
   
   $('#thumbup_pop, #thumbdown_pop, #thumbup_con, #thumbdown_con').click(function(){
     generateModal($(this));
@@ -153,21 +154,21 @@ function generateModal(node){
   //console.log(wholePost);
   $(".modal-body").html(wholePost);
 
-/*
     //highlight the annotation
-    rangy.init(); 
     var classApplierModule = rangy.modules.ClassApplier || rangy.modules.CssClassApplier;
     if (rangy.supported && classApplierModule && classApplierModule.supported) {
       var cssApplier = rangy.createCssClassApplier("whole-post-highlight");
     }
     var element = $(".modal-body").get(0);
     if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
-      var range = rangy.createRange(element);
-      var characterRange = textRange.characterRange;
-      range.selectCharacters(element, characterRange.start, characterRange.end);
+      var range = rangy.createRange();
+      console.log(textRange);
+      startOffset = textRange.characterRange.start;
+      endOffset = textRange.characterRange.end;
+      range.setStart(element.firstChild, startOffset);
+      range.setEnd(element.firstChild, endOffset);
       cssApplier.applyToRange(range);
     } else return;
-  */
 }
   
 
