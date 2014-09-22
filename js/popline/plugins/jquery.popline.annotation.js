@@ -29,21 +29,30 @@
 
   $.popline.addButton({
     nextArrow: {
-      iconClass: "fa fa-chevron-right",
+      iconClass: "ta-chevron-right",
       mode: "display",
       beforeShow: function(popline) {
-        if (popline.settings["selectedText"].length === 1) {
-          this.css("color", "rgba(180, 180, 180, 0.7)");
-        }
+        this.find("i").toggleClass("button-disabled", (popline.settings["selectedText"].length === 1));
       }
     },
 
     prevArrow: {
-      iconClass: "fa fa-chevron-left",
+      iconClass: "ta-chevron-left",
       mode: "display",
       beforeShow: function(popline) {
-        if (popline.settings["selectedText"].length === 1) {
-          this.css("color", "rgba(180, 180, 180, 0.7)");
+        this.find("i").toggleClass("button-disabled", (popline.settings["selectedText"].length === 1));
+      }
+    },
+
+    close: {
+      iconClass: "ta-cancel",
+      mode: "display",
+      beforeShow: function(popline) {
+        if (!this.data("click-event-binded")) {
+          this.click(function() {
+            $.popline.hideAllBar();
+          });
+          this.data("click-event-binded", true);
         }
       }
     },

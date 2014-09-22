@@ -42,6 +42,7 @@ $(document).ready(function() {
           setTimeout(function(){
             //need to adjust the delay time for iframe
             processor.updateAnnotations();
+            processor.user = data; 
             $(processor.initElements).popline();
           }, 1000);
     }

@@ -236,11 +236,11 @@ body {
 
 /*Welcome page*/
 .welcome-card{
-  padding-bottom: 20px;
+  padding-bottom: 25px;
   padding-left: 20px;
   padding-right: 20px;
   width: 350px;
-  background-color: #F7F7F7;
+  /*background-color: #F7F7F7;*/
   margin: 0 auto 5px;
   border-radius: 5px;
   overflow: hidden;
@@ -249,7 +249,7 @@ body {
 .welcome-card h1 {
   font-weight: 100;
   text-align: center;
-  font-size: 1.5em;
+  font-size: 1em;
   margin-bottom: auto;
   margin-top:x;
 }
@@ -263,14 +263,31 @@ body {
 }
 
 #welcome-toggle {
+  position: relative;
+  top: -32px;
+  left: 0px;
+  font-size:1em;
+}
+
+.welcome-card .stat-source{
+  text-align:left;
+  margin-top: -10px;
+  margin-bottom:20px;
 }
 
 .welcome-card .stat-author{
-  font-size:100%;
   text-align:right;
-  margin-top: 0px;
-  margin-bottom:0px;
+  margin-top: 20px;
+  margin-bottom:10px;
 }
+
+.welcome-card .stat-text {
+  font-family: "Times New Roman", Times, serif;
+  font-size:120%;
+  font-style: italic;
+  margin-bottom: -15px;
+}
+    
 
 #pop_agree{
   position: relative;
@@ -280,34 +297,6 @@ body {
 #pop_disagree{
   position: relative;
   right: -42px;
-}
-
-#pop_goPost{
-  position: relative;
-  right: -60px;
-  opacity: 0.6;
-  text-decoration: underline;
-}
-
-#pop_goPost:hover{
-  position: relative;
-  right: -60px;
-  cursor:pointer;
-  opacity: 1;
-}
-
-#con_goPost{
-  position: relative;
-  right: -60px;
-  opacity: 0.6;
-  text-decoration: underline;
-}
-
-#con_goPost:hover{
-  position: relative;
-  right: -60px;
-  cursor:pointer;
-  opacity: 1;
 }
 
 #con_agree{
@@ -320,42 +309,86 @@ body {
   right: -42px;
 }
 
+.stat-goPost{
+position: relative;
+right: -60px;
+font-size:0.7em;
+opacity: 0.6;
+text-decoration: underline;
+}
+
+.stat-goPost:hover{
+position: relative;
+right: -60px;
+cursor:pointer;
+opacity: 1;
+}
+
+#con_goPost{
+position: relative;
+right: -60px;
+font-size:0.7em;
+opacity: 0.6;
+text-decoration: underline;
+}
+
+#con_goPost:hover{
+position: relative;
+right: -60px;
+cursor:pointer;
+opacity: 1;
+}
+
 /*thumb button style*/
 .btnup{
   color: gray;
   position: relative;
   top: 0px;
   right: -10px;
+  font-size:0.8em;
 }
 
+/*
 .btnup:hover{
   color:blue;
   cursor:pointer;
 }
+*/
 
 .btndown{
   color: gray;
   position: relative;
-  top: 0px;
+  p: 0px;
   right: -35px;
+  font-size:0.8em;
 }
 
+/*
 .btndown:hover{
   color:blue;
   cursor:pointer;
 }
+*/
 
-.stat-mostAgree {
-  width: 150px; 
-  /*border:5px solid navy;*/
-  background-color:green; 
-  color: white;
+.welcome-card .stat-title {
+  width: 100%; 
+  border:0px;
+  font-family:'roboto', sans-serif;
+  font-size: 20px;
+  color:#fff;
+  background-color:#4d90fe;
+  text-align:center;
+  position:relative;
+  top:-10px;
 }
 
-.stat-mostDisagree {
-  width: 150px; 
-  background-color:green; 
-  color: white;
+hr {
+  border: 0;
+  height: 1px;
+  background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+  background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+  background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+  background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
 }
 
 .welcome-card p {
@@ -366,13 +399,6 @@ body {
   top: 0px;
 }
 
-.welcome-card .stat-text {
-  font-family: "Times New Roman", Times, serif;
-  font-size:120%;
-  font-style: italic;
-  margin-bottom: 5px;
-}
-    
 .welcome-util {
   width: 100%;
   text-align: center;
@@ -381,14 +407,14 @@ body {
 
 #welcome-logout {
   position: relative;
-  top: 5px;
-  left: -150px;
+  top:12px;
+  left: -110px;
 }
 
 #welcome-close {
   position: relative;
-  top: 5px;
-  left: 150px;
+  top: 12px;
+  left: 110px;
 }
 
 .welcome-card a {
@@ -409,6 +435,18 @@ body {
 #welcome-card .item {
     display: block;
     margin: 12px 0;
+}
+
+/*modal style*/
+div .modal-body {
+  font-family: "Times New Roman", Times, serif;
+  font-size:120%;
+  font-style: italic;
+  margin-bottom: 5px;
+}
+
+div .whole-post-highlight{
+  color:red;
 }
 
 ::-webkit-input-placeholder {
