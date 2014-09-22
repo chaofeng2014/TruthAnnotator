@@ -40,14 +40,14 @@
       ],
 
       "css": [
-        "css/font-awesome.css",
+        "css/ta-font.css",
         "css/highlight.css",
         "js/popline/themes/default.css"
       ],
 
       "js": [
-        "js/parse/parse.js",
-        "js/popline/jquery.min.js",
+        "js/lib/parse.js",
+        "js/lib/jquery.min.js",
         "js/rangy/rangy-core.js",
         "js/rangy/rangy-cssclassapplier.js",
         "js/rangy/rangy-selectionsaverestore.js",
@@ -71,6 +71,6 @@
 
   "web_accessible_resources": [
     "fonts/*",
-    "js/popline/jquery.min.map"
+    "js/libs/jquery.min.map"
   ]
 }

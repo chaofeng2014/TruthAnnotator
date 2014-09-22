@@ -49,7 +49,7 @@
 
   $.popline.addButton({
     link: {
-      iconClass: "fa fa-link",
+      iconClass: "ta-link",
       mode: "annotation",
       beforeShow: function(popline) {
         if (selectionHasLink()) {

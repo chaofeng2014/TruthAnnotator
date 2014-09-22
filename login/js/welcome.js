@@ -17,7 +17,6 @@ $(document).ready(function(){
 });
 
 function generateToggleHTML(currentUserId, _callback) {
-
   var Annotation = Parse.Object.extend("Annotation");
   var query = new Parse.Query(Annotation);
   query.descending("numberOfAgree");
@@ -132,7 +131,7 @@ function makeButton(btn, color){
   var button;
   if (btn === 'btnup_pop' | btn === 'btnup_con'){
     btnClass = '"btnup"';
-    font = 'fa-thumbs-up';
+    font = 'ta-like';
     if(btn === 'btnup_pop')
     id = '"thumbup_pop"';
     else
@@ -140,7 +139,7 @@ function makeButton(btn, color){
   }
   else {
     btnClass = '"btndown"';
-    font = 'fa-thumbs-down';
+    font = 'ta-dislike';
     if(btn === 'btndown_pop')
     id = '"thumbdown_pop"';
     else
@@ -149,7 +148,6 @@ function makeButton(btn, color){
   button = '<span class=' + btnClass + ' id=' + id + ' style="color:'+ color + '"; data-toggle="modal" data-target="#myModal"><i class="fa ' + font + '"></i></span>';
   return button;
 }
-
 
 /*
 function generateModal(node){
