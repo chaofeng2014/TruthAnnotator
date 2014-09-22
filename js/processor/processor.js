@@ -36,7 +36,7 @@
                         range: entry.textRange,
                         agree: entry.numberOfAgree,
                         disagree: entry.numberOfDisagree};
-      processor.userAnnotations[result.id] = {opinion: entry.opinion, link: entry.link};
+      processor.user.opinions[result.id] = {opinion: entry.opinion, link: entry.link};
 
       var post = processor.postList[entry.postId];
       if (!post.selectedTexts) {
@@ -45,7 +45,7 @@
       post.selectedTexts.push(annotation);
 
       processor.utils.destroyAnnotationDisplay(post);
-      processor.utils.initAnnotationDisplay(post, processor.userAnnotations);
+      processor.utils.initAnnotationDisplay(post, processor.user.opinions);
     },
 
     updateAnnotations: function() {
@@ -82,11 +82,11 @@
             }
           }
 
-          processor.database.queryUserAnnotation(function(userAnnotations) {
+          processor.database.queryUserAnnotation(function(opinions) {
             for (var id in processor.postList) {
               post = processor.postList[id];
               if ("selectedTexts" in post) {
-                processor.utils.initAnnotationDisplay(post, userAnnotations);
+                processor.utils.initAnnotationDisplay(post, opinions);
               }
             }
           });
@@ -96,13 +96,10 @@
 
     },
 
-    user: null,
-
     /* 
-      userAnnotations: {opinion: opinion, link: link}
-        The annotations made by the current user. 
+      user: {objectId, username, nickname, opinions: {opinion, link}}
     */
-    userAnnotations: {},
+    user: null,
 
     utils: {
 
@@ -117,7 +114,7 @@
         return null;
       },
 
-      initAnnotationDisplay: function(post, userAnnotations) {
+      initAnnotationDisplay: function(post, opinions) {
         var element = post.element, selectedTexts = post.selectedTexts;
 
         selectedTexts.sort(function(a, b) {
@@ -132,7 +129,7 @@
           var groupSel = groupTexts[i].selections;
           for (var j = 0; j < groupSel.length; j++) {
             processor.utils.highlight(element, groupSel[j].range, {"annotation-group": i});
-            $.extend(groupSel[j], userAnnotations[groupSel[j].id]);
+            $.extend(groupSel[j], opinions[groupSel[j].id]);
           }
           $(element).find("[annotation-group = " + i + "]").popline({mode: "display", selectedText: groupSel, 
                                                                      element: element});
@@ -385,9 +382,9 @@
               var annotationId = results[i].get("annotationId");
               var opinion = results[i].get("opinion");
               var link = results[i].get("link");
-              processor.userAnnotations[annotationId] = {opinion: opinion, link: link};
+              processor.user.opinions[annotationId] = {opinion: opinion, link: link};
             }
-            callback(processor.userAnnotations);
+            callback(processor.user.opinions);
           },
           error: function(error) {
             console.log("Could not finish the Main query!");

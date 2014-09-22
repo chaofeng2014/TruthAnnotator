@@ -49,11 +49,11 @@
   };
 
   var isAnnotatedChanged = function(objectId) {
-    if (!(objectId in processor.userAnnotations)) {
-      processor.userAnnotations[objectId] = {opinion: userOpinions[objectId].opinion};
+    if (!(objectId in processor.user.opinions)) {
+      processor.user.opinions[objectId] = {opinion: userOpinions[objectId].opinion};
       return true;
-    } else if (processor.userAnnotations[objectId].opinion !== userOpinions[objectId].opinion) {
-      processor.userAnnotations[objectId].opinion = userOpinions[objectId].opinion;
+    } else if (processor.user.opinions[objectId].opinion !== userOpinions[objectId].opinion) {
+      processor.user.opinions[objectId].opinion = userOpinions[objectId].opinion;
       return true;
     }
     return false;

@@ -19,60 +19,52 @@ $(document).ready(function() {
   if (host === "twitter.com"){
     processor.useModule("twitter");
     iframe = false;
-  }
-
-  //the disqus module, not implemeted
-  else if(host === "disqus.com"){
+  } else if (host === "disqus.com") {
     processor.useModule("disqus");
     iframe = true;
+  } else {
+    return;
   }
-
-  else return;
 
   processor.initializeUpdateEvent();
   $(window).on("postUpdated", function() {
     processor.updateAnnotations();
   })
 
-  //pull user info from chrome local storage 
+  // Pull user info from chrome local storage 
   chrome.storage.sync.get(['objectId', 'username','nickname'], function(data){
     processor.user = data;
-    if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
-        data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
-          setTimeout(function(){
-            //need to adjust the delay time for iframe
-            processor.updateAnnotations();
-            processor.user = data; 
-            $(processor.initElements).popline();
-          }, 1000);
+    if (data.objectId !== "" && data.username !== "" && data.nickname !== "" && 
+        data.objectId !== undefined && data.username !== undefined && data.nickname !== undefined) {
+      setTimeout(function(){
+        //need to adjust the delay time for iframe
+        processor.updateAnnotations();
+        processor.user = data; 
+        $(processor.initElements).popline();
+      }, 1000);
     }
   });
   
-  //listen to popup page login/logout, update user info
-  // dependes on if it is iframe
+  // Listen to popup page login/logout, update user info
+  // depends on if it is an iframe
   if (!window.isTop | !iframe){
-    chrome.storage.onChanged.addListener(
-      function(changes, namespace){
-        console.log("local storage changed!");
-        chrome.storage.sync.get(['objectId', 'username','nickname'], function(data){
-          processor.user = data;
-          if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
-              data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined){
-                  $(processor.initElements).popline();
-                  processor.updateAnnotations();
-          }
-          else{
-            //destory all existing popline
-            instances = $.popline.instances;
-            for (var i = 0; i < instances.length; i++) {
-              if (instances[i].target.data("popline") !== undefined) {
-                instances[i].target.data("popline").destroy();
-              }
+    chrome.storage.onChanged.addListener(function(changes, namespace) {
+      chrome.storage.sync.get(['objectId', 'username','nickname'], function(data) {
+        processor.user = data;
+        if (data.objectId !== "" & data.username !== "" & data.nickname !== "" & 
+            data.objectId !== undefined & data.username !== undefined & data.nickname !== undefined) {
+          $(processor.initElements).popline();
+          processor.updateAnnotations();
+        } else {
+          instances = $.popline.instances;
+          for (var i = 0; i < instances.length; i++) {
+            if (instances[i].target.data("popline") !== undefined) {
+              instances[i].target.data("popline").destroy();
             }
-              processor.updateAnnotations();
           }
-            console.log("processor user is:", processor.user);
-        });
+          processor.updateAnnotations();
+        }
       });
+    });
   }
 });
