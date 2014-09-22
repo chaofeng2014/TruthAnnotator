@@ -416,11 +416,12 @@ opacity: 1;
 }
 
 /*modal style*/
-/*
-.modal-body {
-  opacity:0.5;
+div .modal-body {
+  font-family: "Times New Roman", Times, serif;
+  font-size:120%;
+  font-style: italic;
+  margin-bottom: 5px;
 }
-*/
 
 div .whole-post-highlight{
   color:red;
