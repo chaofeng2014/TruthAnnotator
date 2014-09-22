@@ -368,8 +368,6 @@
             // Check if the selection is in container
             var containerElement = processor.utils.getContainerFromRange(processor.container, selection.getRangeAt(0));
             if (containerElement != null) {
-              //console.log(containerElement.innerText);
-              console.log(containerElement.textContent);
               $.extend($.popline.selection, processor.getInfoFromContainer(containerElement), {
                 selectedText: selection.toString(),
                 textRange: selection.saveCharacterRanges(containerElement)[0],
