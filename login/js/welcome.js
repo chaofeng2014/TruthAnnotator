@@ -16,10 +16,10 @@ $(document).ready(function(){
 
 function generateHTML(currentUserId, _callback) {
 
-  var btnup_pop = '<span class="btnup" id=thumbup_pop style="color:gray;" title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-up"></i></span>';
-  var btndown_pop = '<span class="btndown" id=thumbdown_pop style="color:gray;" title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-down"></i></span>';
-  var btnup_con = '<span class="btnup" id=thumbup_con style="color:gray;"title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-up"></i></span>';
-  var btndown_con = '<span class="btndown" id=thumbdown_con style="color:gray;"title="" data-toggle="modal" data-target="#myModal"><i class="fa fa-thumbs-down"></i></span>';
+  var btnup_pop = '<span class="btnup" id=thumbup_pop style="color:gray;" title="" data-toggle="modal" data-target="#myModal"><i class="ta-like"></i></span>';
+  var btndown_pop = '<span class="btndown" id=thumbdown_pop style="color:gray;" title="" data-toggle="modal" data-target="#myModal"><i class="ta-dislike"></i></span>';
+  var btnup_con = '<span class="btnup" id=thumbup_con style="color:gray;"title="" data-toggle="modal" data-target="#myModal"><i class="ta-like"></i></span>';
+  var btndown_con = '<span class="btndown" id=thumbdown_con style="color:gray;"title="" data-toggle="modal" data-target="#myModal"><i class="ta-dislike"></i></span>';
   var Annotation = Parse.Object.extend("Annotation");
   var query = new Parse.Query(Annotation);
   query.descending("numberOfAgree");

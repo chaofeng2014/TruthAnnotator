@@ -95,7 +95,7 @@
         mouseup: function(event) {
           var element = $.popline.current.settings.element;
           var rect = element.getBoundingClientRect();
-          var left = rect.right + 20;
+          var left = rect.left - 410;
           var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
           if (left < 0) left = 10;
           var top = scrollTop + rect.top;
@@ -144,6 +144,14 @@
           toggleBox.call(_this, event);
         }), 1);
       });
+
+      // Binding Esc to hide bar
+      $(document).keyup(function(event) {
+        if (event.keyCode === 27) {
+          $.popline.hideAllBar();
+        }
+      });
+
       $(document).data("popline-global-binded", true);
     }
   };
@@ -368,8 +376,6 @@
             // Check if the selection is in container
             var containerElement = processor.utils.getContainerFromRange(processor.container, selection.getRangeAt(0));
             if (containerElement != null) {
-              //console.log(containerElement.innerText);
-              console.log(containerElement.textContent);
               $.extend($.popline.selection, processor.getInfoFromContainer(containerElement), {
                 selectedText: selection.toString(),
                 textRange: selection.saveCharacterRanges(containerElement)[0],
