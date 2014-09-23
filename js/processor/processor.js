@@ -17,7 +17,6 @@
     modules: {},
 
     postList: {},
-    annotationIdList: [],  
 
     updatePostList: function() {
       $(processor.container).each(function() {
@@ -49,49 +48,48 @@
     },
 
     updateAnnotations: function() {
+      var generateAnnotations = function(results) {
+        if (results.length !== 0) {
+          var objectId, postId, text, textRange, post;
+          var annotations = [];
+          var annotationIdList = [];
+
+          for (var j = 0; j < results.length; j++) {
+            var annotation = {
+              id: results[j].id,
+              text: results[j].get("selectedText"),
+              range: results[j].get('textRange'),
+              agree: results[j].get("numberOfAgree"),
+              disagree:results[j].get("numberOfDisagree")
+            };
+
+            if (!(annotation.id in annotationIdList)){
+              annotationIdList.push(annotation.id);
+            }
+
+            // Check if the selected text has been added
+            if ($.inArray(annotation, annotations) === -1) {
+              annotations.push(annotation);
+            }
+          }
+        }
+      };
+
       processor.updatePostList();
       processor.database.queryAnnotation(function(results) {
         console.log("Find " + results.length.toString() + " annotation results on current view!");
 
-        if (results.length !== 0) {
-          var objectId, postId, text, textRange, post;
+        generateAnnotations(results);
 
-          for (var j = 0; j < results.length; j++) {
-            objectId = results[j].id;
-            postId = results[j].get('postId');
-            text = results[j].get("selectedText");
-            textRange = results[j].get('textRange');
-            numAgree = results[j].get("numberOfAgree");
-            numDisagree = results[j].get("numberOfDisagree");
 
-            post = processor.postList[postId];
-
-            if (!(objectId in processor.annotationIdList)){
-              processor.annotationIdList.push(objectId);
-            }
-
-            if (!("selectedTexts" in post)) {
-              $.extend(post, {selectedTexts: []});
-            }
-
-            // Check if the selected text has been added
-            var selectedText = {id: objectId, text: text, range: textRange,
-                                agree: numAgree, disagree: numDisagree};
-            if ($.inArray(selectedText, post.selectedTexts) === -1) {
-              post.selectedTexts.push(selectedText);
-            }
-          }
-
-          processor.database.queryUserAnnotation(function(opinions) {
-            for (var id in processor.postList) {
-              post = processor.postList[id];
-              if ("selectedTexts" in post) {
-                processor.utils.initAnnotationDisplay(post, opinions);
-              }
-            }
-          });
-
-        }
+          // processor.database.queryUserAnnotation(function(opinions) {
+          //   for (var id in processor.postList) {
+          //     post = processor.postList[id];
+          //     if ("selectedTexts" in post) {
+          //       processor.utils.initAnnotationDisplay(post, opinions);
+          //     }
+          //   }
+          // });
       });
 
     },
@@ -118,6 +116,7 @@
         }
         return false;
       },
+      
       getLoginUser: function() {
         chrome.storage.sync.get(['objectId', 'username', 'nickname'], function(user) {
           $.extend(processor.user, user);
