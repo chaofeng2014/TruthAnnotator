@@ -99,7 +99,31 @@
     /* 
       user: {objectId, username, nickname, opinions: {opinion, link}}
     */
-    user: null,
+    user: {
+      objectId: null,
+      username: null,
+      nickname: null,
+      opinions: {},
+
+      /*
+        isUserLogOut:
+          Here input user should only have three keys: [objectId, username, nickname]
+      */
+      isUserLogOut: function(user) {
+        for (key in user) {
+          value = user[key];
+          if (value === "" || typeof(value) === "undefined") {
+            return true;
+          }
+        }
+        return false;
+      },
+      getLoginUser: function() {
+        chrome.storage.sync.get(['objectId', 'username', 'nickname'], function(user) {
+          $.extend(processor.user, user);
+        });
+      }
+    },
 
     utils: {
 
