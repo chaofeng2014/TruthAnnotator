@@ -36,8 +36,13 @@
           }
         });
         
+        $('.js-new-items-bar-container').click(function(){
+          console.log("new tweet loaded");
+          $(window).trigger("postUpdated");
+        });
+          
         $('.ProfileTweet.js-actionable-tweet.u-textBreak').click(function(){
-          console.log("js-actionable-tweet");
+          console.log("reloading page...");
           setTimeout(function(){
             $(window).trigger("refreshPage");
           },1000);

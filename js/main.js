@@ -34,7 +34,12 @@ $(document).ready(function() {
   processor.initializeUpdateEvent();
   $(window).on("postUpdated", function() {
     processor.refreshAnnotations();
-  })
+  });
+
+  $(window).on("refreshPage", function() {
+    processor.refreshAnnotations();
+    //location.reload();
+  });
   
   /* 
     Listen to popup page login/logout, update user info
