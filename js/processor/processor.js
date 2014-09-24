@@ -47,7 +47,6 @@
 
       processor.database.queryAnnotation(function(annotationsIdList, annotationsInPosts) {
         if (isUserValidate) {
-          $(processor.initElements).popline();
           processor.database.queryUserAnnotation(annotationsIdList, function(opinions) {
             initDisplay(annotationsInPosts, opinions);
           });
