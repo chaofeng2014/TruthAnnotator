@@ -20,6 +20,8 @@
     annotationIdList: [],  
 
     updatePostList: function() {
+      console.log(processor.container);
+      console.log($(processor.container));
       $(processor.container).each(function() {
         var info = processor.getInfoFromContainer(this)
 
@@ -49,7 +51,9 @@
     },
 
     updateAnnotations: function() {
+      console.log("updating annotation...");
       processor.updatePostList();
+      //console.log(processor.postList);
       processor.database.queryAnnotation(function(results) {
         console.log("Find " + results.length.toString() + " annotation results on current view!");
 
