@@ -1,5 +1,6 @@
 Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak", "anMcouVSWbzeHoJmFJBcJYrmg8XtzUatOt7hrgJX");
 
+/*
 var _userOpinion;
 var _popUserName;
 var _conUserName;
@@ -7,10 +8,9 @@ var _popPostId;
 var _conPostId;
 var _popObject;
 var _conObject;
+*/
 $(document).ready(function(){
     var currentUserId = showNickname();
-    //generateToggleHTML(currentUserId);
-      
     generateToggleHTML(currentUserId, function(){
       bindEvent(currentUserId);
     });
@@ -23,7 +23,7 @@ function generateToggleHTML(currentUserId, _callback) {
   query.limit(10);
   query.find({
     success: function(objects) {
-      var inHtml_title = '<p class=stat-title id=stat-title>top 10 popular annotations<br></p><hr>'; 
+      var inHtml_title = '<p class=stat-title id=stat-title>top 10 agreed annotations<br></p><hr>'; 
       $("#post-stat-pop").html(inHtml_title);
       //queryCurrentUser(objects, currentUserId);
       for (var i = 0; i < objects.length; i++){
@@ -33,7 +33,7 @@ function generateToggleHTML(currentUserId, _callback) {
       query.limit(10);
       query.find({
         success: function(objects) {
-          var inHtml_title = '<p class=stat-title id=stat-title>top 10 controversial annotations<br></p><hr>'; 
+          var inHtml_title = '<p class=stat-title id=stat-title>top 10 disagreed annotations<br></p><hr>'; 
           $("#post-stat-pop").append(inHtml_title);
           //queryCurrentUser(objects, currentUserId);
           for (var i = 0; i < objects.length; i++){
