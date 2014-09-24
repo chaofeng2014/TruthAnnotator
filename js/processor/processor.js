@@ -18,7 +18,8 @@
 
     postList: {},
 
-    updatePostList: function() {
+    refreshPostList: function() {
+      processor.postList = {};
       $(processor.container).each(function() {
         var info = processor.getInfoFromContainer(this)
 
@@ -29,69 +30,34 @@
       });
     },
 
-    // Initialize popline right after the new annotation is saved 
-    addAnnotationDisplay: function(entry, result) {
-      var annotation = {id: result.id, text: entry.selectedText,
-                        range: entry.textRange,
-                        agree: entry.numberOfAgree,
-                        disagree: entry.numberOfDisagree};
-      processor.user.opinions[result.id] = {opinion: entry.opinion, link: entry.link};
-
-      var post = processor.postList[entry.postId];
-      if (!post.selectedTexts) {
-        post.selectedTexts = [];
-      }
-      post.selectedTexts.push(annotation);
-
-      processor.utils.destroyAnnotationDisplay(post);
-      processor.utils.initAnnotationDisplay(post, processor.user.opinions);
-    },
-
-    updateAnnotations: function() {
-      var generateAnnotations = function(results) {
-        if (results.length !== 0) {
-          var objectId, postId, text, textRange, post;
-          var annotations = [];
-          var annotationIdList = [];
-
-          for (var j = 0; j < results.length; j++) {
-            var annotation = {
-              id: results[j].id,
-              text: results[j].get("selectedText"),
-              range: results[j].get('textRange'),
-              agree: results[j].get("numberOfAgree"),
-              disagree:results[j].get("numberOfDisagree")
-            };
-
-            if (!(annotation.id in annotationIdList)){
-              annotationIdList.push(annotation.id);
-            }
-
-            // Check if the selected text has been added
-            if ($.inArray(annotation, annotations) === -1) {
-              annotations.push(annotation);
-            }
-          }
+    refreshAnnotations: function(user) {
+      var initDisplay = function(annotationsInPosts, opinions) {
+        for (var id in annotationsInPosts) {
+          processor.utils.initAnnotationDisplay(processor.postList[id], opinions);
         }
       };
 
-      processor.updatePostList();
-      processor.database.queryAnnotation(function(results) {
-        console.log("Find " + results.length.toString() + " annotation results on current view!");
-
-        generateAnnotations(results);
-
-
-          // processor.database.queryUserAnnotation(function(opinions) {
-          //   for (var id in processor.postList) {
-          //     post = processor.postList[id];
-          //     if ("selectedTexts" in post) {
-          //       processor.utils.initAnnotationDisplay(post, opinions);
-          //     }
-          //   }
-          // });
+      processor.refreshPostList();
+      processor.database.queryAnnotation(function(annotationsIdList, annotationsInPosts) {
+        if (!processor.user.isUserLogOut(user) || user === null) {
+          $(processor.initElements).popline();
+          processor.database.queryUserAnnotation(annotationsIdList, function(opinions) {
+            initDisplay(annotationsInPosts, opinions);
+          });
+        } else {
+          initDisplay(annotationsInPosts, {});
+        }
       });
+    },
 
+    clearAnnotations: function() {
+      var annotator = $(processor.initElements).data("popline");
+      if (annotator) {
+        annotator.destroy();
+      }
+      for (id in processor.postList) {
+        processor.utils.destroyAnnotationDisplay(processor.postList[id]);
+      }
     },
 
     /* 
@@ -107,9 +73,11 @@
         isUserLogOut:
           Here input user should only have three keys: [objectId, username, nickname]
       */
-      isUserLogOut: function(user) {
-        for (key in user) {
-          value = user[key];
+      isUserLogOut: function(newUser) {
+        var user = newUser || this;
+        var keys = ['objectId', 'username', 'nickname'];
+        for (var i = 0; i < keys.length; i++) {
+          var value = user[keys[i]];
           if (value === "" || typeof(value) === "undefined") {
             return true;
           }
@@ -117,11 +85,13 @@
         return false;
       },
       
-      getLoginUser: function() {
+      getLoginUser: function(callback) {
         chrome.storage.sync.get(['objectId', 'username', 'nickname'], function(user) {
-          $.extend(processor.user, user);
+          $.extend(processor.user, user, {opinions: {}});
+          callback(user);
         });
       }
+
     },
 
     utils: {
@@ -139,6 +109,7 @@
 
       initAnnotationDisplay: function(post, opinions) {
         var element = post.element, selectedTexts = post.selectedTexts;
+        var displayOnly = processor.user.isUserLogOut();
 
         selectedTexts.sort(function(a, b) {
            return parseInt(a.range.characterRange.start) -
@@ -155,7 +126,7 @@
             $.extend(groupSel[j], opinions[groupSel[j].id]);
           }
           $(element).find("[annotation-group = " + i + "]").popline({mode: "display", selectedText: groupSel, 
-                                                                     element: element});
+                                                                     element: element, displayOnly: displayOnly});
         }
       },
 
@@ -174,6 +145,23 @@
           }
           $(element).removeData("groupTexts");
         }
+      },
+
+      insertAnnotationDisplay: function(entry, result) {
+        var annotation = {id: result.id, text: entry.selectedText,
+                          range: entry.textRange,
+                          agree: entry.numberOfAgree,
+                          disagree: entry.numberOfDisagree};
+        processor.user.opinions[result.id] = {opinion: entry.opinion, link: entry.link};
+
+        var post = processor.postList[entry.postId];
+        if (!post.selectedTexts) {
+          post.selectedTexts = [];
+        }
+        post.selectedTexts.push(annotation);
+
+        processor.utils.destroyAnnotationDisplay(post);
+        processor.utils.initAnnotationDisplay(post, processor.user.opinions);
       },
 
       groupTextRanges: function(textRanges) {
@@ -281,7 +269,7 @@
 
             window.getSelection().removeAllRanges();
 
-            processor.addAnnotationDisplay(entry, result);
+            processor.utils.insertAnnotationDisplay(entry, result);
             processor.database.saveUserAnnotation(entry, result);
           },
           error: function(result, error) {
@@ -296,11 +284,13 @@
         var userAnnotation = new UserAnnotation();
 
         var annotationId = result ? result.id : entry.annotationId;
-        var entrySave = {userId: processor.user.objectId,
-                         username: processor.user.username,
-                         annotationId: annotationId,
-                         opinion: entry.opinion,
-                         link: entry.link};
+        var entrySave = {
+          userId: processor.user.objectId,
+          username: processor.user.username,
+          annotationId: annotationId,
+          opinion: entry.opinion,
+          link: entry.link
+        };
 
         userAnnotation.save(entrySave, {
           success: function(newUserEntry){
@@ -376,28 +366,65 @@
         }
       */
       queryAnnotation: function(callback) {
-      // Query through ANNOTATION table 
         var Annotation = Parse.Object.extend(ANNOTATION_TABLE_NAME);
-        var query = new Parse.Query(Annotation);
 
+        var generateAnnotationsIdList = function(results) {
+          var annotationsIdList = [];
+          for (var j = 0; j < results.length; j++) {
+            if (!(results[j].id in annotationsIdList)) {
+              annotationsIdList.push(results[j].id);
+            }
+          }
+          return annotationsIdList;
+        };
+
+        var mapAnnotationsToPosts = function(results) {
+          var postId, annotationsInPosts = {};
+
+          for (var j = 0; j < results.length; j++) {
+            var annotation = {
+              id: results[j].id,
+              text: results[j].get("selectedText"),
+              range: results[j].get('textRange'),
+              agree: results[j].get("numberOfAgree"),
+              disagree: results[j].get("numberOfDisagree")
+            };
+
+            postId = results[j].get("postId");
+            annotationsInPosts[postId] = annotationsInPosts[postId] || {selectedTexts: []};
+            if ($.inArray(annotation, annotationsInPosts[postId]) === -1) {
+              annotationsInPosts[postId].selectedTexts.push(annotation);
+            }
+          }
+          return annotationsInPosts;
+        };
+
+        var query = new Parse.Query(Annotation);
         query.containedIn("postId", Object.keys(processor.postList));
 
         query.find({
           success: function(results) {
-            callback(results);
+            console.log("Find " + results.length.toString() + " annotations in current view!");
+            
+            if (results.length > 0) {
+              var annotationsInPosts = mapAnnotationsToPosts(results);
+              var annotationsIdList = generateAnnotationsIdList(results);
+              $.extend(true, processor.postList, annotationsInPosts);
+              callback(annotationsIdList, annotationsInPosts);
+            }
           },
           error: function(error) {
-            console.log("Could not finish the query!");
+            console.log("Could not query Annotation!");
           }
         });
       },
       
-      queryUserAnnotation: function(callback) {
+      queryUserAnnotation: function(annotationsIdList, callback) {
         var UserAnnotation = Parse.Object.extend(USER_ANNOTATION_TABLE_NAME);
         var query = new Parse.Query(UserAnnotation);
 
         query.equalTo("userId", processor.user.objectId);
-        query.containedIn("annotationId", processor.annotationIdList);
+        query.containedIn("annotationId", annotationsIdList);
 
         query.find({
           success: function(results) {
@@ -410,7 +437,7 @@
             callback(processor.user.opinions);
           },
           error: function(error) {
-            console.log("Could not finish the Main query!");
+            console.log("Could not query UserAnnotation!");
           }
         });
       }

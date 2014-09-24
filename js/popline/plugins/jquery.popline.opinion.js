@@ -73,7 +73,7 @@
         }
 
         // Bind the click behavior of the button if not set yet
-        if (!this.data("click-event-binded")) {
+        if (!this.data("click-event-binded") && !popline.settings.displayOnly) {
           this.click(function(event) {
             var newOpinion = calcOpinion("thumbsUp");
             toggleButton(popline, newOpinion);
@@ -107,7 +107,7 @@
           $.extend($.popline.selection, {numberOfAgree: opinion > 0 ? 1 : 0,
                                          numberOfDisagree: opinion < 0 ? 1 : 0,
                                          opinion : opinion});
-        } else if (mode === "display") {
+        } else if (mode === "display" && !popline.settings.displayOnly) {
           for (var objectId in userOpinions) {
             if (isAnnotatedChanged(objectId)) {
               processor.database.updateAnnotation(objectId, userOpinions[objectId]);
@@ -136,7 +136,7 @@
       mode: "always",
       beforeShow: function(popline) {
 
-        if (!this.data("click-event-binded")) {
+        if (!this.data("click-event-binded") && !popline.settings.displayOnly) {
           this.click(function(event) {
             var newOpinion = calcOpinion("thumbsDown");
             toggleButton(popline, newOpinion);
