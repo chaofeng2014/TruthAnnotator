@@ -22,16 +22,11 @@
       processor.postList = {};
       $(processor.container).each(function() {
         var info = processor.getInfoFromContainer(this)
-
-        if (!(info.postId in processor.postList)) {
-          processor.postList[info.postId] = {username: info.userName, element: this};
-        }
-    
+        processor.postList[info.postId] = {username: info.userName, element: this};
       });
     },
 
     refreshAnnotations: function(user) {
-      // If there is no user in the input, isUserValidate is true by default
       var isUserValidate = !processor.user.isUserLogOut(user);
       
       var initDisplay = function(annotationsInPosts, opinions) {
@@ -204,6 +199,7 @@
             var cssApplier = rangy.createCssClassApplier("ta-annotation-highlight");
           }
           
+          try {
           if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
             var range = rangy.createRange(element);
             var characterRange = textRange.characterRange;
@@ -211,6 +207,10 @@
             cssApplier.applyToRange(range);
           } else if (window.getSelection().toString().length > 0) {
             cssApplier.applyToSelection();
+          }
+          }
+          catch(error) {
+            $(window).trigger("postUpdated");
           }
         }
       },
@@ -220,11 +220,16 @@
 
         if (rangy.supported && classApplierModule && classApplierModule.supported) {
           var cssApplier = rangy.createCssClassApplier("ta-annotation-inner-highlight");
+          try {
           if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
             var range = rangy.createRange(element);
             var characterRange = textRange.characterRange;
             range.selectCharacters(element, characterRange.start, characterRange.end);
             cssApplier.applyToRange(range);
+          }
+          }
+          catch(error) {
+            $(window).trigger("postUpdated");
           }
         }
       },
@@ -234,11 +239,16 @@
 
         if (rangy.supported && classApplierModule && classApplierModule.supported) {
           var cssApplier = rangy.createCssClassApplier("ta-annotation-inner-highlight");
+          try {
           if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
             var range = rangy.createRange(element);
             var characterRange = textRange.characterRange;
             range.selectCharacters(element, characterRange.start, characterRange.end);
             cssApplier.undoToRange(range);
+          }
+          }
+          catch(error) {
+            $(window).trigger("postUpdated");
           }
         }
 
@@ -249,11 +259,16 @@
 
         if (rangy.supported && classApplierModule && classApplierModule.supported) {
           var cssApplier = rangy.createCssClassApplier("ta-annotation-highlight", {elementAttributes : group});
+          try {
           if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
             var range = rangy.createRange(element);
             var characterRange = textRange.characterRange;
             range.selectCharacters(element, characterRange.start, characterRange.end);
             cssApplier.undoToRange(range);
+          }
+          }
+          catch(error) {
+            $(window).trigger("postUpdated");
           }
         }
 

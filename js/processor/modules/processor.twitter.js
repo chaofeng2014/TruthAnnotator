@@ -27,26 +27,19 @@
       },
 
       initializeUpdateEvent: function() {
-        $(window).scroll(function() {
+        var updatePosts = function() {
           var origTweetNumber = Object.keys(processor.postList).length;
           var newTweetNumber = $(processor.container).length;
 
-          if (newTweetNumber > origTweetNumber) {
+          if (newTweetNumber !== origTweetNumber) {
             $(window).trigger("postUpdated");
           }
-        });
-        
-        $('.js-new-items-bar-container').click(function(){
-          console.log("new tweet loaded");
-          $(window).trigger("postUpdated");
+        };
+
+        $(window).scroll(function() {
+          updatePosts();
         });
           
-        $('.ProfileTweet.js-actionable-tweet.u-textBreak').click(function(){
-          console.log("reloading page...");
-          setTimeout(function(){
-            $(window).trigger("refreshPage");
-          },1000);
-        });
       }
     }
   });

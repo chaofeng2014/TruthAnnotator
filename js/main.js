@@ -32,15 +32,12 @@ $(document).ready(function() {
   });
 
   processor.initializeUpdateEvent();
+
   $(window).on("postUpdated", function() {
+    processor.clearAnnotations();
     processor.refreshAnnotations();
   });
 
-  $(window).on("refreshPage", function() {
-    processor.refreshAnnotations();
-    //location.reload();
-  });
-  
   /* 
     Listen to popup page login/logout, update user info
     depends on if it is an iframe
