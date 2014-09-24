@@ -1,5 +1,6 @@
 Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak", "anMcouVSWbzeHoJmFJBcJYrmg8XtzUatOt7hrgJX");
 
+/*
 var _userOpinion;
 var _popUserName;
 var _conUserName;
@@ -7,10 +8,9 @@ var _popPostId;
 var _conPostId;
 var _popObject;
 var _conObject;
+*/
 $(document).ready(function(){
     var currentUserId = showNickname();
-    //generateToggleHTML(currentUserId);
-      
     generateToggleHTML(currentUserId, function(){
       bindEvent(currentUserId);
     });

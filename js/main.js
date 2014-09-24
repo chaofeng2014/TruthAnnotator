@@ -33,6 +33,10 @@ $(document).ready(function() {
   $(window).on("postUpdated", function() {
     processor.updateAnnotations();
   })
+  
+  $(window).on("refreshPage", function() {
+    location.reload();
+  })
 
   //pull user info from chrome local storage 
   chrome.storage.sync.get(['objectId', 'username','nickname'], function(data){
