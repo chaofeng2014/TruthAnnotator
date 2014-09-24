@@ -31,7 +31,8 @@
     },
 
     refreshAnnotations: function(user) {
-      var isUserValidate = !processor.user.isUserLogOut(user) || !user;
+      // If there is no user in the input, isUserValidate is true by default
+      var isUserValidate = !processor.user.isUserLogOut(user);
       
       var initDisplay = function(annotationsInPosts, opinions) {
         for (var id in annotationsInPosts) {
