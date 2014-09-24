@@ -31,6 +31,8 @@
     },
 
     refreshAnnotations: function(user) {
+      var isUserValidate = !processor.user.isUserLogOut(user) || !user;
+      
       var initDisplay = function(annotationsInPosts, opinions) {
         for (var id in annotationsInPosts) {
           processor.utils.initAnnotationDisplay(processor.postList[id], opinions);
@@ -38,8 +40,13 @@
       };
 
       processor.refreshPostList();
+
+      if (isUserValidate) {
+        $(processor.initElements).popline();
+      }
+
       processor.database.queryAnnotation(function(annotationsIdList, annotationsInPosts) {
-        if (!processor.user.isUserLogOut(user) || user === null) {
+        if (isUserValidate) {
           $(processor.initElements).popline();
           processor.database.queryUserAnnotation(annotationsIdList, function(opinions) {
             initDisplay(annotationsInPosts, opinions);
