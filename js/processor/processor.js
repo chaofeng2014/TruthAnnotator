@@ -136,6 +136,7 @@
         var element = post.element;
         var groupTexts = $(element).data("annotation-groups");
 
+
         if (groupTexts) {
           for (var i = 0; i < groupTexts.length; i++) {
             var groupSel = groupTexts[i].selections;
@@ -150,16 +151,17 @@
       },
 
       insertAnnotationDisplay: function(entry, result) {
-        var annotation = {id: result.id, text: entry.selectedText,
-                          range: entry.textRange,
-                          agree: entry.numberOfAgree,
-                          disagree: entry.numberOfDisagree};
+        var annotation = {
+          id: result.id,
+          text: entry.selectedText,
+          range: entry.textRange,
+          agree: entry.numberOfAgree,
+          disagree: entry.numberOfDisagree
+        };
         processor.user.opinions[result.id] = {opinion: entry.opinion, link: entry.link};
 
         var post = processor.postList[entry.postId];
-        if (!post.selectedTexts) {
-          post.selectedTexts = [];
-        }
+        post.selectedTexts = post.selectedTexts || [];
         post.selectedTexts.push(annotation);
 
         processor.utils.destroyAnnotationDisplay(post);
@@ -167,9 +169,11 @@
       },
 
       groupTextRanges: function(textRanges) {
-        var groupRanges = [{end: textRanges[0].range.characterRange.end,
-                            start: textRanges[0].range.characterRange.start,
-                            selections: [textRanges[0]]}];
+        var groupRanges = [{
+          end: textRanges[0].range.characterRange.end,
+          start: textRanges[0].range.characterRange.start,
+          selections: [textRanges[0]]
+        }];
         var groupOrder = 0;
         for (var i = 1; i < textRanges.length; i++) {
           var characterRange = textRanges[i].range.characterRange;
@@ -200,17 +204,17 @@
           }
           
           try {
-          if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
-            var range = rangy.createRange(element);
-            var characterRange = textRange.characterRange;
-            range.selectCharacters(element, characterRange.start, characterRange.end);
-            cssApplier.applyToRange(range);
-          } else if (window.getSelection().toString().length > 0) {
-            cssApplier.applyToSelection();
-          }
+            if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
+              var range = rangy.createRange(element);
+              var characterRange = textRange.characterRange;
+              range.selectCharacters(element, characterRange.start, characterRange.end);
+              cssApplier.applyToRange(range);
+            } else if (window.getSelection().toString().length > 0) {
+              cssApplier.applyToSelection();
+            }
           }
           catch(error) {
-            $(window).trigger("postUpdated");
+            console.log("DOM mutation!");
           }
         }
       },
@@ -221,15 +225,15 @@
         if (rangy.supported && classApplierModule && classApplierModule.supported) {
           var cssApplier = rangy.createCssClassApplier("ta-annotation-inner-highlight");
           try {
-          if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
-            var range = rangy.createRange(element);
-            var characterRange = textRange.characterRange;
-            range.selectCharacters(element, characterRange.start, characterRange.end);
-            cssApplier.applyToRange(range);
-          }
+            if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
+              var range = rangy.createRange(element);
+              var characterRange = textRange.characterRange;
+              range.selectCharacters(element, characterRange.start, characterRange.end);
+              cssApplier.applyToRange(range);
+            }
           }
           catch(error) {
-            $(window).trigger("postUpdated");
+            console.log("DOM mutation!");
           }
         }
       },
@@ -240,15 +244,15 @@
         if (rangy.supported && classApplierModule && classApplierModule.supported) {
           var cssApplier = rangy.createCssClassApplier("ta-annotation-inner-highlight");
           try {
-          if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
-            var range = rangy.createRange(element);
-            var characterRange = textRange.characterRange;
-            range.selectCharacters(element, characterRange.start, characterRange.end);
-            cssApplier.undoToRange(range);
-          }
+            if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
+              var range = rangy.createRange(element);
+              var characterRange = textRange.characterRange;
+              range.selectCharacters(element, characterRange.start, characterRange.end);
+              cssApplier.undoToRange(range);
+            }
           }
           catch(error) {
-            $(window).trigger("postUpdated");
+            console.log("DOM mutation!");
           }
         }
 
@@ -260,15 +264,15 @@
         if (rangy.supported && classApplierModule && classApplierModule.supported) {
           var cssApplier = rangy.createCssClassApplier("ta-annotation-highlight", {elementAttributes : group});
           try {
-          if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
-            var range = rangy.createRange(element);
-            var characterRange = textRange.characterRange;
-            range.selectCharacters(element, characterRange.start, characterRange.end);
-            cssApplier.undoToRange(range);
-          }
+            if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
+              var range = rangy.createRange(element);
+              var characterRange = textRange.characterRange;
+              range.selectCharacters(element, characterRange.start, characterRange.end);
+              cssApplier.undoToRange(range);
+            }
           }
           catch(error) {
-            $(window).trigger("postUpdated");
+            console.log("DOM mutation!");
           }
         }
 

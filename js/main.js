@@ -37,7 +37,7 @@ $(document).ready(function() {
     processor.clearAnnotations();
     processor.refreshAnnotations();
   });
-
+  
   /* 
     Listen to popup page login/logout, update user info
     depends on if it is an iframe

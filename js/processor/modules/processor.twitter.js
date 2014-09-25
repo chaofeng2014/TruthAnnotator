@@ -7,7 +7,8 @@
 ;(function(processor, $) {
   processor.addModule({
     twitter: {
-      initElements: "#doc, #profile_popup, #activity-popup-dialog",
+      // initElements: "#doc, #profile_popup, #activity-popup-dialog",
+      initElements: "#doc",
       container: ".js-tweet-text",
 
       getInfoFromContainer: function(element) {
@@ -35,11 +36,20 @@
             $(window).trigger("postUpdated");
           }
         };
-
-        $(window).scroll(function() {
+        
+        var node = document.getElementById("page-container");
+        var observer = new MutationObserver(function(mutations) {
           updatePosts();
         });
-          
+
+        try {
+          observer.observe(node, {attributes: true, attributeFilter: ["class"] });
+        } catch(error) {
+          console.log("Issue in iframe");
+        }
+
+        $(window).scroll(updatePosts);
+        $(document).on("mouseup", ".js-new-tweets-bar", updatePosts);
       }
     }
   });
