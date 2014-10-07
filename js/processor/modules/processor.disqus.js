@@ -15,8 +15,6 @@
         
         var userName   = $(postByLine).find("a[data-role=username]").val();
         var commentURL = $(postMeta).find("a").attr("href");
-        //var commentID = 
-        //console.log("userName is : ", userName, "  commentURL is: ", commentURL);
 
         return {postId: commentURL, userName: userName};
       },

@@ -28,7 +28,14 @@ $(document).ready(function() {
   
   // FIXME: Probably need a delay for iframe
   processor.user.getLoginUser(function(user) {
-    processor.refreshAnnotations(user);
+    var initElementNum;
+    var waitIframe = window.setInterval(function(){
+        initElementNum = $(processor.initElements).length;
+        if (initElementNum != 0){
+          processor.refreshAnnotations(user);
+          clearInterval(waitIframe);
+        }
+      }, 1000);
   });
 
   processor.initializeUpdateEvent();

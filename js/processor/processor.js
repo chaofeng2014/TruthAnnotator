@@ -38,6 +38,7 @@
       processor.refreshPostList();
 
       if (isUserValidate) {
+        console.log("init elements");
         $(processor.initElements).popline();
       }
 
