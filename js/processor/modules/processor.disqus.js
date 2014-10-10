@@ -6,7 +6,7 @@
 ;(function(processor, $) {
   processor.addModule({
     disqus: {
-      initElements: "#post-list",
+      initElements: ".post",
       container: ".post-body",
 
       getInfoFromContainer: function(element) {

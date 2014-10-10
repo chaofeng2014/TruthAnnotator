@@ -22,20 +22,26 @@ $(document).ready(function() {
   } else if (host === "disqus.com") {
     processor.useModule("disqus");
     iframe = true;
+    iframeReady = false;
   } else {
     return;
   }
   
-  // FIXME: Probably need a delay for iframe
+  //There may be multiple disqus domain iframe running on the page
   processor.user.getLoginUser(function(user) {
-    var initElementNum;
+    var waitingTime = 0;
     var waitIframe = window.setInterval(function(){
-        initElementNum = $(processor.initElements).length;
+      var postListEle = $(processor.initElements);
+        initElementNum = postListEle.length;
+        console.log(document);
         if (initElementNum != 0){
           processor.refreshAnnotations(user);
           clearInterval(waitIframe);
         }
-      }, 1000);
+        waitingTime ++;
+        if(waitingTime > 10)
+          clearInterval(waitIframe);
+      }, 3000);
   });
 
   processor.initializeUpdateEvent();
