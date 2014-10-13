@@ -1,4 +1,5 @@
 import tweepy
+import json
 
 consumer_key = "Aey8cEiIJcp02HjbUl74M2JrV"
 consumer_secret = "bHDf717W4IQgOx42g4g5uCT8ffZwqrtaNJBDOiSl4qrqgFXquq"
@@ -12,9 +13,9 @@ api = tweepy.API(auth)
 
 public_tweets = api.home_timeline()
 tweetId = "521660698162905088"
-recentRetweets = api.retweets(tweetId,3)
+recentRetweets = api.retweets(tweetId,20)
 
 for tweet in recentRetweets:
-  print tweet.text
+  print "retweeter id: ", tweet.author._json[u'id']
+  print "retweeter username: ", tweet.author._json[u'name']
   print
-  print tweet.author
