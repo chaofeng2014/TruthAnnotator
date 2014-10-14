@@ -1,0 +1,19 @@
+span.ta-annotation-highlight {
+  font-style: normal;
+  background-color: rgba(136, 153, 166, 0.2);
+}
+/*
+span.ta-annotation-highlight:hover {
+  cursor:pointer;
+}
+*/
+
+span.ta-annotation-highlight.current-target {
+  background-color: rgba(255, 178, 0, 0.4); 
+}
+
+.ta-annotation-inner-highlight {
+  background-color: rgba(255, 178, 0, 0.9) !important;
+}
+
+.ta-thumbs-up

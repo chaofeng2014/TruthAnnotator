@@ -1,0 +1,76 @@
+{
+  "name": "Truth Annotator",
+
+  "version": "0.0.1",
+
+  "manifest_version": 2,
+
+  "description": "Inline annotation for the web. Select text, images, or (nearly) anything else, and add your notes.",
+  
+  "browser_action": {
+    "default_icon":  "img/T-400_white.png",
+    "default_popup": "login/login.html"
+  },
+  
+  //"page_action": {
+  //  },
+
+  // need to used different size icons
+  "icons":{
+    "128": "img/T-400.png", 
+    "48": "img/T-400.png", 
+    "16": "img/T-400.png" 
+  },
+  
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": true 
+  },
+
+  "permissions":[
+    "tabs",
+    "storage"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "*://twitter.com/*",
+        "*://disqus.com/*"
+      ],
+
+      "css": [
+        "css/ta-font.css",
+        "css/highlight.css",
+        "js/popline/themes/default.css"
+      ],
+
+      "js": [
+        "js/lib/parse.js",
+        "js/lib/jquery.min.js",
+        "js/rangy/rangy-core.js",
+        "js/rangy/rangy-cssclassapplier.js",
+        "js/rangy/rangy-selectionsaverestore.js",
+        "js/rangy/rangy-serializer.js",
+        "js/rangy/rangy-textrange.js",
+        "js/processor/processor.js",
+        "js/processor/modules/processor.twitter.js",
+        "js/processor/modules/processor.disqus.js",
+        "js/popline/jquery.popline.js",
+        "js/popline/plugins/jquery.popline.opinion.js",
+        "js/popline/plugins/jquery.popline.annotation.js",
+        "js/popline/plugins/jquery.popline.link.js",
+        "js/simple.carousel.js",
+        "js/main.js"
+      ],
+
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+
+  "web_accessible_resources": [
+    "fonts/*",
+    "js/lib/jquery.min.map"
+  ]
+}

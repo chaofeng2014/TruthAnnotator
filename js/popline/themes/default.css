@@ -1,0 +1,177 @@
+.popline {
+  min-height: 40px;
+  max-width: 340px;
+  line-height: 40px;
+  position: absolute;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.75);
+  background: rgba(56, 169, 247, 1.0);
+  opacity: 0.95;
+  display: none;
+  margin: 0;
+  list-style: none;
+  padding: 0px 10px;
+  font-family: "Segoe UI Semilight", Helvetica, "Hiragino Sans GB", sans-serif;
+  text-rendering: optimizeLegibility;
+  white-space: pre-wrap;
+}
+
+.popline-display {
+  height: 204px;
+  width: 350px;
+}
+
+.popline .popline-button {
+  color: white;
+  font-size: 18px;
+  font-weight: normal;
+  cursor: pointer;
+  min-width: 24px;
+  text-align: center;
+  display: inline-block;
+}
+
+.popline .popline-button i {
+  color: rgba(255, 255, 255, 1.0);
+}
+
+.popline .popline-button i.button-selected {
+  color: rgba(200, 200, 200, 1.0);
+}
+
+.popline .popline-button i.button-disabled {
+  color: rgba(180, 180, 180, 0.7);
+}
+
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .popline-annotation .popline-button div {
+    display: inline-block;
+  }
+
+  .popline-annotation .popline-button i {
+    padding: 0 10px;
+  }
+
+  .popline-display .popline-button i {
+    font-weight: normal;
+    line-height: 20px;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.popline .popline-button .text {
+  font-size: 14px; 
+  line-height: 20px;
+}
+
+.popline .lighter {
+  font-weight: lighter;
+}
+
+.popline .subbar {
+  display: none;
+  list-style: none;
+  padding: 0;
+}
+
+.popline .textfield {
+  border: none;
+  height: 35px;
+  font-size: 14px;
+  padding: 0 10px;
+  -webkit-box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
+  background: rgba(74, 74, 74, 0.15);
+  color: #FFFFFF;
+  line-height: 20px;
+  margin-left: 10px;
+  margin-bottom: 7px;
+  display: none;
+  outline: none;
+  width: 250px; 
+}
+
+.popline .textfield::-webkit-input-placeholder {
+  color: #EEE;
+}
+
+.popline .popline-link-button {
+  padding-top: 5px;
+}
+
+.popline .carousel {
+  border: none;
+  height: 100px;
+  width: 252px;
+  color: #FFFFFF;
+  outline: none;
+  text-align: left;
+  font-size: 14px; 
+  line-height: 20px;
+}
+
+.popline .popline-annotationText-button {
+  position: absolute;
+  left: 56px;
+  top: 40px;
+  height: 90px;
+  font-weight: normal; 
+}
+
+.popline .popline-prevArrow-button {
+  position: absolute;
+  left: 12px;
+  top: 82px;
+  font-weight: normal;
+}
+
+.popline .popline-nextArrow-button {
+  position: absolute;
+  left: 322px;
+  top: 82px;
+  font-weight: normal;
+}
+
+.popline .popline-close-button {
+  position: absolute;
+  left: 340px;
+  top: -10px;
+  color: #888;
+}
+
+.popline .popline-numThumbsDown-button {
+  position: absolute;
+  left: 322px;
+  top: 160px;
+  font-weight: normal; 
+}
+
+.popline-thumbsDown-button {
+  padding-top: 3px;
+}
+
+.popline-display .popline-thumbsDown-button {
+  position: absolute;
+  left: 298px;
+  top: 160px;
+  font-weight: normal; 
+}
+
+.popline .popline-numThumbsUp-button {
+  position: absolute;
+  left: 274px;
+  top: 160px;
+  font-weight: normal; 
+}
+
+.popline-thumbsUp-button {
+  padding-top: 3px;
+}
+
+.popline-display .popline-thumbsUp-button {
+  position: absolute;
+  left: 250px;
+  top: 160px;
+  font-weight: normal; 
+}
