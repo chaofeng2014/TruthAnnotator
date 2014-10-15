@@ -1,0 +1,454 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,100);
+
+body {
+  /*background: url(https://dl.dropboxusercontent.com/u/23299152/Wallpapers/wallpaper-22705.jpg) no-repeat center center
+   * fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  */
+  font-family: 'Roboto', sans-serif;
+}
+
+.login-card {
+  padding: 20px;
+  width: 225px;
+  background-color: #F7F7F7;
+  margin: 0 auto 5px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.login-card h1 {
+  font-weight: 100;
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: auto;
+  margin-top:x;
+}
+
+.login-card button[type=submit] {
+  width: 100%;
+  display: block;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.login-card input[type=email], input[type=password] {
+  height: 35px;
+  font-size: 16px;
+  width: 100%;
+  font-family: "GothamMedium", Helvetica, Arial, sans-serif;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-top: 1px solid #c0c0c0;
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+
+.login-card input[type=email]:hover, input[type=password]:hover {
+  border: 1px solid #b9b9b9;
+  border-top: 1px solid #a0a0a0;
+  -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+  -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.login {
+  text-align: center;
+  font-size: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  height: 36px;
+  padding: 0 8px;
+}
+
+.login-submit {
+  border: 0px;
+  color: #fff;
+  text-shadow: 0 1px rgba(0,0,0,0.1); 
+  background-color: #4d90fe;
+}
+
+.login-submit:hover {
+  /* border: 1px solid #2f5bb7; */
+  border: 0px;
+  text-shadow: 0 1px rgba(0,0,0,0.3);
+  background-color: #357ae8;
+  /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#357ae8)); */
+}
+
+.login-card a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 400;
+  font-size:16px;
+  text-align: center;
+  display: inline-block;
+  opacity: 0.5;
+  transition: opacity ease 0.5s;
+}
+
+.login-card a:hover {
+  opacity: 1;
+}
+
+.login-help {
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+}
+
+.login-close {
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+}
+
+#users {
+  position: relative; 
+  right: -85px;
+}
+
+#close {
+  position: relative; 
+  top: -280px;
+  right: -110px;
+}
+
+#login-info {
+  font-weight: 100;
+  width: 100%;
+  text-align: center;
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+/*sign up page */
+.signup-card {
+  padding: 20px;
+  width: 225px;
+  background-color: #F7F7F7;
+  margin: 0 auto 10px;
+  border-radius: 2px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.signup-card h1 {
+  font-weight: 100;
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.signup-card button[type=submit] {
+  width: 100%;
+  display: block;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.signup-card input[type=text], input[type=email], input[type=password] {
+  height: 35px;
+  font-size: 16px;
+  width: 100%;
+  font-family: "GothamMedium", Helvetica, Arial, sans-serif;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-top: 1px solid #c0c0c0;
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.signup-card input[type=email]:hover, input[type=text]:hover, input[type=password]:hover {
+  border: 1px solid #b9b9b9;
+  border-top: 1px solid #a0a0a0;
+  -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+  -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.signup {
+  text-align: center;
+  font-size: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  height: 36px;
+  padding: 0 8px;
+}
+
+.signup-submit {
+  border: 0px;
+  color: #fff;
+  text-shadow: 0 1px rgba(0,0,0,0.1); 
+  background-color: #4d90fe;
+}
+
+.signup-submit:hover {
+  border: 0px;
+  text-shadow: 0 1px rgba(0,0,0,0.3);
+  background-color: #357ae8;
+}
+
+.signup-card a{
+  width: 95%;
+  display: block;
+  position: right;
+}
+
+.signup-card a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 400;
+  font-size:15px;
+  text-align: right;
+  display: inline-block;
+  opacity: 0.6;
+  transition: opacity ease 0.5s;
+}
+
+.signup-card a:hover {
+  opacity: 1;
+}
+
+#signup-info {
+  width: 100%;
+  font-weight:100;
+  text-align: center;
+  font-size: 15px;
+  color: blue;
+  font-family: 'Roboto', sans-serif;
+}
+
+.info p{
+  display: block;
+  -webkit-margin-before: 0em;
+}
+
+/*Welcome page*/
+.welcome-card{
+  padding-bottom: 25px;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 350px;
+  /*background-color: #F7F7F7;*/
+  margin: 0 auto 5px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.welcome-card h1 {
+  font-weight: 100;
+  text-align: center;
+  font-size: 1em;
+  margin-bottom: auto;
+  margin-top:x;
+}
+
+.welcome-card p {
+  font-weight: 100;
+  text-align: center;
+  font-size: 1em;
+  position: relative;
+  top: 0px;
+}
+
+#welcome-toggle {
+  position: relative;
+  top: -32px;
+  left: 0px;
+  font-size:1em;
+}
+
+.welcome-card .stat-source{
+  text-align:left;
+  margin-top: -10px;
+  margin-bottom:20px;
+}
+
+.welcome-card .stat-author{
+  text-align:right;
+  margin-top: 20px;
+  margin-bottom:10px;
+}
+
+.welcome-card .stat-text {
+  font-family: "Times New Roman", Times, serif;
+  font-size:120%;
+  font-style: italic;
+  margin-bottom: -15px;
+}
+    
+
+#pop_agree{
+  position: relative;
+  right: -18px;
+}
+
+#pop_disagree{
+  position: relative;
+  right: -42px;
+}
+
+#con_agree{
+  position: relative;
+  right: -18px;
+}
+
+#con_disagree{
+  position: relative;
+  right: -42px;
+}
+
+.stat-goPost{
+position: relative;
+right: -60px;
+font-size:0.7em;
+opacity: 0.6;
+text-decoration: underline;
+}
+
+.stat-goPost:hover{
+position: relative;
+right: -60px;
+cursor:pointer;
+opacity: 1;
+}
+
+#con_goPost{
+position: relative;
+right: -60px;
+font-size:0.7em;
+opacity: 0.6;
+text-decoration: underline;
+}
+
+#con_goPost:hover{
+position: relative;
+right: -60px;
+cursor:pointer;
+opacity: 1;
+}
+
+/*thumb button style*/
+.btnup{
+  color: gray;
+  position: relative;
+  top: 0px;
+  right: -10px;
+  font-size:0.8em;
+}
+
+/*
+.btnup:hover{
+  color:blue;
+  cursor:pointer;
+}
+*/
+
+.btndown{
+  color: gray;
+  position: relative;
+  p: 0px;
+  right: -35px;
+  font-size:0.8em;
+}
+
+/*
+.btndown:hover{
+  color:blue;
+  cursor:pointer;
+}
+*/
+
+.welcome-card .stat-title {
+  width: 100%; 
+  border:0px;
+  font-family:'roboto', sans-serif;
+  font-size: 20px;
+  color:#fff;
+  background-color:#4d90fe;
+  text-align:center;
+  position:relative;
+  top:-10px;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+  background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+  background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+  background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+}
+
+.welcome-card p {
+  font-weight: 100;
+  text-align: center;
+  font-size: 1em;
+  position: relative;
+  top: 0px;
+}
+
+.welcome-util {
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+}
+
+#welcome-logout {
+  position: relative;
+  top:12px;
+  left: -110px;
+}
+
+#welcome-close {
+  position: relative;
+  top: 12px;
+  left: 110px;
+}
+
+.welcome-card a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 400;
+  font-size:14px;
+  text-align: center;
+  display: inline-block;
+  opacity: 0.6;
+  transition: opacity ease 0.5s;
+}
+
+.welcome-card a:hover {
+  opacity: 1;
+}
+
+#welcome-card .item {
+    display: block;
+    margin: 12px 0;
+}
+
+/*modal style*/
+div .modal-body {
+  font-family: "Times New Roman", Times, serif;
+  font-size:120%;
+  font-style: italic;
+  margin-bottom: 5px;
+}
+
+div .whole-post-highlight{
+  color:red;
+}
+
+::-webkit-input-placeholder {
+  font-family: 'Arial', Sans-serif;
+}
