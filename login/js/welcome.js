@@ -11,12 +11,12 @@ var _conObject;
 */
 $(document).ready(function(){
     var currentUserId = showNickname();
-    generateToggleHTML(currentUserId, function(){
-      bindEvent(currentUserId);
+    generateToggleHTML( function(){
+      bindEvent();
     });
 });
 
-function generateToggleHTML(currentUserId, _callback) {
+function generateToggleHTML( _callback) {
   var Annotation = Parse.Object.extend("Annotation");
   var query = new Parse.Query(Annotation);
   query.descending("numberOfAgree");
