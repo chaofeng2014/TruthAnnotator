@@ -10,13 +10,11 @@ var _popObject;
 var _conObject;
 */
 $(document).ready(function(){
-    var currentUserId = showNickname();
-    generateToggleHTML(currentUserId, function(){
-      bindEvent(currentUserId);
-    });
+    //var currentUserId = showNickname();
+    generateToggleHTML();
 });
 
-function generateToggleHTML(currentUserId, _callback) {
+function generateToggleHTML() {
   var Annotation = Parse.Object.extend("Annotation");
   var query = new Parse.Query(Annotation);
   query.descending("numberOfAgree");
@@ -39,7 +37,7 @@ function generateToggleHTML(currentUserId, _callback) {
           for (var i = 0; i < objects.length; i++){
             generateAnnotation(objects[i], i+10);
           }
-          _callback();
+          //_callback();
         }
       });
     }
@@ -259,7 +257,7 @@ function removeStorage(){
   console.log('local nickname removed');
   });
 }
-
+/*
 function showNickname(){
   var currentUser = Parse.User.current();
   if(!currentUser){
@@ -272,4 +270,4 @@ function showNickname(){
   $("#welcome-toggle").html(inHtml);
   return currentUser.id;
 }
-
+*/
