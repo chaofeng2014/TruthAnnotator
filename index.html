@@ -24,6 +24,22 @@
 			<link rel="stylesheet" href="css/style-wide.css" />
 		</noscript>
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+
+		<!--welcome reference -->
+		<meta charset="UTF-8">
+  		<title>Welcome-Truth-Annotator</title>
+  		<link rel='stylesheet' href="login/css/jquery-ui.css" type="text/css"/>
+  		<link rel='stylesheet' href="login/bootstrap/css/bootstrap.css" type="text/css"/>
+  		<link rel="stylesheet" href="login/css/style.css" media="screen" type="text/css" />
+  		<link rel="stylesheet" href="css/ta-font.css" />
+  		<script src="js/lib/jquery.min.js"></script>
+  		<script src="login/bootstrap/js/bootstrap.min.js"></script>
+  		<script src="js/rangy/rangy-core.js"></script>
+  		<script src="js/rangy/rangy-textrange.js"></script>
+  		<script src="js/rangy/rangy-cssclassapplier.js"></script>
+  		<script type="text/javascript" src="js/lib/parse.js"></script>
+  		<script type="text/javascript" src="login/js/welcome.js"></script>
+
 	</head>
 	<body class="landing">
 
@@ -62,5 +78,27 @@
 					<li><a href="#" class="button">Learn More</a></li>
 				</ul>
 			</section>
+		<!-- Top 10 annotations agree and disagree-->	
+		<div class="welcome-card" id="welcome-card">
+      	<div class="welcome-util">
+        <a href="#" id="welcome-logout">logout</a> 
+        <a href="#" id="welcome-close">close</a> 
+      	</div>
+
+      	<div id="welcome-toggle" class="item">
+      	</div>
+
+      	<div id="post-stat-pop" class="post-stat">
+      	<p>loading... </p>
+      	</div>
+      	<!--<div id="post-stat-con" class="post-stat">
+      	<p>loading... </p>
+      	</div>
+      	-->
+  	</div>
+
+
+
+
 	</body>
 </html>
