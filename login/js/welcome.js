@@ -10,7 +10,7 @@ var _popObject;
 var _conObject;
 */
 $(document).ready(function(){
-    var currentUserId = showNickname();
+    //var currentUserId = showNickname();
     generateToggleHTML( function(){
       bindEvent();
     });
