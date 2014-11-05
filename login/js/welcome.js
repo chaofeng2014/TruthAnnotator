@@ -25,15 +25,13 @@ function generateTopUser() {
       var inHtml_title = '<p class=stat-title id=stat-title>top 10 agreed annotator<br></p><hr>'; 
       $("#top-10-annotator").html(inHtml_title);
       //queryCurrentUser(objects, currentUserId);
-      alert("Successfully retrieved " + objects[0].get('username') + " scores.");
+      //alert("Successfully retrieved " + objects[0].get('username') + " scores.");
       for (var i = 0; i < objects.length; i++){
         generateAnnotator(objects[i], i);
       }
     }
   });
 }
-
-
 
 function generateToggleHTML( _callback) {
   var Annotation = Parse.Object.extend("Annotation");
@@ -45,7 +43,7 @@ function generateToggleHTML( _callback) {
       var inHtml_title = '<p class=stat-title id=stat-title>top 10 agreed annotations<br></p><hr>'; 
       $("#post-stat-pop").html(inHtml_title);
       //queryCurrentUser(objects, currentUserId);
-      alert("Successfully retrieved " + objects[0].get('username') + " scores.");
+      //alert("Successfully retrieved " + objects[0].get('username') + " scores.");
 
       for (var i = 0; i < objects.length; i++){
         generateAnnotation(objects[i], i);
