@@ -11,10 +11,29 @@ var _conObject;
 */
 $(document).ready(function(){
     //var currentUserId = showNickname();
-    generateToggleHTML( function(){
-      bindEvent();
-    });
+    generateToggleHTML();
+    generateTopUser();
 });
+
+function generateTopUser() {
+  var Annotator = Parse.Object.extend("User");
+  var query = new Parse.Query(Annotator);
+  query.descending("numOfAnnotation");
+  query.limit(10);
+  query.find({
+    success: function(objects) {
+      var inHtml_title = '<p class=stat-title id=stat-title>top 10 agreed annotator<br></p><hr>'; 
+      $("#top-10-annotator").html(inHtml_title);
+      //queryCurrentUser(objects, currentUserId);
+      alert("Successfully retrieved " + objects[0].get('username') + " scores.");
+      for (var i = 0; i < objects.length; i++){
+        generateAnnotator(objects[i], i);
+      }
+    }
+  });
+}
+
+
 
 function generateToggleHTML( _callback) {
   var Annotation = Parse.Object.extend("Annotation");
@@ -26,9 +45,12 @@ function generateToggleHTML( _callback) {
       var inHtml_title = '<p class=stat-title id=stat-title>top 10 agreed annotations<br></p><hr>'; 
       $("#post-stat-pop").html(inHtml_title);
       //queryCurrentUser(objects, currentUserId);
+      alert("Successfully retrieved " + objects[0].get('username') + " scores.");
+
       for (var i = 0; i < objects.length; i++){
         generateAnnotation(objects[i], i);
       }
+      
       query.descending("numberOfDisagree");
       query.limit(10);
       query.find({
@@ -44,6 +66,21 @@ function generateToggleHTML( _callback) {
       });
     }
   });
+}
+function generateAnnotator(object, index){
+  //var opinion;
+    var btnup_pop = makeButton ('btnup_pop', 'gray');
+    var selectedText = object.get('nickname');
+    var author = object.get('nickname');
+    var count = object.get('numOfAnnotation');
+    //var disagree = object.get('numberOfDisagree');
+    //var source = object.get('hostDomain');
+    var inHtml_user = '<p class=stat-text id=stat-text-'+ index +'>  ' + selectedText + ' </p>';
+    var inHtml_count = '<span class=stat-count id=pop_count> times: ' + count + '</span>';
+    var inHtml_pop = inHtml_user +inHtml_count + '<hr>';
+    $("#top-10-annotator").append(inHtml_pop);
+    var linkId = '#pop_goPost_' + index;
+    $(linkId).data("annotator", object);
 }
 
 function generateAnnotation(object, index){
@@ -76,16 +113,6 @@ function generateNewTab(node){
 }
 
 function bindEvent(userId){
-
-/*
-  $('#thumbup_pop, #thumbdown_pop, #thumbup_con, #thumbdown_con').click(function(){
-    processVote($(this), userId);
-  });
-  
-  $('#thumbup_pop, #thumbdown_pop, #thumbup_con, #thumbdown_con').click(function(){
-    generateModal($(this));
-  });
-*/
   for (var i = 0; i < 20; i++){
     var linkId = '#pop_goPost_' + i;
     $(linkId).click(function(){
@@ -107,22 +134,7 @@ function bindEvent(userId){
   });
 }
 
-/*
-function queryCurrentUser(objects, userId, _callback){
-  var UserAnnotation = Parse.Object.extend("UserAnnotation");
-  var query = new Parse.Query(UserAnnotation);
-  query.equalTo('annotationId', annotationId);
-  query.equalTo('userId', userId);
-  query.find({
-      success: function(results) {
-        _callback(results);
-      },
-      error: function(error) {
-        alert("Error: " + error.code + " " + error.message);
-      }
-  });
-}
-*/
+
 
 function makeButton(btn, color){
   var btnClass;
@@ -149,110 +161,7 @@ function makeButton(btn, color){
   return button;
 }
 
-/*
-function generateModal(node){
-  if (node.attr('id') === 'thumbup_pop'){
-    var wholePost = _popObject.get('wholePost');
-    var textRange = _popObject.get('textRange');
-  }
-  else{
-    var wholePost = _conObject.get('wholePost');
-    var textRange = _conObject.get('textRange');
-  }
-  //console.log(wholePost);
-  $(".modal-body").html(wholePost);
 
-    //highlight the annotation
-    var classApplierModule = rangy.modules.ClassApplier || rangy.modules.CssClassApplier;
-    if (rangy.supported && classApplierModule && classApplierModule.supported) {
-      var cssApplier = rangy.createCssClassApplier("whole-post-highlight");
-    }
-    var element = $(".modal-body").get(0);
-    if (typeof(element) != "undefined" && typeof(textRange) != "undefined") {
-      var range = rangy.createRange();
-      console.log(textRange);
-      startOffset = textRange.characterRange.start;
-      endOffset = textRange.characterRange.end;
-      range.setStart(element.firstChild, startOffset);
-      range.setEnd(element.firstChild, endOffset);
-      cssApplier.applyToRange(range);
-    } else return;
-}
-
-function processVote(node,userId){
-  var num;
-  var numNode;
-
-  var counterBtn; 
-  var counterNumNode;
-  var counterNum;
-
-  var annotationObject;
-  if (node.attr('id') === 'thumbup_pop'){
-    numNode = $("#pop_agree");
-    num = parseInt(numNode.html());
-    counterBtn = $('#thumbdown_pop');
-    counterNumNode = $('#pop_disagree');
-    counterNum = parseInt(counterNumNode.html());
-    annotationObject = $("stat-mostAgree").data("object");
-    if(node.css("color") === "rgb(0, 0, 255)") 
-      chrome.storage.sync.set({thumbup_pop: 0});
-    else
-      chrome.storage.sync.set({thumbup_pop: 1});
-  }
-
-  else if (node.attr('id') === 'thumbdown_pop'){
-    numNode = $("#pop_disagree");
-    num = parseInt(numNode.html());
-    counterBtn = $('#thumbup_pop');
-    counterNumNode = $('#pop_agree');
-    counterNum = parseInt(counterNumNode.html());
-    annotationObject = $("stat-mostAgree").data("object");
-    if(node.css("color") === "rgb(0, 0, 255)") 
-      chrome.storage.sync.set({thumbdown_pop: 0});
-    else
-      chrome.storage.sync.set({thumbdown_pop: 1});
-  }
-  
-  else if (node.attr('id') === 'thumbup_con'){
-    numNode = $("#con_agree");
-    num = parseInt(numNode.html());
-    counterBtn = $('#thumbdown_con');
-    counterNumNode = $('#con_disagree');
-    counterNum = parseInt(counterNumNode.html());
-    annotationObject = $("stat-mostDisagree").data("object");
-  }
-  
-  else {
-    numNode = $("#con_disagree");
-    num = parseInt(numNode.html());
-    counterBtn = $('#thumbup_con');
-    counterNumNode = $('#con_agree');
-    counterNum = parseInt(counterNumNode.html());
-    annotationObject = $("stat-mostDisagree").data("object");
-  }
-
-  if(node.css("color") === "rgb(0, 0, 255)") {
-    node.css({"color" : "gray"});
-    num--;
-    numNode.html(num);
-  }
-  else {
-    if(counterBtn.css("color") === "rgb(0, 0, 255)") {
-      counterNum--;
-      counterNumNode.html(counterNum);
-    }
-      node.css({"color" : "blue"});
-      num++;
-      //console.log(counterBtn);
-      counterBtn.css({"color":"gray"});
-      numNode.html(num);
-  }
-    // need better logic to update parse
-    //chrome.storage.sync.set({popAnnotation: object});
-    //counterBtn.css({"color":""});
-}
-*/
 
 function removeStorage(){
   chrome.storage.sync.set({objectId: "", username: "", nickname:""}, function(){
