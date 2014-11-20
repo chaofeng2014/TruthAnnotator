@@ -2,16 +2,17 @@ Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak", "anMcouVSWbzeHoJmFJ
 
 
 $(document).ready(function(){
+    //alert("welcome");
     var currentUser = Parse.User.current();
     if(currentUser){
-        alert("welcome");
-        window.location.href = 'welcome.html';
+        window.location.href = 'personal.html';
         alert("login already");
     }
     
     $("#login-password").focus();
 
           $("#login").click(function(){ 
+          alert("logIn");
           console.log("login in");
           var email = $("#login-email").val();
           var password = $("#login-password").val();
@@ -64,7 +65,20 @@ $(document).ready(function(){
           });
         }
         
-        
+        /*
+        function sendToContentLogin(objectId, username, nickname){
+            console.log("sending to content");
+            //chrome.tabs.query({url:'*://twitter.com/'}, function(tabs) {
+            chrome.tabs.query({}, function(tabs) {
+              for (var i = 0; i < tabs.length; i++){
+                //console.log("the nick name will be sent ", nickname);
+                chrome.tabs.sendMessage(tabs[i].id, {objectId: objectId, username: username, nickname:nickname}, function() {
+                  console.log('login change sent to content script');
+                });
+              }
+            }); 
+        }
+        */
         
         function saveToStorage(objectId, username, nickname){
           chrome.storage.sync.set({'objectId': objectId, 'username': username, 'nickname': nickname}, function() {
