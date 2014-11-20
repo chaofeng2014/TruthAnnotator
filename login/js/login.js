@@ -1,6 +1,5 @@
 Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak", "anMcouVSWbzeHoJmFJBcJYrmg8XtzUatOt7hrgJX");
 
-
 $(document).ready(function(){
     var currentUser = Parse.User.current();
     console.log("the current user is ", currentUser);
@@ -46,8 +45,17 @@ $(document).ready(function(){
                 var nickname = user.get("nickname");
                 var username = user.get("username");
                 var objectId = user.id;
-                //console.log(objectId);
-                //saveToStorage(objectId, username, nickname);
+
+                //TODO
+
+                //document.cookie="username=" + username;
+                /*
+                chrome.runtime.sendMessage({'objectId': objectId, 'username': username, 'nickname': nickname}, function(response) {
+                  console.log("content messaging feedback received");
+                });
+                */
+
+
                 window.location.reload();
               
               },
