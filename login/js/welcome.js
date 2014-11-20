@@ -1,14 +1,5 @@
 Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak", "anMcouVSWbzeHoJmFJBcJYrmg8XtzUatOt7hrgJX");
 
-/*
-var _userOpinion;
-var _popUserName;
-var _conUserName;
-var _popPostId;
-var _conPostId;
-var _popObject;
-var _conObject;
-*/
 $(document).ready(function(){
     var currentUserId = showNickname();
     //alert("showNickname already done");
@@ -16,7 +7,7 @@ $(document).ready(function(){
     generateTopUser();
     $("#personal-logout").click(function(){
       Parse.User.logOut();
-      removeStorage();
+      //removeStorage();
       //location.reload();
       window.location.href = 'index.html';
     });  
@@ -143,7 +134,7 @@ function bindEvent(userId){
  
   $("#welcome-logout").click(function(){
       Parse.User.logOut();
-      removeStorage();
+      //removeStorage();
       //location.reload();
       window.location.href = 'personal.html';
   });
@@ -176,7 +167,7 @@ function makeButton(btn, color){
   var id;
   var button;
   if (btn === 'btnup_pop' | btn === 'btnup_con'){
-    console.log("inside");
+    //console.log("inside");
     btnClass = '"btnup"';
     font = 'ta-like';
     if(btn === 'btnup_pop')
@@ -196,12 +187,13 @@ function makeButton(btn, color){
   return button;
 }
 
-
+/*
 function removeStorage(){
   chrome.storage.sync.set({objectId: "", username: "", nickname:""}, function(){
   console.log('local nickname removed');
   });
 }
+*/
 
 function showNickname(){
   console.log("showNickname running");

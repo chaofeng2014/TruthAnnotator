@@ -3,16 +3,14 @@ Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak", "anMcouVSWbzeHoJmFJ
 
 $(document).ready(function(){
     var currentUser = Parse.User.current();
+    console.log("the current user is ", currentUser);
     if(currentUser){
-        alert("welcome");
-        window.location.href = 'welcome.html';
-        alert("login already");
+        window.location.href = 'personal.html';
     }
     
     $("#login-password").focus();
 
-          $("#login").click(function(){ 
-          console.log("login in");
+    $("#login").click(function(){ 
           var email = $("#login-email").val();
           var password = $("#login-password").val();
 
@@ -27,16 +25,16 @@ $(document).ready(function(){
           }
             
           else {
-            console.log("log in function");
             login(); 
           }
       });
-          $("#close").click(function(){window.close();}); 
     
     $("#logout").click(function(){ 
         Parse.User.logOut();
         window.location.reload();
-        });
+    });
+
+    $("#close").click(function(){window.close();}); 
 
       function login(){
           var email = $("input[name=email]").val();
@@ -44,17 +42,14 @@ $(document).ready(function(){
           
           Parse.User.logIn(email.toLowerCase(), password.toLowerCase(), {
               success: function(user) {
-                console.log(user);
+                console.log("parse login successed");
                 var nickname = user.get("nickname");
                 var username = user.get("username");
                 var objectId = user.id;
-                console.log(objectId);
-                //sendToContentLogin(objectId, username, nickname);
-                saveToStorage(objectId, username, nickname);
-                chrome.browserAction.setIcon({path:'../../img/T-400.png'}, function()
-                { 
-                  window.location.reload();
-                });
+                //console.log(objectId);
+                //saveToStorage(objectId, username, nickname);
+                window.location.reload();
+              
               },
               error: function(user, error){
                 console.log("Error: ", error);
@@ -62,13 +57,25 @@ $(document).ready(function(){
                 setTimeout( function(){$('#login-info').html('<p style="visibility:hidden">info</p>');}, 5000 );
               },
           });
+      }
+        
+        /*
+        function sendToContentLogin(objectId, username, nickname){
+            console.log("sending to content");
+            chrome.tabs.query({}, function(tabs) {
+              for (var i = 0; i < tabs.length; i++){
+                //console.log("the nick name will be sent ", nickname);
+                chrome.tabs.sendMessage(tabs[i].id, {objectId: objectId, username: username, nickname:nickname}, function() {
+                  console.log('login change sent to content script');
+                });
+              }
+            }); 
         }
-        
-        
         
         function saveToStorage(objectId, username, nickname){
           chrome.storage.sync.set({'objectId': objectId, 'username': username, 'nickname': nickname}, function() {
              console.log('Settings saved to local storage');
           });
         } 
+        */
 });
