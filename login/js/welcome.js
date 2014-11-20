@@ -11,9 +11,19 @@ var _conObject;
 */
 $(document).ready(function(){
     var currentUserId = showNickname();
+    //alert("showNickname already done");
     generateToggleHTML();
     generateTopUser();
+    $("#personal-logout").click(function(){
+      Parse.User.logOut();
+      removeStorage();
+      //location.reload();
+      window.location.href = 'index.html';
+    });  
 });
+
+
+
 
 function generateTopUser() {
   var Annotator = Parse.Object.extend("User");
@@ -33,14 +43,14 @@ function generateTopUser() {
   });
 }
 
-function generateToggleHTML( _callback) {
+function generateToggleHTML() {
   var Annotation = Parse.Object.extend("Annotation");
   var query = new Parse.Query(Annotation);
   query.descending("numberOfAgree");
   query.limit(10);
   query.find({
     success: function(objects) {
-      var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Agreed<br></p><hr>'; 
+      var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Agreed Annotations<br></p><hr>'; 
       $("#agreed").html(inHtml_title);
       //queryCurrentUser(objects, currentUserId);
       for (var i = 0; i < objects.length; i++){
@@ -50,13 +60,13 @@ function generateToggleHTML( _callback) {
       query.limit(10);
       query.find({
         success: function(objects) {
-          var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Disagreed<br></p><hr>'; 
+          var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Disagreed Annotations<br></p><hr>'; 
           $("#disagreed").append(inHtml_title);
           //queryCurrentUser(objects, currentUserId);
           for (var i = 0; i < objects.length; i++){
             generateAnnotation(objects[i], i+10, "disagreed");
           }
-          _callback();
+          //_callback();
         }
       });
     }
@@ -134,10 +144,8 @@ function bindEvent(userId){
   $("#welcome-logout").click(function(){
       Parse.User.logOut();
       removeStorage();
-      chrome.browserAction.setIcon({path:'../../img/T-400_white.png'}, function()
-      {
-        window.close();
-      });
+      //location.reload();
+      window.location.href = 'personal.html';
   });
   
   $("#welcome-close").click(function(){
@@ -201,7 +209,8 @@ function showNickname(){
 
   var currentUser = Parse.User.current();
   if(!currentUser){
-      window.location.href = "index.html";
+      return;
+      //window.location.href = "index.html";
   }
 
   var inHtml1 = '<h4>Hello, '; 

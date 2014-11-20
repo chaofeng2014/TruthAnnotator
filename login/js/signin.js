@@ -4,15 +4,14 @@ Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak", "anMcouVSWbzeHoJmFJ
 $(document).ready(function(){
     //alert("welcome");
     var currentUser = Parse.User.current();
+    console.log(currentUser);
     if(currentUser){
         window.location.href = 'personal.html';
-        alert("login already");
     }
     
     $("#login-password").focus();
 
-          $("#login").click(function(){ 
-          alert("logIn");
+    $("#login").click(function(){ 
           console.log("login in");
           var email = $("#login-email").val();
           var password = $("#login-password").val();
@@ -29,7 +28,7 @@ $(document).ready(function(){
             
           else {
             console.log("log in function");
-            login(); 
+            // login(); 
           }
       });
           $("#close").click(function(){window.close();}); 
@@ -52,10 +51,8 @@ $(document).ready(function(){
                 console.log(objectId);
                 //sendToContentLogin(objectId, username, nickname);
                 saveToStorage(objectId, username, nickname);
-                chrome.browserAction.setIcon({path:'../../img/T-400.png'}, function()
-                { 
-                  window.location.reload();
-                });
+                //window.location.reload();
+              
               },
               error: function(user, error){
                 console.log("Error: ", error);
