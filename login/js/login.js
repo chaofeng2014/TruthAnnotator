@@ -61,6 +61,7 @@ $(document).ready(function(){
               },
               error: function(user, error){
                 console.log("Error: ", error);
+                  alert('email or password is incorrect');
                   $('#login-info').html('<p>email or password is incorrect</p>');
                 setTimeout( function(){$('#login-info').html('<p style="visibility:hidden">info</p>');}, 5000 );
               },
