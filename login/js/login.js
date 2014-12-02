@@ -15,12 +15,12 @@ $(document).ready(function(){
 
           if (email === "") {
               $('#login-info').html('<p>Please enter your registed email</p>');
-              setTimeout( function(){$('#login-info').html('<p style="visibility:hidden">info</p>');}, 5000 );
+              setTimeout( function(){$('#login-info').html('<p style="visibility:hidden">info</p>');}, 10000 );
           }
 
           else if (password === "") {
               $('#login-info').html('<p>Please enter your password</p>');
-              setTimeout( function(){$('#login-info').html('<p style="visibility:hidden">info</p>');}, 5000 );
+              setTimeout( function(){$('#login-info').html('<p style="visibility:hidden">info</p>');}, 10000 );
           }
             
           else {
@@ -61,9 +61,8 @@ $(document).ready(function(){
               },
               error: function(user, error){
                 console.log("Error: ", error);
-                  alert('email or password is incorrect');
-                  $('#login-info').html('<p>email or password is incorrect</p>');
-                setTimeout( function(){$('#login-info').html('<p style="visibility:hidden">info</p>');}, 5000 );
+                  $('#login-info').html('<p>The email or password you entered is incorrect.</p>');
+                setTimeout( function(){$('#login-info').html('<p style="visibility:hidden">info</p>');}, 30000 );
               },
           });
       }

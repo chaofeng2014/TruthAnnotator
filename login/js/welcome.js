@@ -79,7 +79,7 @@ function generateAnnotation(object, index, type){
     var inHtml_agree = '<span class=stat-agree id=pop_agree>' + agree + '</span>';
     var inHtml_disagree = '<span class=stat-disagree id=pop_disagree>' + disagree + '</span>';
     var inHtml_goPost = '<span class=stat-goPost id=pop_goPost_'+ index+'> see original post </span>';
-    var inHtml_pop = inHtml_text + inHtml_source + btnup_pop + '<hr>';
+    var inHtml_pop = inHtml_text + inHtml_source  + '<hr>';
     if(type == "agreed") {
     $("#agreed-content").append(inHtml_pop);
     }
