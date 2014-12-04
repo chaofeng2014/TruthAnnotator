@@ -41,7 +41,7 @@ function generateToggleHTML() {
   query.limit(10);
   query.find({
     success: function(objects) {
-      var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Agreed Annotations<br></p><hr>'; 
+      var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Agreed<br></p><hr>'; 
       $("#agreed").html(inHtml_title);
       //queryCurrentUser(objects, currentUserId);
       for (var i = 0; i < objects.length; i++){
@@ -51,7 +51,7 @@ function generateToggleHTML() {
       query.limit(10);
       query.find({
         success: function(objects) {
-          var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Disagreed Annotations<br></p><hr>'; 
+          var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Disagreed<br></p><hr>'; 
           $("#disagreed").append(inHtml_title);
           //queryCurrentUser(objects, currentUserId);
           for (var i = 0; i < objects.length; i++){
