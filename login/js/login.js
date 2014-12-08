@@ -28,6 +28,22 @@ $(document).ready(function(){
           }
       });
     
+    $("#forgot-password").click(function(){ 
+        var email = $("#forgot-password-email").val();
+        Parse.User.requestPasswordReset(email, {
+        success: function() {
+        // Password reset request was sent successfully
+        alert("Password reset request was sent successfully");
+        $("#forgot-password-email").val('');
+        },
+       error: function(error) {
+      // Show the error message somewhere
+      alert("Error: " + error.code + " " + error.message);
+       }
+      });
+    });
+
+
     $("#logout").click(function(){ 
         Parse.User.logOut();
         window.location.reload();
