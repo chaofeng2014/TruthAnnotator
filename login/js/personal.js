@@ -1,6 +1,8 @@
 Parse.initialize("Jbz8IatuSOpr7xmnNXBpnCcN1cj2ox9sPzsqggak", "anMcouVSWbzeHoJmFJBcJYrmg8XtzUatOt7hrgJX");
 
 $(document).ready(function(){
+      var currentUser = Parse.User.current();
+    console.log("the current user is ", currentUser.id);
     var currentUserId = showNickname();
     //alert("showNickname already done");
     //generateToggleHTML();
@@ -15,27 +17,64 @@ $(document).ready(function(){
 
 
 function generateRecentAnnotations() {
+
   var user = Parse.User.current();
+  var userid = user.id;
+
   var username = user.get("username");
   var annotationIdQuery = Parse.Object.extend("UserAnnotation");
-  var annotationsQuery = Parse.Object.extend("Annotation");
+  
   var innerQuery = new Parse.Query(annotationIdQuery);
-  innerQuery.equalTo("username", username);
-  var query = new Parse.Query(annotationsQuery);
-  query.matchesKeyInQuery("objectId","annotationId", innerQuery);
+  innerQuery.equalTo("userId", userid);
+  
+  //query.matchesKeyInQuery("objectId","annotationId", innerQuery);
   //alert(query);
-  query.descending("updatedAt");
-  query.limit(10);
-  query.find({
+  //query.descending("updatedAt");
+  //query.limit(10);
+  innerQuery.find({
     success: function(objects) {
       var inHtml_title = '<p class=stat-title id=stat-title>10 Recent Annotations<br></p><hr>'; 
       $("#recentAnnotation").html(inHtml_title);
       //queryCurrentUser(objects, currentUserId);
       //alert("Successfully retrieved " + objects[0].get('username') + " scores.");
       for (var i = 0; i < objects.length; i++){
-        generateAnnotation(objects[i], i);
-        //console.log(objects[i].get("updateAt"));
+        //generateAnnotation(objects[i], i);
+        getPersonalAnnotation(objects[i].get("annotationId"));
+        
+        //var annotationId = objects[i].get("annotationId");
+        
+
+        console.log(objects[i].get("annotationId"));
       }
+    }
+  });
+}
+
+function getPersonalAnnotation(object) {
+ // alert(object);
+  // var annotationsQuery = Parse.Object.extend("Annotation");
+  // var query = new Parse.Query(annotationsQuery);
+  //       //query.equalTo("objectId",object);
+  // query.find({
+  //           success: function(iobjects) {
+  //             console.log(iobjects);
+  //           }
+  //       });
+
+  var Annotator = Parse.Object.extend("Annotation");
+  var query = new Parse.Query(Annotator);
+  query.equalTo("objectId",object);
+  //query.descending("hostDomain");
+  //query.limit(10);
+  query.find({
+    success: function(objects) {
+      //var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Annotators<br></p><hr>'; 
+      //$("#annotators").html(inHtml_title);
+      //queryCurrentUser(objects, currentUserId);
+      //alert("Successfully retrieved " + objects[0].get('objectId') + " scores.");
+      //for (var i = 0; i < objects.length; i++){
+      //  generateAnnotator(objects[i], i);
+      //}
     }
   });
 }
