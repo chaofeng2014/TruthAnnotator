@@ -4,13 +4,9 @@ $(document).ready(function(){
       var currentUser = Parse.User.current();
     console.log("the current user is ", currentUser.id);
     var currentUserId = showNickname();
-    //alert("showNickname already done");
-    //generateToggleHTML();
     generateRecentAnnotations();
     $("#personal-logout").click(function(){
       Parse.User.logOut();
-      //removeStorage();
-      //location.reload();
       window.location.href = 'index.html';
     });  
 });
@@ -26,88 +22,38 @@ function generateRecentAnnotations() {
   
   var innerQuery = new Parse.Query(annotationIdQuery);
   innerQuery.equalTo("userId", userid);
-  
-  //query.matchesKeyInQuery("objectId","annotationId", innerQuery);
-  //alert(query);
-  //query.descending("updatedAt");
-  //query.limit(10);
+
   innerQuery.find({
     success: function(objects) {
-      var inHtml_title = '<p class=stat-title id=stat-title>10 Recent Annotations<br></p><hr>'; 
+      var inHtml_title = '<p class=stat-title id=stat-title>Your Annotations<br></p><hr>'; 
       $("#recentAnnotation").html(inHtml_title);
-      //queryCurrentUser(objects, currentUserId);
-      //alert("Successfully retrieved " + objects[0].get('username') + " scores.");
+      var j = 1;
       for (var i = 0; i < objects.length; i++){
-        //generateAnnotation(objects[i], i);
-        getPersonalAnnotation(objects[i].get("annotationId"));
-        
-        //var annotationId = objects[i].get("annotationId");
-        
-
-        console.log(objects[i].get("annotationId"));
+        getPersonalAnnotation(objects[i].get("annotationId"), j);
+        j++;
       }
     }
   });
 }
 
-function getPersonalAnnotation(object) {
- // alert(object);
-  // var annotationsQuery = Parse.Object.extend("Annotation");
-  // var query = new Parse.Query(annotationsQuery);
-  //       //query.equalTo("objectId",object);
-  // query.find({
-  //           success: function(iobjects) {
-  //             console.log(iobjects);
-  //           }
-  //       });
-
-  var Annotator = Parse.Object.extend("Annotation");
-  var query = new Parse.Query(Annotator);
-  query.equalTo("objectId",object);
-  //query.descending("hostDomain");
-  //query.limit(10);
-  query.find({
-    success: function(objects) {
-      //var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Annotators<br></p><hr>'; 
-      //$("#annotators").html(inHtml_title);
-      //queryCurrentUser(objects, currentUserId);
-      //alert("Successfully retrieved " + objects[0].get('objectId') + " scores.");
-      //for (var i = 0; i < objects.length; i++){
-      //  generateAnnotator(objects[i], i);
-      //}
-    }
-  });
-}
-
-function generateToggleHTML() {
+function getPersonalAnnotation(obj) {
   var Annotation = Parse.Object.extend("Annotation");
   var query = new Parse.Query(Annotation);
-  query.descending("numberOfAgree");
-  query.limit(10);
+
+  query.equalTo("objectId",obj);
   query.find({
-    success: function(objects) {
-      var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Agreed Annotations<br></p><hr>'; 
-      $("#agreed").html(inHtml_title);
-      //queryCurrentUser(objects, currentUserId);
-      for (var i = 0; i < objects.length; i++){
-        generateAnnotation(objects[i], i, "agreed");
-      }
-      query.descending("numberOfDisagree");
-      query.limit(10);
-      query.find({
-        success: function(objects) {
-          var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Disagreed Annotations<br></p><hr>'; 
-          $("#disagreed").append(inHtml_title);
-          //queryCurrentUser(objects, currentUserId);
-          for (var i = 0; i < objects.length; i++){
-            generateAnnotation(objects[i], i+10, "disagreed");
-          }
-          //_callback();
-        }
-      });
-    }
-  });
+            success: function(object) {
+              var selectedText = object[0].get('selectedText');
+             var source = object[0].get('hostDomain');
+              var inHtml_source = '&emsp; &emsp;'+ '(' + source  + ')';
+              var inHtml_text = '<p class=stat-text id=stat-text> " ' + selectedText + ' "</p>';
+              var inHtml_pop = inHtml_text + " " + inHtml_source + '<hr>';
+              $("#10-recent").append(inHtml_pop);
+            }
+        });
 }
+
+
 //inHtml_text + source
 function generateAnnotation(object, index, type){
   //var opinion;
@@ -137,110 +83,7 @@ function generateAnnotation(object, index, type){
 }
 
 
-function generateAnnotator(object, index){
-  //var opinion;
-    var btnup_pop = makeButton ('btnup_pop', 'gray');
-    var selectedText = object.get('nickname');
-    var author = object.get('nickname');
-    var count = object.get('numOfAnnotation');
-    //var disagree = object.get('numberOfDisagree');
-    //var source = object.get('hostDomain');
-    var inHtml_user = '<p class=stat-text id=stat-text-'+ index +'>  ' + selectedText + ': ' + count +' </p>';
-    var inHtml_count = '<span class=stat-count id=pop_count> times: ' + count + '</span>';
-    var inHtml_pop = inHtml_user  + '<hr>';
-    $("#top-annotators").append(inHtml_pop);
-    var linkId = '#pop_goPost_' + index;
-    $(linkId).data("annotator", object);
-}
 
-function generateNewTab(node){
-  //console.log(node.data());
-  var postId = node.data("annotation").get('postId');
-  var userName = node.data("annotation").get('userName');
-  url = 'https://twitter.com/' + userName + '/status/' + postId;
-  window.open(url);
-}
-
-function bindEvent(userId){
-
-/*
-  $('#thumbup_pop, #thumbdown_pop, #thumbup_con, #thumbdown_con').click(function(){
-    processVote($(this), userId);
-  });
-  
-  $('#thumbup_pop, #thumbdown_pop, #thumbup_con, #thumbdown_con').click(function(){
-    generateModal($(this));
-  });
-*/
-  for (var i = 0; i < 20; i++){
-    var linkId = '#pop_goPost_' + i;
-    $(linkId).click(function(){
-      generateNewTab($(this));
-    });
-  }
- 
-  $("#welcome-logout").click(function(){
-      Parse.User.logOut();
-      //removeStorage();
-      //location.reload();
-      window.location.href = 'personal.html';
-  });
-  
-  $("#welcome-close").click(function(){
-    window.close();
-  });
-}
-
-/*
-function queryCurrentUser(objects, userId, _callback){
-  var UserAnnotation = Parse.Object.extend("UserAnnotation");
-  var query = new Parse.Query(UserAnnotation);
-  query.equalTo('annotationId', annotationId);
-  query.equalTo('userId', userId);
-  query.find({
-      success: function(results) {
-        _callback(results);
-      },
-      error: function(error) {
-        alert("Error: " + error.code + " " + error.message);
-      }
-  });
-}
-*/
-
-function makeButton(btn, color){
-  var btnClass;
-  var font;
-  var id;
-  var button;
-  if (btn === 'btnup_pop' | btn === 'btnup_con'){
-    //console.log("inside");
-    btnClass = '"btnup"';
-    font = 'ta-like';
-    if(btn === 'btnup_pop')
-    id = '"thumbup_pop"';
-    else
-    id = '"thumbup_con"';
-  }
-  else {
-    btnClass = '"btndown"';
-    font = 'ta-dislike';
-    if(btn === 'btndown_pop')
-    id = '"thumbdown_pop"';
-    else
-    id = '"thumbdown_con"';
-  }
-  button = '<span class=' + btnClass + ' id=' + id + ' style="color:'+ color + '"; data-toggle="modal" data-target="#myModal"><i class="fa ' + font + '"></i></span>';
-  return button;
-}
-
-/*
-function removeStorage(){
-  chrome.storage.sync.set({objectId: "", username: "", nickname:""}, function(){
-  console.log('local nickname removed');
-  });
-}
-*/
 
 function showNickname(){
   console.log("showNickname running");
