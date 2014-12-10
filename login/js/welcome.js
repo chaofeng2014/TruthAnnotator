@@ -17,19 +17,33 @@ $(document).ready(function(){
 
 
 function generateTopUser() {
-  var Annotator = Parse.Object.extend("User");
+  var Annotator = Parse.Object.extend("UserStat");
   var query = new Parse.Query(Annotator);
-  query.descending("numOfAnnotation");
+  query.descending("numOperation");
   query.limit(10);
   query.find({
     success: function(objects) {
-      var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Annotators<br></p><hr>'; 
+      var inHtml_title = '<p class=stat-title id=stat-title>Top 10 Active Annotators<br></p><hr>'; 
       $("#annotators").html(inHtml_title);
       //queryCurrentUser(objects, currentUserId);
       //alert("Successfully retrieved " + objects[0].get('username') + " scores.");
       for (var i = 0; i < objects.length; i++){
-        generateAnnotator(objects[i], i);
+        getNickname(objects[i].get("userName"));
       }
+    }
+  });
+}
+
+
+function getNickname(obj) {
+  var user = Parse.Object.extend("User");
+  var query = new Parse.Query(user);
+  query.equalTo("username", obj);
+  query.find({
+    success: function(object) {
+              var inHtml_user = object[0].get('nickname');
+              var inHtml_pop = inHtml_user  + '<hr>';
+              $("#top-annotators").append(inHtml_pop);
     }
   });
 }
